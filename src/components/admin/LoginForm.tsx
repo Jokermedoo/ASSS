@@ -102,10 +102,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             </button>
           </div>
 
-          {/* Default Password Info */}
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-xs text-blue-700">
-              كلمة المرور الافتراضية: admin123123
+          {/* Security Notice */}
+          <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+            <p className="text-xs text-yellow-800">
+              <strong>تنبيه أمني:</strong> يُنصح بشدة بتغيير كلمة المرور الافتراضية فور تسجيل الدخول لضمان أمان حسابك.
             </p>
           </div>
         </div>
