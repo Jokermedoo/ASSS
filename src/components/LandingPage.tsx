@@ -141,7 +141,7 @@ const LandingPage: React.FC = () => {
       title: t('speed_title'),
       description: t('speed_desc'),
       color: 'from-yellow-500 to-yellow-600',
-      benefits: ['إنجاز فوري للطلبات', 'معال��ة سريعة للدفعات', 'دعم فني فوري']
+      benefits: ['إنجاز فوري للطلبات', 'معالجة سريعة للدفعات', 'دعم فني فوري']
     },
     {
       icon: Award,
@@ -266,6 +266,7 @@ const LandingPage: React.FC = () => {
                 { id: 'services', label: t('services') },
                 { id: 'features', label: t('features') },
                 { id: 'testimonials', label: t('testimonials') },
+                { id: 'faq', label: 'الأسئلة الشائعة' },
                 { id: 'contact', label: t('contact') }
               ].map((item) => (
                 <button
@@ -326,6 +327,7 @@ const LandingPage: React.FC = () => {
                 { id: 'services', label: t('services') },
                 { id: 'features', label: t('features') },
                 { id: 'testimonials', label: t('testimonials') },
+                { id: 'faq', label: 'الأسئلة الشائعة' },
                 { id: 'contact', label: t('contact') }
               ].map((item) => (
                 <button
@@ -546,7 +548,7 @@ const LandingPage: React.FC = () => {
               {[
                 { value: heroData.statsData.clients, label: 'عميل راضٍ', icon: Users },
                 { value: heroData.statsData.successRate, label: 'معدل النجاح', icon: Target },
-                { value: heroData.statsData.support, label: 'دعم متو��صل', icon: Clock },
+                { value: heroData.statsData.support, label: 'دعم متواصل', icon: Clock },
                 { value: heroData.statsData.speed, label: 'سرعة التنفيذ', icon: Zap }
               ].map((stat, index) => (
                 <div key={index} className={`text-center p-6 rounded-2xl backdrop-blur-sm border ${
@@ -604,7 +606,7 @@ const LandingPage: React.FC = () => {
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
               خدمات <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                مالية شاملة
+                مالي�� شاملة
               </span>
             </h2>
             
@@ -800,7 +802,7 @@ const LandingPage: React.FC = () => {
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              تجارب حقيقية من عملائنا الكرام حول جودة خدماتنا
+              تجار�� حقيقية من عملائنا الكرام حول جودة خدماتنا
             </p>
           </div>
 
@@ -910,7 +912,7 @@ const LandingPage: React.FC = () => {
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              إجابات سريعة على الأسئلة الأكثر شيوعاً حول خدماتنا
+              إجابات سريعة على الأسئلة الأكثر ش��وعاً حول خدماتنا
             </p>
           </div>
 
@@ -933,8 +935,8 @@ const LandingPage: React.FC = () => {
                 a: 'نعم، نحن نقدم ضمان استرداد الأموال في حالة عدم تنفيذ الخدمة كما هو متفق عليه.'
               },
               {
-                q: 'كيف يمكنني التواصل مع الدعم؟',
-                a: 'يمكنك التواصل معنا عبر واتساب على مدار 24/7، أو من خلال نموذ�� التواصل في الموقع.'
+                q: 'كيف يمكنني التو��صل مع الدعم؟',
+                a: 'يمكنك التواصل معنا عبر واتساب على مدار 24/7، أو من خلال نموذج التواصل في الموقع.'
               }
             ].map((faq, index) => (
               <div
@@ -1148,7 +1150,7 @@ const LandingPage: React.FC = () => {
               <p className={`text-sm leading-relaxed mb-6 max-w-md ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                نحن نقدم خدمات مالية رقمية آمنة وموثوق�� مع أعلى معايير الجودة والحماية لعملائنا الكرام.
+                نحن نقدم خدمات مالية رقمية آمنة وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.
               </p>
               
               <div className="flex space-x-reverse space-x-4">
