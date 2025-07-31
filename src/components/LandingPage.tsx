@@ -25,7 +25,7 @@ const LandingPage: React.FC = () => {
   const { t } = useTranslation(language);
 
   // State
-  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [selectedService, setSelectedService] = useState<{name: string, price: string} | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
@@ -62,7 +62,7 @@ const LandingPage: React.FC = () => {
     },
     {
       id: 2,
-      name: 'فاطمة السالم',
+      name: 'فاطمة السا��م',
       role: 'مؤسسة شركة',
       avatar: '👩‍💼',
       rating: 5,
@@ -756,7 +756,7 @@ const LandingPage: React.FC = () => {
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
               {language === 'ar' 
-                ? 'تجارب حقيقية من عملائنا الكرام حول جودة خدماتنا'
+                ? 'تجارب حقيقية من عملائنا الكرام حول ��ودة خدماتنا'
                 : 'Real experiences from our valued customers about the quality of our services'
               }
             </p>
