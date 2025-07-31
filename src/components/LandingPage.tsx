@@ -63,7 +63,7 @@ const LandingPage: React.FC = () => {
     {
       id: 2,
       name: 'فاطمة السالم',
-      role: 'مؤسسة شر��ة',
+      role: 'مؤسسة شركة',
       avatar: '👩‍💼',
       rating: 5,
       comment: 'أفضل منصة للخدمات المالية، دعم فني ممتاز وأسعار مناسبة جداً.',
@@ -587,7 +587,7 @@ const LandingPage: React.FC = () => {
                     theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                   }`}>
                     {language === 'ar' 
-                      ? 'خدمة مالية موثوقة وآمنة بأف��ل الأسعار'
+                      ? 'خدمة مالية موثوقة وآمنة بأفضل الأسعار'
                       : 'Reliable and secure financial service at the best prices'
                     }
                   </p>
@@ -612,7 +612,7 @@ const LandingPage: React.FC = () => {
 
                   {/* Features */}
                   <div className="space-y-2 pt-4">
-                    {(language === 'ar' ? ['تنفيذ فوري', 'أمان عالي', 'دعم 24/7'] : ['Instant execution', 'High security', '24/7 support']).map((feature, idx) => (
+                    {(language === 'ar' ? ['تنفيذ فوري', 'أمان عالي', 'دع�� 24/7'] : ['Instant execution', 'High security', '24/7 support']).map((feature, idx) => (
                       <div key={idx} className="flex items-center space-x-reverse space-x-2">
                         <CheckSquare className="h-4 w-4 text-green-500" />
                         <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -635,7 +635,7 @@ const LandingPage: React.FC = () => {
               onClick={() => setIsServicesOpen(true)}
               className="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3 mx-auto"
             >
-              <span>{language === 'ar' ? 'عرض جميع الخدمات' : 'View All Services'}</span>
+              <span>{language === 'ar' ? 'عرض جميع ا��خدمات' : 'View All Services'}</span>
               <Eye className="h-5 w-5 group-hover:scale-110 transition-transform" />
             </button>
           </div>
@@ -893,7 +893,7 @@ const LandingPage: React.FC = () => {
             {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
-                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخدمات قد تحتاج إلى وقت أطول قليلاً حسب التع��يد.'
+                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخدمات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
               },
               {
                 q: 'هل خدماتكم آمنة؟',
@@ -1112,7 +1112,8 @@ const LandingPage: React.FC = () => {
             setIsModalOpen(false);
             setSelectedService(null);
           }}
-          serviceName={selectedService}
+          serviceName={selectedService.name}
+          servicePrice={selectedService.price}
         />
       )}
 
