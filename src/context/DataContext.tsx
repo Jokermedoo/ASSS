@@ -73,7 +73,7 @@ const defaultSiteSettings: SiteSettings = {
   title: 'KYCtrust - خدمات مالية رقمية موثوقة',
   description: 'نقدم خدمات مالية رقمية احترافية وآمنة لجميع المنصات العالمية مع ضمان الجودة والموثوقية',
   orderNotice: 'سيتم التواصل معك يدوياً عبر واتساب بعد إرسال الطلب.',
-  whatsappNumber: '+966501234567'
+  whatsappNumber: '+201062453344'
 };
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
