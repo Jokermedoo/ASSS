@@ -1,43 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import LandingPage from './components/LandingPage';
-import SimpleLandingPage from './components/SimpleLandingPage';
-import AdminPanel from './components/AdminPanel';
-import TestPage from './TestPage';
-import { DataProvider } from './context/DataContext';
-import { ThemeProvider } from './context/ThemeContext';
-import { CustomizationProvider } from './context/CustomizationContext';
+import React from 'react';
 
 function App() {
   return (
-    <ThemeProvider>
-      <CustomizationProvider>
-        <DataProvider>
-          <div className="min-h-screen transition-colors duration-300">
-            <Router>
-              <Routes>
-                <Route path="/" element={<SimpleLandingPage />} />
-                <Route path="/full" element={<LandingPage />} />
-                <Route path="/test" element={<TestPage />} />
-                <Route path="/admin" element={<AdminPanel />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Router>
-            <Toaster
-              position="top-center"
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  fontFamily: 'Cairo, system-ui, sans-serif'
-                },
-                className: 'dark:bg-gray-800 dark:text-white',
-              }}
-            />
-          </div>
-        </DataProvider>
-      </CustomizationProvider>
-    </ThemeProvider>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ color: '#2563eb' }}>🎉 KYCtrust Platform - Working!</h1>
+      <p>✅ React is working correctly</p>
+      <p>✅ App is loading</p>
+      <p>✅ Basic functionality confirmed</p>
+      
+      <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
+        <h3>النص العربي يعمل بشكل صحيح</h3>
+        <p>هذا اختبار للنص العربي والتأكد من أن كل شيء يعمل بشكل طبيعي</p>
+      </div>
+
+      <button 
+        onClick={() => alert('Button clicked!')}
+        style={{ 
+          marginTop: '10px', 
+          padding: '10px 20px', 
+          backgroundColor: '#2563eb', 
+          color: 'white', 
+          border: 'none', 
+          borderRadius: '5px',
+          cursor: 'pointer'
+        }}
+      >
+        Test Button
+      </button>
+    </div>
   );
 }
 
