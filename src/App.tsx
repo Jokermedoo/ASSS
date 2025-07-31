@@ -6,7 +6,7 @@ function App() {
   const [selectedPayment, setSelectedPayment] = useState('vodafone');
 
   const paymentMethods = [
-    { id: 'vodafone', name: 'Vodafone Cash', details: '+966501234567' },
+    { id: 'vodafone', name: 'Vodafone Cash', details: '+201062453344' },
     { id: 'usdt', name: 'USDT (TRC20)', details: 'TFUt8GRpk2R8Wv3FvoCiSUghRBQo4HrmQK' }
   ];
 
@@ -17,7 +17,7 @@ function App() {
 
 👤 العميل: ${customerName}
 🛍️ الخدمة: Payoneer
-💰 السع��: 30$
+💰 السعر: 30$
 💳 طريقة الدفع: ${payment?.name}
 📱 التفاصيل: ${payment?.details}
 
