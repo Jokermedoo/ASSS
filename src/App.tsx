@@ -12,15 +12,28 @@ function App() {
   return (
     <ThemeProvider>
       <CustomizationProvider>
-        <div className="min-h-screen transition-colors duration-300">
-          <Router>
-            <Routes>
-              <Route path="/" element={<TestPage />} />
-              <Route path="/test" element={<TestPage />} />
-              <Route path="*" element={<Navigate to="/test" replace />} />
-            </Routes>
-          </Router>
-        </div>
+        <DataProvider>
+          <div className="min-h-screen transition-colors duration-300">
+            <Router>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/test" element={<TestPage />} />
+                <Route path="/admin" element={<AdminPanel />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Router>
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  fontFamily: 'Cairo, system-ui, sans-serif'
+                },
+                className: 'dark:bg-gray-800 dark:text-white',
+              }}
+            />
+          </div>
+        </DataProvider>
       </CustomizationProvider>
     </ThemeProvider>
   );
