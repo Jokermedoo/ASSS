@@ -69,7 +69,7 @@ const LandingPage: React.FC = () => {
       role: 'مؤسسة شركة',
       avatar: '👩‍💼',
       rating: 5,
-      comment: 'أفضل منصة للخدمات المالية، دعم فني ممتاز وأسعار مناسبة جداً.',
+      comment: 'أفضل منصة للخدمات المالية، دع�� فني ممتاز وأسعار مناسبة جداً.',
       date: '2024-11-10',
       verified: true
     },
@@ -724,7 +724,7 @@ const LandingPage: React.FC = () => {
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              نجمع بين الأمان والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات المالية
+              نجمع بين الأمان والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات ال��الية
             </p>
           </div>
 
@@ -920,7 +920,7 @@ const LandingPage: React.FC = () => {
                 {[
                   { icon: Phone, label: 'هاتف', value: '+966 50 123 4567', action: 'tel:+966501234567' },
                   { icon: Mail, label: 'بريد إلكتروني', value: 'support@kyctrust.com', action: 'mailto:support@kyctrust.com' },
-                  { icon: MessageCircle, label: 'تليجرام', value: '@kyctrust_support', action: 'https://t.me/kyctrust_support' },
+                  { icon: MessageCircle, label: 'تليجر��م', value: '@kyctrust_support', action: 'https://t.me/kyctrust_support' },
                   { icon: MapPin, label: 'العنوان', value: 'الرياض، المملكة العربية السعودية', action: '#' }
                 ].map((contact, index) => (
                   <a
@@ -1199,11 +1199,16 @@ const LandingPage: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Action Button */}
+      {/* Floating WhatsApp Button */}
       <div className="fixed bottom-6 left-6 z-40">
         <button
-          onClick={() => scrollToSection('contact')}
-          className="w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group hover:scale-110"
+          onClick={() => {
+            const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
+            const message = 'السلام عليكم، أريد الاستفسار عن خدماتكم';
+            const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+          }}
+          className="w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group hover:scale-110 animate-pulse"
         >
           <MessageCircle className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
         </button>
