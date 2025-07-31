@@ -1,6 +1,6 @@
 {
   "name": "kyctrust-platform",
-  "description": "KYCtrust - Advanced Digital Financial Services Platform with Visual Page Builder",
+  "description": "KYCtrust - Digital Financial Services Platform with Visual Page Builder (No User Registration - Manual Orders Only)",
   "version": "2.0.0",
   "private": true,
   "type": "module",
