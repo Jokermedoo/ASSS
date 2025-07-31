@@ -12,7 +12,7 @@ function App() {
 
   const handleSubmit = () => {
     const payment = paymentMethods.find(p => p.id === selectedPayment);
-    const whatsappNumber = '+966501234567';
+    const whatsappNumber = '+201062453344';
     const message = `🔔 طلب خدمة جديد
 
 👤 العميل: ${customerName}
@@ -36,7 +36,7 @@ function App() {
         <h2>✅ التحديثات المكتملة:</h2>
         <ul style={{ marginRight: '20px' }}>
           <li>رقم فودافون كاش نفس رقم الواتساب: <strong>+966501234567</strong></li>
-          <li>شاشة دفع بدلاً من حقل الملاحظات</li>
+          <li>شاشة دفع بدلاً من حقل الملاحظ��ت</li>
           <li>عرض طرق الدفع مع إمكانية النسخ</li>
           <li>إرسال تفاصيل الدفع للواتساب</li>
           <li>خطوات واضحة للعميل</li>
