@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import LandingPage from './components/LandingPage';
 import AdminPanel from './components/AdminPanel';
+import TestPage from './TestPage';
 import { DataProvider } from './context/DataContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { CustomizationProvider } from './context/CustomizationContext';
