@@ -62,8 +62,8 @@ const LandingPage: React.FC = () => {
     },
     {
       id: 2,
-      name: 'فاطمة السا��م',
-      role: 'مؤسسة شركة',
+      name: 'فاطمة السالم',
+      role: 'مؤسسة شر��ة',
       avatar: '👩‍💼',
       rating: 5,
       comment: 'أفضل منصة للخدمات المالية، دعم فني ممتاز وأسعار مناسبة جداً.',
@@ -229,9 +229,12 @@ const LandingPage: React.FC = () => {
 
   // Handle service order
   const handleOrderService = useCallback((serviceName: string) => {
-    setSelectedService(serviceName);
-    setIsModalOpen(true);
-  }, []);
+    const service = activeServices.find(s => s.name === serviceName);
+    if (service) {
+      setSelectedService({name: serviceName, price: service.price});
+      setIsModalOpen(true);
+    }
+  }, [activeServices]);
 
   // Loading and error states
   if (loading) {
@@ -584,7 +587,7 @@ const LandingPage: React.FC = () => {
                     theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                   }`}>
                     {language === 'ar' 
-                      ? 'خدمة مالية موثوقة وآمنة بأفضل الأسعار'
+                      ? 'خدمة مالية موثوقة وآمنة بأف��ل الأسعار'
                       : 'Reliable and secure financial service at the best prices'
                     }
                   </p>
@@ -756,7 +759,7 @@ const LandingPage: React.FC = () => {
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
               {language === 'ar' 
-                ? 'تجارب حقيقية من عملائنا الكرام حول ��ودة خدماتنا'
+                ? 'تجارب حقيقية من عملائنا الكرام حول جودة خدماتنا'
                 : 'Real experiences from our valued customers about the quality of our services'
               }
             </p>
@@ -890,7 +893,7 @@ const LandingPage: React.FC = () => {
             {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
-                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخدمات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
+                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخدمات قد تحتاج إلى وقت أطول قليلاً حسب التع��يد.'
               },
               {
                 q: 'هل خدماتكم آمنة؟',
