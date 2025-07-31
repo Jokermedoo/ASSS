@@ -52,6 +52,8 @@ const AdminPanel: React.FC = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard />;
+      case 'builder':
+        return <PageBuilder />;
       case 'services':
         return <ServicesManager />;
       case 'payments':
