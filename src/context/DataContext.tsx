@@ -21,7 +21,7 @@ export interface SiteSettings {
   title: string;
   description: string;
   orderNotice: string;
-  whatsappNumber: string;
+  whatsappNumber?: string;
 }
 
 export interface Order {
