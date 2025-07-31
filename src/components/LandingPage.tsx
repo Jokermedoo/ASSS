@@ -69,7 +69,7 @@ const LandingPage: React.FC = () => {
       role: 'مؤسسة شركة',
       avatar: '👩‍💼',
       rating: 5,
-      comment: 'أفضل منصة للخدمات المالية، دع�� فني ممتاز وأسعار مناسبة جداً.',
+      comment: 'أفضل منصة للخدمات المالية، دعم فني ممتاز وأسعار مناسبة جداً.',
       date: '2024-11-10',
       verified: true
     },
@@ -141,7 +141,7 @@ const LandingPage: React.FC = () => {
       title: t('speed_title'),
       description: t('speed_desc'),
       color: 'from-yellow-500 to-yellow-600',
-      benefits: ['إنجاز فوري للطلبات', 'معالجة سريعة للدفعات', 'دعم فني فوري']
+      benefits: ['إنجاز فوري للطلبات', 'معال��ة سريعة للدفعات', 'دعم فني فوري']
     },
     {
       icon: Award,
@@ -546,7 +546,7 @@ const LandingPage: React.FC = () => {
               {[
                 { value: heroData.statsData.clients, label: 'عميل راضٍ', icon: Users },
                 { value: heroData.statsData.successRate, label: 'معدل النجاح', icon: Target },
-                { value: heroData.statsData.support, label: 'دعم متواصل', icon: Clock },
+                { value: heroData.statsData.support, label: 'دعم متو��صل', icon: Clock },
                 { value: heroData.statsData.speed, label: 'سرعة التنفيذ', icon: Zap }
               ].map((stat, index) => (
                 <div key={index} className={`text-center p-6 rounded-2xl backdrop-blur-sm border ${
@@ -724,7 +724,7 @@ const LandingPage: React.FC = () => {
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              نجمع بين الأمان والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات ال��الية
+              نجمع بين الأمان والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات المالية
             </p>
           </div>
 
@@ -890,6 +890,95 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section id="faq" className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 bg-orange-50 dark:bg-orange-900/20 rounded-full mb-6">
+              <Clock className="h-4 w-4 text-orange-600 ml-2" />
+              <span className="text-orange-600 font-medium text-sm">الأسئلة الشائعة</span>
+            </div>
+
+            <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              أجوبة على <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                أسئلتك
+              </span>
+            </h2>
+
+            <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            }`}>
+              إجابات سريعة على الأسئلة الأكثر شيوعاً حول خدماتنا
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {[
+              {
+                q: 'كم يستغرق تنفيذ الطلب؟',
+                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخدمات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
+              },
+              {
+                q: 'هل خدماتكم آمنة؟',
+                a: 'نعم، نحن نستخدم أعلى معايير الأمان والتشفير. جميع البيانات محمية ولا نحتفظ بأي معلومات حساسة.'
+              },
+              {
+                q: 'ما هي طرق الدفع المتاحة؟',
+                a: 'نقبل الدفع عبر فودافون كاش، USDT، وطرق دفع أخرى. يمكنك مراجعة جميع الطرق المتاحة في قسم طرق الدفع.'
+              },
+              {
+                q: 'هل تقدمون ضمان على الخدمات؟',
+                a: 'نعم، نحن نقدم ضمان استرداد الأموال في حالة عدم تنفيذ الخدمة كما هو متفق عليه.'
+              },
+              {
+                q: 'كيف يمكنني التواصل مع الدعم؟',
+                a: 'يمكنك التواصل معنا عبر واتساب على مدار 24/7، أو من خلال نموذ�� التواصل في الموقع.'
+              }
+            ].map((faq, index) => (
+              <div
+                key={index}
+                className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
+                  theme === 'dark'
+                    ? 'bg-gray-800/50 border-gray-700/50 hover:border-orange-500/50'
+                    : 'bg-white/50 border-gray-200/50 hover:border-orange-300/50'
+                } backdrop-blur-sm`}
+              >
+                <h3 className={`text-lg font-semibold mb-3 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  {faq.q}
+                </h3>
+                <p className={`leading-relaxed ${
+                  theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                }`}>
+                  {faq.a}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className={`mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+              لم تجد إجابة لسؤالك؟
+            </p>
+            <button
+              onClick={() => {
+                const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
+                const message = 'السلام عليكم، لدي سؤال حول خدماتكم';
+                const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+              }}
+              className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2 mx-auto"
+            >
+              <MessageCircle className="h-5 w-5" />
+              <span>تواصل معنا عبر واتساب</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Enhanced Contact Section */}
       <section id="contact" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -920,7 +1009,7 @@ const LandingPage: React.FC = () => {
                 {[
                   { icon: Phone, label: 'هاتف', value: '+966 50 123 4567', action: 'tel:+966501234567' },
                   { icon: Mail, label: 'بريد إلكتروني', value: 'support@kyctrust.com', action: 'mailto:support@kyctrust.com' },
-                  { icon: MessageCircle, label: 'تليجر��م', value: '@kyctrust_support', action: 'https://t.me/kyctrust_support' },
+                  { icon: MessageCircle, label: 'تليجرام', value: '@kyctrust_support', action: 'https://t.me/kyctrust_support' },
                   { icon: MapPin, label: 'العنوان', value: 'الرياض، المملكة العربية السعودية', action: '#' }
                 ].map((contact, index) => (
                   <a
@@ -1059,7 +1148,7 @@ const LandingPage: React.FC = () => {
               <p className={`text-sm leading-relaxed mb-6 max-w-md ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                نحن نقدم خدمات مالية رقمية آمنة وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.
+                نحن نقدم خدمات مالية رقمية آمنة وموثوق�� مع أعلى معايير الجودة والحماية لعملائنا الكرام.
               </p>
               
               <div className="flex space-x-reverse space-x-4">
