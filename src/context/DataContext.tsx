@@ -83,7 +83,8 @@ const defaultPaymentMethods: PaymentMethod[] = [
 const defaultSiteSettings: SiteSettings = {
   title: 'KYCtrust - خدمات مالية رقمية موثوقة',
   description: 'نقدم خدمات مالية رقمية احترافية وآمنة لجميع المنصات العالمية مع ضمان الجودة والموثوقية',
-  orderNotice: 'سيتم التواصل معك يدويًا عبر واتساب بعد إرسال الطلب.'
+  orderNotice: 'سيتم التواصل معك ي��ويًا عبر واتساب بعد إرسال الطلب.',
+  whatsappNumber: '+966501234567'
 };
 
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -342,7 +343,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       console.error('Error archiving order:', errorMessage);
-      toast.error('حدث خطأ في أرشفة الطلب');
+      toast.error('حدث خطأ في أرش��ة الطلب');
     }
   };
 
