@@ -10,15 +10,17 @@ import { CustomizationProvider } from './context/CustomizationContext';
 
 function App() {
   return (
-    <div className="min-h-screen transition-colors duration-300">
-      <Router>
-        <Routes>
-          <Route path="/" element={<TestPage />} />
-          <Route path="/test" element={<TestPage />} />
-          <Route path="*" element={<Navigate to="/test" replace />} />
-        </Routes>
-      </Router>
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen transition-colors duration-300">
+        <Router>
+          <Routes>
+            <Route path="/" element={<TestPage />} />
+            <Route path="/test" element={<TestPage />} />
+            <Route path="*" element={<Navigate to="/test" replace />} />
+          </Routes>
+        </Router>
+      </div>
+    </ThemeProvider>
   );
 }
 
