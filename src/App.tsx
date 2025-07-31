@@ -35,7 +35,7 @@ function App() {
       <div style={{ backgroundColor: '#f8fafc', padding: '20px', borderRadius: '10px', marginBottom: '20px' }}>
         <h2>✅ التحديثات المكتملة:</h2>
         <ul style={{ marginRight: '20px' }}>
-          <li>رقم فودافون كاش نفس رقم الو��تساب: <strong>+201062453344</strong></li>
+          <li>رقم فودافون كاش نفس رقم الواتساب: <strong>+201062453344</strong></li>
           <li>شاشة دفع بدلاً من حقل الملاحظات</li>
           <li>عرض طرق الدفع مع إمكانية النسخ</li>
           <li>إرسال تفاصيل الدفع للواتساب</li>
@@ -197,7 +197,7 @@ function App() {
       {/* Info Section */}
       <div style={{ backgroundColor: '#dbeafe', padding: '20px', borderRadius: '10px', marginTop: '20px' }}>
         <h3>معلومات الدفع المحدثة:</h3>
-        <p><strong>فودافون كاش:</strong> +966501234567 (نفس رقم الواتساب)</p>
+        <p><strong>فودافون كاش:</strong> +201062453344 (نفس رقم الواتساب)</p>
         <p><strong>USDT (TRC20):</strong> TFUt8GRpk2R8Wv3FvoCiSUghRBQo4HrmQK</p>
         <p style={{ color: '#1d4ed8', fontWeight: 'bold' }}>✅ تم توحيد الأرقام لتسهيل التواصل</p>
       </div>
