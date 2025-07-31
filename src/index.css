@@ -1,9 +1,9 @@
+/* استيراد التحسينات المخصصة */
+@import './styles/custom.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* استيراد التحسينات المخصصة */
-@import './styles/custom.css';
 
 /* CSS Variables for Customization */
 :root {
