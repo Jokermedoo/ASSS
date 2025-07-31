@@ -1,33 +1,30 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import SimpleLandingPage from './components/SimpleLandingPage';
+import { DataProvider } from './context/DataContext';
 
 function App() {
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ color: '#2563eb' }}>🎉 KYCtrust Platform - Working!</h1>
-      <p>✅ React is working correctly</p>
-      <p>✅ App is loading</p>
-      <p>✅ Basic functionality confirmed</p>
-      
-      <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-        <h3>النص العربي يعمل بشكل صحيح</h3>
-        <p>هذا اختبار للنص العربي والتأكد من أن كل شيء يعمل بشكل طبيعي</p>
+    <DataProvider>
+      <div className="min-h-screen">
+        <Router>
+          <Routes>
+            <Route path="/" element={<SimpleLandingPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              fontFamily: 'system-ui, sans-serif'
+            }
+          }}
+        />
       </div>
-
-      <button 
-        onClick={() => alert('Button clicked!')}
-        style={{ 
-          marginTop: '10px', 
-          padding: '10px 20px', 
-          backgroundColor: '#2563eb', 
-          color: 'white', 
-          border: 'none', 
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        Test Button
-      </button>
-    </div>
+    </DataProvider>
   );
 }
 
