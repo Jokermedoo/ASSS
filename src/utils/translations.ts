@@ -41,7 +41,7 @@ export const translations = {
     // Features Section
     whyWeAre: 'لماذا نحن',
     theBest: 'الأفضل؟',
-    featuresDescription: 'نتميز بمجموعة من الخصائص التي تجعلنا الخيار الأول للخدمات المالية الرقمية',
+    featuresDescription: 'نتميز بمجموعة من الخ��ائص التي تجعلنا الخيار الأول للخدمات المالية الرقمية',
     advancedSecurity: 'أمان متقدم',
     securityDescription: 'تشفير متقدم وحماية شاملة لجميع معاملاتك المالية',
     lightningSpeed: 'سرعة البرق',
@@ -108,7 +108,7 @@ export const translations = {
     update: 'تحديث',
     view: 'عرض',
     search: 'بحث',
-    filter: 'تصفي��',
+    filter: 'تصفية',
     next: 'التالي',
     previous: 'السابق',
     submit: 'إرسال',
@@ -145,6 +145,19 @@ export const translations = {
     reliability_desc: 'ضمان الجودة وإرجاع الأموال في حالة عدم الرضا',
     global_reach: 'تغطية عالمية',
     global_reach_desc: 'خدماتنا متاحة في أكثر من 150 دولة حول العالم',
+    // Additional translations
+    comprehensive_services: 'خدمات شاملة',
+    why_best: 'لماذا نحن الأفضل؟',
+    client_reviews: 'آراء العملاء',
+    what_clients_say: 'ماذا يقول عملاؤنا؟',
+    answers_questions: 'أجوبة على أسئلتك',
+    faq_section: 'الأسئلة الشائعة',
+    quick_links: 'روابط سريعة',
+    contact_info: 'معلومات التواصل',
+    all_rights_reserved: 'جميع الحقوق محفوظة',
+    privacy_policy: 'سياسة الخصوصية',
+    terms_use: 'شروط الاستخدام',
+    help_support: 'المساعدة',
   },
   en: {
     // Navigation
