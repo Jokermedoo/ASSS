@@ -99,27 +99,49 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setLoading(true);
       setError(null);
-      console.log('Starting data refresh...');
 
-      console.log('Fetching data from services...');
-      const [servicesData, paymentMethodsData, ordersData, siteSettingsData] = await Promise.all([
-        servicesService.getAll().catch(err => {
-          console.warn('Services fetch failed:', err.message);
-          return [];
-        }),
-        paymentMethodsService.getAll().catch(err => {
-          console.warn('Payment methods fetch failed:', err.message);
-          return [];
-        }),
-        ordersService.getAll().catch(err => {
-          console.warn('Orders fetch failed:', err.message);
-          return [];
-        }),
-        siteSettingsService.get().catch(err => {
-          console.warn('Site settings fetch failed:', err.message);
-          return defaultSiteSettings;
-        })
-      ]);
+      // Use default data initially
+      setServices(defaultServices);
+      setPaymentMethods(defaultPaymentMethods);
+      setSiteSettings(defaultSiteSettings);
+      setOrders([]);
+
+      // Try to fetch data from API/Database
+      try {
+        const [servicesData, paymentMethodsData, ordersData, siteSettingsData] = await Promise.all([
+          servicesService.getAll().catch(err => {
+            console.warn('Services fetch failed:', err.message);
+            return defaultServices;
+          }),
+          paymentMethodsService.getAll().catch(err => {
+            console.warn('Payment methods fetch failed:', err.message);
+            return defaultPaymentMethods;
+          }),
+          ordersService.getAll().catch(err => {
+            console.warn('Orders fetch failed:', err.message);
+            return [];
+          }),
+          siteSettingsService.get().catch(err => {
+            console.warn('Site settings fetch failed:', err.message);
+            return defaultSiteSettings;
+          })
+        ]);
+
+        // Update with fetched data if available
+        if (servicesData && servicesData.length > 0) {
+          setServices(servicesData);
+        }
+        if (paymentMethodsData && paymentMethodsData.length > 0) {
+          setPaymentMethods(paymentMethodsData);
+        }
+        if (siteSettingsData) {
+          setSiteSettings(siteSettingsData);
+        }
+        setOrders(ordersData || []);
+
+      } catch (fetchError) {
+        console.warn('API fetch failed, using default data:', fetchError);
+      }
 
       console.log('Data fetched successfully:', {
         services: servicesData.length,
@@ -152,7 +174,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.warn('Using local storage fallback - Supabase not configured');
         setError(null);
       } else {
-        setError(`خطأ في التحميل: ${errorMessage}`);
+        setError(`خطأ ��ي التحميل: ${errorMessage}`);
       }
       
       // Fallback to localStorage if database fails
@@ -313,7 +335,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       console.error('Error updating site settings:', errorMessage);
-      toast.error('حدث خطأ في تحديث إعدادات الموقع');
+      toast.error('حدث خطأ في تحديث إع��ادات الموقع');
     }
   };
 
