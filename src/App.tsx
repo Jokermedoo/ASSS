@@ -10,7 +10,7 @@ function App() {
       <div className="min-h-screen">
         <Router>
           <Routes>
-            <Route path="/" element={<SimpleLandingPage />} />
+            <Route path="/" element={<TestOrderPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
