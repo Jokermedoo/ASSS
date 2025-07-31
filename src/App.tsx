@@ -17,7 +17,8 @@ function App() {
           <div className="min-h-screen transition-colors duration-300">
             <Router>
               <Routes>
-                <Route path="/" element={<LandingPage />} />
+                <Route path="/" element={<SimpleLandingPage />} />
+                <Route path="/full" element={<LandingPage />} />
                 <Route path="/test" element={<TestPage />} />
                 <Route path="/admin" element={<AdminPanel />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
