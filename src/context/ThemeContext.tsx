@@ -42,8 +42,12 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('kyctrust_theme', newTheme);
-    
+    try {
+      localStorage.setItem('kyctrust_theme', newTheme);
+    } catch (error) {
+      console.warn('Failed to save theme to localStorage:', error);
+    }
+
     // Apply theme to document
     if (newTheme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -54,7 +58,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const setLanguage = (newLanguage: Language) => {
     setLanguageState(newLanguage);
-    localStorage.setItem('kyctrust_language', newLanguage);
+    try {
+      localStorage.setItem('kyctrust_language', newLanguage);
+    } catch (error) {
+      console.warn('Failed to save language to localStorage:', error);
+    }
     
     // Apply language to document
     document.documentElement.lang = newLanguage;
