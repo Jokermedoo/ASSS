@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Globe, FileText, Bell } from 'lucide-react';
+import { Save, Globe, FileText, Bell, Phone } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import LoadingSpinner from '../LoadingSpinner';
 import ErrorMessage from '../ErrorMessage';
@@ -9,7 +9,8 @@ const SiteSettingsManager: React.FC = () => {
   const [formData, setFormData] = useState({
     title: siteSettings.title,
     description: siteSettings.description,
-    orderNotice: siteSettings.orderNotice
+    orderNotice: siteSettings.orderNotice,
+    whatsappNumber: siteSettings.whatsappNumber || '+966501234567'
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -86,6 +87,30 @@ const SiteSettingsManager: React.FC = () => {
             />
             <p className="text-xs text-gray-500 mt-1">
               وصف مختصر يظهر تحت العنوان الرئيسي لتعريف العملاء بخدماتك
+            </p>
+          </div>
+
+          {/* WhatsApp Number */}
+          <div>
+            <label htmlFor="whatsappNumber" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="flex items-center space-x-reverse space-x-2">
+                <Phone className="h-4 w-4 text-green-600" />
+                <span>رقم الواتس اب</span>
+              </div>
+            </label>
+            <input
+              type="tel"
+              id="whatsappNumber"
+              name="whatsappNumber"
+              value={formData.whatsappNumber}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              placeholder="+966501234567"
+              dir="ltr"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              رقم الواتس اب الذي سيتم إرسال الطلبات إليه (مع رمز الدولة)
             </p>
           </div>
 
