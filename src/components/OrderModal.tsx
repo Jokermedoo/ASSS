@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Send, User, FileText, Shield, Clock } from 'lucide-react';
+import { X, Send, User, FileText, Shield, Clock, MessageCircle } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import toast from 'react-hot-toast';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -18,15 +19,42 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, serviceName })
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.customerName.trim()) {
+      // إرسال الطلب للواتس اب
+      sendToWhatsApp();
+
+      // حفظ الطلب في قاعدة البيانات
       addOrder({
         customerName: formData.customerName.trim(),
         serviceName,
         notes: formData.notes.trim(),
         archived: false
       });
+
       setFormData({ customerName: '', notes: '' });
+      toast.success('تم إرسال طلبك بنجاح إلى الواتس اب!');
       onClose();
     }
+  };
+
+  const sendToWhatsApp = () => {
+    const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
+    const message = `🔔 *طلب خدمة جديد*\n\n` +
+                   `👤 *العميل:* ${formData.customerName.trim()}\n` +
+                   `🛍️ *الخدمة:* ${serviceName}\n` +
+                   `📝 *الملاحظات:* ${formData.notes.trim() || 'لا توجد ملاحظات'}\n\n` +
+                   `📅 *التاريخ:* ${new Date().toLocaleString('ar-EG')}\n` +
+                   `💻 *من خلال:* منصة KYCtrust`;
+
+    const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleDirectWhatsApp = () => {
+    if (!formData.customerName.trim()) {
+      toast.error('يرجى إدخال اسمك أولاً');
+      return;
+    }
+    sendToWhatsApp();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -128,21 +156,34 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, serviceName })
             </div>
 
             {/* Buttons */}
-            <div className="flex gap-3 pt-4">
-              <button
-                type="submit"
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2 hover:scale-105 transform"
-              >
-                <Send className="h-4 w-4" />
-                <span>إرسال الطلب</span>
-              </button>
+            <div className="space-y-3 pt-4">
+              {/* واتس اب مباشر */}
               <button
                 type="button"
-                onClick={onClose}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors hover:border-gray-400"
+                onClick={handleDirectWhatsApp}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2 hover:scale-105 transform shadow-lg"
               >
-                إلغاء
+                <MessageCircle className="h-5 w-5" />
+                <span>إرسال للواتس اب مباشرة</span>
               </button>
+
+              {/* إرسال عادي */}
+              <div className="flex gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2 hover:scale-105 transform"
+                >
+                  <Send className="h-4 w-4" />
+                  <span>حفظ الطلب</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors hover:border-gray-400"
+                >
+                  إلغاء
+                </button>
+              </div>
             </div>
           </form>
         </div>
