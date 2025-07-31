@@ -28,7 +28,7 @@ INSERT INTO site_settings (
 
 -- Insert default services
 INSERT INTO services (name, description, price, category, order_index, active, popular, processing_time) VALUES
-('Payoneer', 'إنشاء وتفعيل حساب Payoneer للتحويلات الدولية', '30$', 'wallets', 1, true, true, '5 دقائق'),
+('Payoneer', 'إنشاء وتفعيل حساب Payoneer للتحويلات الدولية', '30$', 'wallets', 1, true, true, '5 ��قائق'),
 ('Wise (TransferWise)', 'فتح حساب Wise للتحويلات المالية الدولية', '30$', 'wallets', 2, true, true, '5 دقائق'),
 ('Skrill', 'إنشاء وتفعيل محفظة Skrill الرقمية', '20$', 'wallets', 3, true, false, '3 دقائق'),
 ('Neteller', 'فتح حساب Neteller للمدفوعات الإلكترونية', '20$', 'wallets', 4, true, false, '3 دقائق'),
@@ -39,7 +39,7 @@ INSERT INTO services (name, description, price, category, order_index, active, p
 ('Bybit', 'إنشاء حساب Bybit للتداول', '20$', 'crypto', 9, true, false, '5 دقائق'),
 ('Bitget', 'فتح حساب Bitget للعملات الرقمية', '20$', 'crypto', 10, true, false, '5 دقائق'),
 ('KuCoin', 'إنشاء حساب KuCoin للتداول', '20$', 'crypto', 11, true, false, '5 دقائق'),
-('PayPal', 'إنشاء وتفعيل حساب PayPal', '15$', 'wallets', 12, true, true, '3 دقائق'),
+('PayPal', 'إنشاء وتفعيل حساب PayPal', '15$', 'wallets', 12, true, true, '3 دقا��ق'),
 ('Mexc', 'فتح حساب Mexc للتداول', '20$', 'crypto', 13, true, false, '5 دقائق'),
 ('Exness', 'إنشاء حساب Exness للتداول', '20$', 'trading', 14, true, false, '10 دقائق'),
 ('شحن رصيد فودافون', 'خدمة شحن رصيد فودافون كاش', '100 جنيه = 120 جنيه (متاح أي مبلغ)', 'local', 15, true, false, '1 دقيقة'),
@@ -48,7 +48,7 @@ INSERT INTO services (name, description, price, category, order_index, active, p
 
 -- Insert default payment methods (Manual Only)
 INSERT INTO payment_methods (name, details, type, active, order_index, instructions) VALUES
-('Vodafone Cash', '+966501234567', 'manual', true, 1, 'قم بإرسال المبلغ إلى رقم فودافون كاش (نفس رقم الواتس اب) وأرفق صورة من عملية التحويل'),
+('Vodafone Cash', '+201062453344', 'manual', true, 1, 'قم بإرسال المبلغ إلى رقم فودافون كاش (نفس رقم الواتس اب) وأرفق صورة من عملية التحويل'),
 ('USDT (TRC20)', 'TFUt8GRpk2R8Wv3FvoCiSUghRBQo4HrmQK', 'manual', true, 2, 'أرسل USDT إلى العنوان المذكور على شبكة TRC20 وأرفق hash المعاملة'),
 ('Orange Cash', '01234567890', 'manual', true, 3, 'قم بإرسال المبلغ إلى رقم Orange Cash وأرفق إثبات التحويل'),
 ('حوالة بنكية', 'البنك الأهلي المصري - حساب رقم: 1234567890', 'manual', true, 4, 'قم بتحويل المبلغ إلى الحساب البنكي المذكور وأرفق صورة من الإيصال');
