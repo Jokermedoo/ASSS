@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import SimpleLandingPage from './components/SimpleLandingPage';
+import TestOrderPage from './components/TestOrderPage';
 import { DataProvider } from './context/DataContext';
 
 function App() {
