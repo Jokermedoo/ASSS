@@ -31,6 +31,7 @@
     "test:coverage": "echo 'Running test coverage...' && exit 0",
     "type-check": "tsc --noEmit",
     "setup": "node scripts/setup.js",
+    "verify": "node scripts/verify-setup.js",
     "deploy": "bash scripts/deploy.sh",
     "deploy:prod": "bash scripts/deploy.sh --production",
     "db:schema": "echo 'Run database/simplified-schema.sql in your database'",
