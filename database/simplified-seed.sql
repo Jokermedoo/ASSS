@@ -22,7 +22,7 @@ INSERT INTO site_settings (
     '#1E40AF', 
     '#F59E0B',
     'ar',
-    'خدمات مالية, محافظ رقمية, تحويلات دولية, KYC Trust, PayPal, Payoneer, Wise',
+    'خدما�� مالية, محافظ رقمية, تحويلات دولية, KYC Trust, PayPal, Payoneer, Wise',
     'منصة KYCtrust الرائدة في تقديم الخدمات المالية الرقمية الآمنة والموثوقة'
 );
 
@@ -35,7 +35,7 @@ INSERT INTO services (name, description, price, category, order_index, active, p
 ('Kast', 'إنشاء حساب Kast للخدمات المالية', '20$', 'banking', 5, true, false, '5 دقائق'),
 ('Redotpay', 'فتح حساب Redotpay للمدفوعات', '20$', 'wallets', 6, true, false, '3 دقائق'),
 ('OKX', 'إنشاء حساب OKX لتداول العملات الرقمية', '20$', 'crypto', 7, true, false, '5 دقائق'),
-('World First', 'فتح حساب World First للخدمات المصرفية', '20$', 'banking', 8, true, false, '10 د��ائق'),
+('World First', 'فتح حساب World First للخدم��ت المصرفية', '20$', 'banking', 8, true, false, '10 د��ائق'),
 ('Bybit', 'إنشاء حساب Bybit للتداول', '20$', 'crypto', 9, true, false, '5 دقائق'),
 ('Bitget', 'فتح حساب Bitget للعملات الرقمية', '20$', 'crypto', 10, true, false, '5 دقائق'),
 ('KuCoin', 'إنشاء حساب KuCoin للتداول', '20$', 'crypto', 11, true, false, '5 دقائق'),
@@ -48,7 +48,7 @@ INSERT INTO services (name, description, price, category, order_index, active, p
 
 -- Insert default payment methods (Manual Only)
 INSERT INTO payment_methods (name, details, type, active, order_index, instructions) VALUES
-('Vodafone Cash', '01062453344', 'manual', true, 1, 'قم بإرسال المبلغ إلى رقم فودافون كاش المذكور وأرفق صورة من عملية التحويل'),
+('Vodafone Cash', '+966501234567', 'manual', true, 1, 'قم بإرسال المبلغ إلى رقم فودافون كاش (نفس رقم الواتس اب) وأرفق صورة من عملية التحويل'),
 ('USDT (TRC20)', 'TFUt8GRpk2R8Wv3FvoCiSUghRBQo4HrmQK', 'manual', true, 2, 'أرسل USDT إلى العنوان المذكور على شبكة TRC20 وأرفق hash المعاملة'),
 ('Orange Cash', '01234567890', 'manual', true, 3, 'قم بإرسال المبلغ إلى رقم Orange Cash وأرفق إثبات التحويل'),
 ('حوالة بنكية', 'البنك الأهلي المصري - حساب رقم: 1234567890', 'manual', true, 4, 'قم بتحويل المبلغ إلى الحساب البنكي المذكور وأرفق صورة من الإيصال');
@@ -66,7 +66,7 @@ INSERT INTO faqs (question, answer, category, display_order, active, language) V
 ('ما هي مدة تنفيذ الطلب؟', 'يتم تنفيذ معظم الطلبات خلال 5-30 دقيقة حسب نوع الخدمة المطلوبة', 'general', 1, true, 'ar'),
 ('هل الخدمات آمنة ومضمونة؟', 'نعم، جميع خدماتنا آمنة ومضمونة 100% مع ضمان استرداد الأموال في حالة عدم نجاح الخدمة', 'security', 2, true, 'ar'),
 ('كيف يتم الدفع؟', 'يمكنك الدفع عبر فودافون كاش، USDT، أو حوالة بنكية حسب طريقة الدفع المناسبة لك', 'payment', 3, true, 'ar'),
-('هل يمكنني إلغاء الطلب؟', 'يمكن إلغاء الطلب قبل البدء في تنفيذه، أما بعد البدء فلا يمكن الإلغاء', 'general', 4, true, 'ar'),
+('هل يمكنني إلغاء الطلب؟', 'يمكن إلغاء الطلب قبل البدء في تنفيذه، أما بعد البدء فلا يمكن ��لإلغاء', 'general', 4, true, 'ar'),
 ('كيف يتم التواصل معكم؟', 'يتم التواصل عبر واتساب على الرقم المذكور في الموقع، وسنقوم بالرد خلال دقائق', 'support', 5, true, 'ar'),
 ('هل تقدمون دعم فني؟', 'نعم، نقدم دعم فني على مدار الساعة لجميع العملاء لضمان تنفيذ الخدمات بأفضل شكل', 'support', 6, true, 'ar');
 
