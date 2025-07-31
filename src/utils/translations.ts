@@ -41,7 +41,7 @@ export const translations = {
     // Features Section
     whyWeAre: 'لماذا نحن',
     theBest: 'الأفضل؟',
-    featuresDescription: 'نتميز بمجموعة من الخ��ائص التي تجعلنا الخيار الأول للخدمات المالية الرقمية',
+    featuresDescription: 'نتميز بمجموعة من الخصائص التي تجعلنا الخيار الأول للخدمات المالية الرقمية',
     advancedSecurity: 'أمان متقدم',
     securityDescription: 'تشفير متقدم وحماية شاملة لجميع معاملاتك المالية',
     lightningSpeed: 'سرعة البرق',
@@ -305,6 +305,19 @@ export const translations = {
     reliability_desc: 'Quality guarantee and money back in case of dissatisfaction',
     global_reach: 'Global Coverage',
     global_reach_desc: 'Our services are available in more than 150 countries worldwide',
+    // Additional translations
+    comprehensive_services: 'Comprehensive Services',
+    why_best: 'Why Are We The Best?',
+    client_reviews: 'Client Reviews',
+    what_clients_say: 'What Do Our Clients Say?',
+    answers_questions: 'Answers to Your Questions',
+    faq_section: 'Frequently Asked Questions',
+    quick_links: 'Quick Links',
+    contact_info: 'Contact Information',
+    all_rights_reserved: 'All rights reserved',
+    privacy_policy: 'Privacy Policy',
+    terms_use: 'Terms of Use',
+    help_support: 'Help & Support',
   }
 };
 
