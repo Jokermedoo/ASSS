@@ -35,8 +35,8 @@ function App() {
       <div style={{ backgroundColor: '#f8fafc', padding: '20px', borderRadius: '10px', marginBottom: '20px' }}>
         <h2>✅ التحديثات المكتملة:</h2>
         <ul style={{ marginRight: '20px' }}>
-          <li>رقم فودافون كاش نفس رقم الواتساب: <strong>+966501234567</strong></li>
-          <li>شاشة دفع بدلاً من حقل الملاحظ��ت</li>
+          <li>رقم فودافون كاش نفس رقم الو��تساب: <strong>+201062453344</strong></li>
+          <li>شاشة دفع بدلاً من حقل الملاحظات</li>
           <li>عرض طرق الدفع مع إمكانية النسخ</li>
           <li>إرسال تفاصيل الدفع للواتساب</li>
           <li>خطوات واضحة للعميل</li>
