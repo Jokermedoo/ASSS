@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
-  Shield, CheckCircle, CreditCard, MessageCircle, Star, ArrowLeft, 
+  Shield, CheckCircle, CreditCard, MessageCircle, Star, ArrowRight, 
   Clock, Users, Award, Zap, Globe, TrendingUp, Lock, Heart, 
-  Sparkles, Phone, Mail, MapPin, Menu, X, Rocket, Target, Play,
-  ChevronDown, CheckSquare, Eye, Download, Instagram, Twitter, Linkedin, Youtube
+  Sparkles, Phone, Mail, MapPin, Menu, X, Rocket, Target,
+  ChevronDown, CheckSquare, Eye, Instagram, Twitter, Linkedin, Youtube
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
@@ -31,9 +31,6 @@ const LandingPage: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [isNewsletterSubmitted, setIsNewsletterSubmitted] = useState(false);
 
   // Memoized data
   const activeServices = useMemo(() => 
@@ -51,8 +48,8 @@ const LandingPage: React.FC = () => {
     [activeServices]
   );
 
-  // Enhanced testimonials data
-  const testimonials = useMemo(() => [
+  // Enhanced testimonials data with full translations
+  const testimonials = useMemo(() => language === 'ar' ? [
     {
       id: 1,
       name: 'أحمد محمد',
@@ -82,82 +79,119 @@ const LandingPage: React.FC = () => {
       comment: 'سهولة في الاستخدام وأمان عالي، تعاملت معهم عدة مرات ولم أواجه أي مشكلة.',
       date: '2024-11-08',
       verified: true
+    }
+  ] : [
+    {
+      id: 1,
+      name: 'Ahmed Mohamed',
+      role: 'Business Manager',
+      avatar: '👨‍💼',
+      rating: 5,
+      comment: 'Excellent and fast service, my order was completed in less than 5 minutes. I highly recommend dealing with KYCtrust.',
+      date: '2024-11-15',
+      verified: true
     },
     {
-      id: 4,
-      name: 'مريم أحمد',
-      role: 'ربة منزل',
-      avatar: '👩‍🏫',
-      rating: 4,
-      comment: 'خدمة موثوقة وسعار معقولة، الدعم الفني يرد بسرعة.',
-      date: '2024-11-05',
+      id: 2,
+      name: 'Fatima Al-Salem',
+      role: 'Company Founder',
+      avatar: '👩‍💼',
+      rating: 5,
+      comment: 'Best platform for financial services, excellent technical support and very reasonable prices.',
+      date: '2024-11-10',
+      verified: true
+    },
+    {
+      id: 3,
+      name: 'Khalid Al-Ali',
+      role: 'University Student',
+      avatar: '👨‍🎓',
+      rating: 5,
+      comment: 'Easy to use with high security, I have dealt with them several times and never faced any problems.',
+      date: '2024-11-08',
       verified: true
     }
-  ], []);
+  ], [language]);
 
-  // Enhanced stats data
+  // Enhanced stats data with translations
   const stats = useMemo(() => [
     { 
       value: 15000, 
-      label: t('satisfied_customers'),
+      label: language === 'ar' ? 'عميل راضٍ' : 'Satisfied Clients',
       icon: Users,
       prefix: '+',
       color: 'from-blue-500 to-blue-600'
     },
     { 
       value: 99.9, 
-      label: t('success_rate'),
+      label: language === 'ar' ? 'معدل النجاح' : 'Success Rate',
       icon: Target,
       suffix: '%',
       color: 'from-green-500 to-green-600'
     },
     { 
       value: 24, 
-      label: t('support_hours'),
+      label: language === 'ar' ? 'دعم متواصل' : '24/7 Support',
       icon: Clock,
       suffix: '/7',
       color: 'from-purple-500 to-purple-600'
     },
     { 
       value: 5, 
-      label: t('avg_completion_time'),
+      label: language === 'ar' ? 'متوسط وقت الإنجاز' : 'Avg. Completion Time',
       icon: Zap,
-      suffix: ' دقائق',
+      suffix: language === 'ar' ? ' دقائق' : ' minutes',
       color: 'from-orange-500 to-orange-600'
     }
-  ], [t]);
+  ], [language]);
 
-  // Enhanced features data
+  // Enhanced features data with translations
   const features = useMemo(() => [
     {
       icon: Shield,
-      title: t('security_title'),
-      description: t('security_desc'),
+      title: language === 'ar' ? 'أمان متقدم' : 'Advanced Security',
+      description: language === 'ar' 
+        ? 'تشفير متقدم وحماية شاملة لجميع معاملاتك المالية' 
+        : 'Advanced encryption and comprehensive protection for all your financial transactions',
       color: 'from-blue-500 to-blue-600',
-      benefits: ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصية', 'مراقبة أمنية 24/7']
+      benefits: language === 'ar' 
+        ? ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصية', 'مراقبة أمنية 24/7']
+        : ['Bank-grade encryption', 'Personal data protection', '24/7 security monitoring']
     },
     {
       icon: Zap,
-      title: t('speed_title'),
-      description: t('speed_desc'),
+      title: language === 'ar' ? 'سرعة البرق' : 'Lightning Speed',
+      description: language === 'ar' 
+        ? 'معالجة فورية للطلبات في أقل من 5 دقائق' 
+        : 'Instant processing of requests in less than 5 minutes',
       color: 'from-yellow-500 to-yellow-600',
-      benefits: ['إنجاز فوري للطلبات', 'معالجة سريعة للدفعات', 'دعم فني فوري']
+      benefits: language === 'ar' 
+        ? ['إنجاز فوري للطلبات', 'معالجة سريعة للدفعات', 'دعم فني فوري']
+        : ['Instant order completion', 'Fast payment processing', 'Immediate technical support']
     },
     {
       icon: Award,
-      title: t('reliability_title'),
-      description: t('reliability_desc'),
+      title: language === 'ar' ? 'موثوقية عالية' : 'High Reliability',
+      description: language === 'ar' 
+        ? 'ضمان الجودة وإرجاع الأموال في حالة عدم الرضا' 
+        : 'Quality guarantee and money back in case of dissatisfaction',
       color: 'from-green-500 to-green-600',
-      benefits: ['ضمان على جميع الخدمات', 'فريق دعم محترف', 'خبرة أكثر من 5 سنوات']
+      benefits: language === 'ar' 
+        ? ['ضمان على جميع الخدمات', 'فريق دعم محترف', 'خبرة أكثر من 5 سنوات']
+        : ['Guarantee on all services', 'Professional support team', 'Over 5 years of experience']
     },
     {
       icon: Globe,
-      title: t('global_reach'),
-      description: t('global_reach_desc'),
+      title: language === 'ar' ? 'تغطية عالمية' : 'Global Coverage',
+      description: language === 'ar' 
+        ? 'خدماتنا متاحة في أكثر من 150 دولة حول العالم' 
+        : 'Our services are available in more than 150 countries worldwide',
       color: 'from-purple-500 to-purple-600',
-      benefits: ['دعم متعدد القارات', 'عملات متنوعة', 'شراكات عالمية']
+      benefits: language === 'ar' 
+        ? ['دعم متعدد القارات', 'عملات متنوعة', 'شراكات عالمية']
+        : ['Multi-continental support', 'Multiple currencies', 'Global partnerships']
     }
-  ], [t]);
+  ], [language]);
 
   // Effects
   useEffect(() => {
@@ -165,7 +199,7 @@ const LandingPage: React.FC = () => {
       setScrollY(window.scrollY);
       
       // Update active section based on scroll position
-      const sections = ['home', 'services', 'features', 'testimonials', 'contact'];
+      const sections = ['home', 'services', 'features', 'testimonials', 'faq'];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -199,19 +233,9 @@ const LandingPage: React.FC = () => {
     setIsModalOpen(true);
   }, []);
 
-  // Handle newsletter subscription
-  const handleNewsletterSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (newsletterEmail.trim()) {
-      setIsNewsletterSubmitted(true);
-      setNewsletterEmail('');
-      setTimeout(() => setIsNewsletterSubmitted(false), 3000);
-    }
-  }, [newsletterEmail]);
-
   // Loading and error states
   if (loading) {
-    return <LoadingSpinner size="lg" text={t('loading')} />;
+    return <LoadingSpinner size="lg" text={language === 'ar' ? 'جاري التحميل...' : 'Loading...'} />;
   }
 
   if (error) {
@@ -219,18 +243,19 @@ const LandingPage: React.FC = () => {
   }
 
   const heroData = customization?.hero || {
-    title: t('hero_title'),
-    titleGradient: t('hero_title_gradient'),
-    subtitle: t('hero_subtitle'),
-    button1Text: t('get_started'),
-    button2Text: t('explore_services'),
-    badgeText: t('hero_badge'),
+    title: language === 'ar' ? 'مستقبل الخدمات' : 'Future of Digital',
+    titleGradient: language === 'ar' ? 'المالية الرقمية' : 'Financial Services',
+    subtitle: language === 'ar' 
+      ? 'نحن نعيد تعريف الخدمات المالية الرقمية من خلال تقديم حلول مبتكرة وآمنة ومتطورة تلبي احتياجاتك المالية بكفاءة عالية وموثوقية استثنائية'
+      : 'We are redefining digital financial services by providing innovative, secure, and advanced solutions that meet your financial needs with high efficiency and exceptional reliability',
+    button1Text: language === 'ar' ? 'ابدأ رحلتك معنا' : 'Start Your Journey',
+    badgeText: language === 'ar' ? 'منصة رائدة في الخدم��ت المالية الرقمية' : 'Leading platform in digital financial services',
     showStats: true,
     statsData: {
-      clients: '15000+',
+      clients: '15,000+',
       successRate: '99.9%',
       support: '24/7',
-      speed: '< 5 دقائق'
+      speed: language === 'ar' ? '< 5 دقائق' : '< 5 min'
     }
   };
 
@@ -254,7 +279,7 @@ const LandingPage: React.FC = () => {
                   KYCtrust
                 </h1>
                 <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {t('trusted_platform')}
+                  {language === 'ar' ? 'منصة موثوقة' : 'Trusted Platform'}
                 </p>
               </div>
             </div>
@@ -262,12 +287,11 @@ const LandingPage: React.FC = () => {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-reverse space-x-8">
               {[
-                { id: 'home', label: t('home') },
-                { id: 'services', label: t('services') },
-                { id: 'features', label: t('features') },
-                { id: 'testimonials', label: t('testimonials') },
-                { id: 'faq', label: 'الأسئلة الشائعة' },
-                { id: 'contact', label: t('contact') }
+                { id: 'home', label: language === 'ar' ? 'الرئيسية' : 'Home' },
+                { id: 'services', label: language === 'ar' ? 'الخدمات' : 'Services' },
+                { id: 'features', label: language === 'ar' ? 'المميزات' : 'Features' },
+                { id: 'testimonials', label: language === 'ar' ? 'آراء العملاء' : 'Testimonials' },
+                { id: 'faq', label: language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ' }
               ].map((item) => (
                 <button
                   key={item.id}
@@ -296,7 +320,7 @@ const LandingPage: React.FC = () => {
                 className="hidden lg:flex items-center space-x-reverse space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
               >
                 <Rocket className="h-4 w-4" />
-                <span>{t('start_now')}</span>
+                <span>{language === 'ar' ? 'ابدأ الآن' : 'Start Now'}</span>
               </button>
 
               {/* Mobile Menu Button */}
@@ -323,17 +347,16 @@ const LandingPage: React.FC = () => {
           }`}>
             <div className="px-4 py-6 space-y-4">
               {[
-                { id: 'home', label: t('home') },
-                { id: 'services', label: t('services') },
-                { id: 'features', label: t('features') },
-                { id: 'testimonials', label: t('testimonials') },
-                { id: 'faq', label: 'الأسئلة الشائعة' },
-                { id: 'contact', label: t('contact') }
+                { id: 'home', label: language === 'ar' ? 'الرئيسية' : 'Home' },
+                { id: 'services', label: language === 'ar' ? 'الخدمات' : 'Services' },
+                { id: 'features', label: language === 'ar' ? 'المميزات' : 'Features' },
+                { id: 'testimonials', label: language === 'ar' ? 'آراء العملاء' : 'Testimonials' },
+                { id: 'faq', label: language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ' }
               ].map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-right py-3 px-4 rounded-lg font-medium transition-colors ${
+                  className={`block w-full text-${language === 'ar' ? 'right' : 'left'} py-3 px-4 rounded-lg font-medium transition-colors ${
                     activeSection === item.id
                       ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20'
                       : theme === 'dark'
@@ -350,7 +373,7 @@ const LandingPage: React.FC = () => {
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-reverse space-x-2"
               >
                 <Rocket className="h-4 w-4" />
-                <span>{t('start_now')}</span>
+                <span>{language === 'ar' ? 'ابدأ الآن' : 'Start Now'}</span>
               </button>
             </div>
           </div>
@@ -374,205 +397,102 @@ const LandingPage: React.FC = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Content */}
-            <div className="text-center lg:text-right space-y-8">
-              {/* Badge */}
-              <div className={`inline-flex items-center px-6 py-3 backdrop-blur-sm border rounded-full font-semibold ${
-                theme === 'dark' 
-                  ? 'bg-gray-800/80 border-blue-500/50 text-blue-300' 
-                  : 'bg-white/80 border-blue-200/50 text-blue-700'
+          <div className="text-center space-y-8">
+            {/* Badge */}
+            <div className={`inline-flex items-center px-6 py-3 backdrop-blur-sm border rounded-full font-semibold ${
+              theme === 'dark' 
+                ? 'bg-gray-800/80 border-blue-500/50 text-blue-300' 
+                : 'bg-white/80 border-blue-200/50 text-blue-700'
+            }`}>
+              <Sparkles className="h-4 w-4 ml-2 text-yellow-500" />
+              <span>{heroData.badgeText}</span>
+            </div>
+
+            {/* Title */}
+            <div>
+              <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
               }`}>
-                <Sparkles className="h-4 w-4 ml-2 text-yellow-500" />
-                <span>{heroData.badgeText}</span>
-              </div>
+                <span className="block">{heroData.title}</span>
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  {heroData.titleGradient}
+                </span>
+              </h1>
+              
+              <p className={`text-lg md:text-xl leading-relaxed max-w-4xl mx-auto ${
+                theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+                {heroData.subtitle}
+              </p>
+            </div>
 
-              {/* Title */}
-              <div>
-                <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}>
-                  <span className="block">{heroData.title}</span>
-                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                    {heroData.titleGradient}
-                  </span>
-                </h1>
-                
-                <p className={`text-lg md:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 ${
-                  theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  {heroData.subtitle}
-                </p>
-              </div>
+            {/* CTA Button */}
+            <div className="flex justify-center">
+              <button
+                onClick={() => scrollToSection('services')}
+                className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3"
+              >
+                <span>{heroData.button1Text}</span>
+                <ArrowRight className={`h-5 w-5 group-hover:translate-x-${language === 'ar' ? '-' : ''}1 transition-transform`} />
+              </button>
+            </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button
-                  onClick={() => scrollToSection('services')}
-                  className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3"
-                >
-                  <span>{heroData.button1Text}</span>
-                  <ArrowLeft className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-                
-                <button
-                  onClick={() => setIsVideoModalOpen(true)}
-                  className={`group backdrop-blur-sm px-8 py-4 rounded-xl font-semibold text-lg border hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3 ${
-                    theme === 'dark' 
-                      ? 'bg-gray-800/80 text-gray-200 border-gray-600/50 hover:bg-gray-700/80' 
-                      : 'bg-white/80 text-gray-700 border-gray-200/50 hover:bg-gray-50/80'
-                  }`}
-                >
-                  <span>{heroData.button2Text}</span>
-                  <Play className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                </button>
-              </div>
-
-              {/* Trust Indicators */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-8">
-                <div className="flex items-center space-x-reverse space-x-2">
-                  <div className="flex -space-x-2">
-                    {[1,2,3,4,5].map(i => (
-                      <div key={i} className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">
-                        {String.fromCharCode(65 + i - 1)}
-                      </div>
-                    ))}
-                  </div>
-                  <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    <span className="font-semibold">15,000+</span> عميل راضٍ
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-reverse space-x-1">
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap items-center justify-center gap-6 pt-8">
+              <div className="flex items-center space-x-reverse space-x-2">
+                <div className="flex -space-x-2">
                   {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                    <div key={i} className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">
+                      {String.fromCharCode(65 + i - 1)}
+                    </div>
                   ))}
-                  <span className={`text-sm font-semibold ml-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    4.9/5
-                  </span>
                 </div>
+                <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <span className="font-semibold">15,000+</span> {language === 'ar' ? 'عميل راضٍ' : 'satisfied clients'}
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-reverse space-x-1">
+                {[1,2,3,4,5].map(i => (
+                  <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                ))}
+                <span className={`text-sm font-semibold ml-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  4.9/5
+                </span>
               </div>
             </div>
 
-            {/* Visual Element */}
-            <div className="relative">
-              {/* Dashboard Preview */}
-              <div className={`relative p-8 rounded-3xl shadow-2xl backdrop-blur-sm border transform hover:scale-105 transition-all duration-500 ${
-                theme === 'dark' 
-                  ? 'bg-gray-800/50 border-gray-700/50' 
-                  : 'bg-white/50 border-gray-200/50'
-              }`}>
-                {/* Mini Dashboard */}
-                <div className="space-y-6">
-                  {/* Header */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-reverse space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center">
-                        <Shield className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                          لوحة التحكم
-                        </h3>
-                        <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                          إدارة شاملة
-                        </p>
-                      </div>
-                    </div>
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
-                  </div>
-
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-2 gap-4">
-                    {stats.slice(0, 4).map((stat, index) => (
-                      <div key={index} className={`p-4 rounded-xl ${
-                        theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50/50'
-                      }`}>
-                        <div className="flex items-center space-x-reverse space-x-2 mb-2">
-                          <stat.icon className="h-4 w-4 text-blue-600" />
-                          <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                            {stat.label}
-                          </span>
-                        </div>
-                        <div className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                          <CounterAnimation
-                            value={stat.value}
-                            prefix={stat.prefix}
-                            suffix={stat.suffix}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Recent Activity */}
-                  <div className={`p-4 rounded-xl ${
-                    theme === 'dark' ? 'bg-gray-700/30' : 'bg-gray-50/30'
+            {/* Enhanced Stats Row */}
+            {heroData.showStats && (
+              <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
+                {stats.map((stat, index) => (
+                  <div key={index} className={`text-center p-6 rounded-2xl backdrop-blur-sm border ${
+                    theme === 'dark' 
+                      ? 'bg-gray-800/30 border-gray-700/30' 
+                      : 'bg-white/30 border-gray-200/30'
                   }`}>
-                    <h4 className={`text-sm font-semibold mb-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      النشاط الأخير
-                    </h4>
-                    <div className="space-y-2">
-                      {[1,2,3].map(i => (
-                        <div key={i} className="flex items-center space-x-reverse space-x-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full" />
-                          <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                            طلب جديد تم إنجازه بنجاح
-                          </span>
-                          <span className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-                            {i}م
-                          </span>
-                        </div>
-                      ))}
+                    <div className="flex justify-center mb-3">
+                      <div className={`p-3 bg-gradient-to-r ${stat.color} rounded-xl`}>
+                        <stat.icon className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
+                    <div className={`text-2xl md:text-3xl font-bold mb-2 ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      <CounterAnimation
+                        value={stat.value}
+                        prefix={stat.prefix}
+                        suffix={stat.suffix}
+                      />
+                    </div>
+                    <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {stat.label}
                     </div>
                   </div>
-                </div>
-
-                {/* Floating Action Button */}
-                <div className="absolute -bottom-4 -right-4">
-                  <button className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group">
-                    <CheckCircle className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
-                  </button>
-                </div>
+                ))}
               </div>
-
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -left-4 w-20 h-20 bg-blue-500/20 rounded-full blur-2xl animate-bounce" />
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-purple-500/20 rounded-full blur-2xl animate-bounce delay-1000" />
-            </div>
+            )}
           </div>
-
-          {/* Enhanced Stats Row */}
-          {heroData.showStats && (
-            <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { value: heroData.statsData.clients, label: 'عميل راضٍ', icon: Users },
-                { value: heroData.statsData.successRate, label: 'معدل النجاح', icon: Target },
-                { value: heroData.statsData.support, label: 'دعم متواصل', icon: Clock },
-                { value: heroData.statsData.speed, label: 'سرعة التنفيذ', icon: Zap }
-              ].map((stat, index) => (
-                <div key={index} className={`text-center p-6 rounded-2xl backdrop-blur-sm border ${
-                  theme === 'dark' 
-                    ? 'bg-gray-800/30 border-gray-700/30' 
-                    : 'bg-white/30 border-gray-200/30'
-                }`}>
-                  <div className="flex justify-center mb-3">
-                    <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl">
-                      <stat.icon className="h-6 w-6 text-white" />
-                    </div>
-                  </div>
-                  <div className={`text-2xl md:text-3xl font-bold mb-2 ${
-                    theme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    {stat.value}
-                  </div>
-                  <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Scroll Indicator */}
@@ -599,21 +519,32 @@ const LandingPage: React.FC = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-full mb-6">
               <CreditCard className="h-4 w-4 text-blue-600 ml-2" />
-              <span className="text-blue-600 font-medium text-sm">{t('our_services')}</span>
+              <span className="text-blue-600 font-medium text-sm">
+                {language === 'ar' ? 'خدماتنا' : 'Our Services'}
+              </span>
             </div>
             
             <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
-              خدمات <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                مالي�� شاملة
-              </span>
+              {language === 'ar' ? (
+                <>خدمات <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  مالية شاملة
+                </span></>
+              ) : (
+                <>Comprehensive <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Financial Services
+                </span></>
+              )}
             </h2>
             
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              نقدم مجموعة واسعة من الخدمات المالية الرقمية بأعلى معايير الجودة والأمان
+              {language === 'ar' 
+                ? 'نقدم مجموعة واسعة من الخدمات المالية الرقمية بأعلى معايير الجودة والأمان'
+                : 'We provide a wide range of digital financial services with the highest standards of quality and security'
+              }
             </p>
           </div>
 
@@ -652,17 +583,20 @@ const LandingPage: React.FC = () => {
                   <p className={`text-sm leading-relaxed ${
                     theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                   }`}>
-                    {service.description || 'خدمة مالية موثوقة وآمنة بأفضل الأسعار'}
+                    {language === 'ar' 
+                      ? 'خدمة مالية موثوقة وآمنة بأفضل الأسعار'
+                      : 'Reliable and secure financial service at the best prices'
+                    }
                   </p>
 
                   {/* Price */}
                   <div className="flex items-center justify-between pt-4 border-t border-gray-200/20">
                     <div>
                       <span className="text-2xl font-bold text-blue-600">
-                        ${service.price}
+                        {service.price}
                       </span>
                       <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        / خدمة
+                        {language === 'ar' ? ' / خدمة' : ' / service'}
                       </span>
                     </div>
                     
@@ -675,7 +609,7 @@ const LandingPage: React.FC = () => {
 
                   {/* Features */}
                   <div className="space-y-2 pt-4">
-                    {['تنفيذ فوري', 'أمان عالي', 'دعم 24/7'].map((feature, idx) => (
+                    {(language === 'ar' ? ['تنفيذ فوري', 'أمان عالي', 'دعم 24/7'] : ['Instant execution', 'High security', '24/7 support']).map((feature, idx) => (
                       <div key={idx} className="flex items-center space-x-reverse space-x-2">
                         <CheckSquare className="h-4 w-4 text-green-500" />
                         <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -698,7 +632,7 @@ const LandingPage: React.FC = () => {
               onClick={() => setIsServicesOpen(true)}
               className="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3 mx-auto"
             >
-              <span>عرض جميع الخدمات</span>
+              <span>{language === 'ar' ? 'عرض جميع الخدمات' : 'View All Services'}</span>
               <Eye className="h-5 w-5 group-hover:scale-110 transition-transform" />
             </button>
           </div>
@@ -712,21 +646,32 @@ const LandingPage: React.FC = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 bg-purple-50 dark:bg-purple-900/20 rounded-full mb-6">
               <Sparkles className="h-4 w-4 text-purple-600 ml-2" />
-              <span className="text-purple-600 font-medium text-sm">مميزاتنا</span>
+              <span className="text-purple-600 font-medium text-sm">
+                {language === 'ar' ? 'مميزاتنا' : 'Our Features'}
+              </span>
             </div>
             
             <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
-              لماذا <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                نحن الأفضل؟
-              </span>
+              {language === 'ar' ? (
+                <>لماذا <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  نحن الأفضل؟
+                </span></>
+              ) : (
+                <>Why Are We <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  The Best?
+                </span></>
+              )}
             </h2>
             
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              نجمع بين الأمان والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات المالية
+              {language === 'ar' 
+                ? 'نجمع بين الأمان والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات المالية'
+                : 'We combine security, speed and reliability to provide you with the best experience in financial services'
+              }
             </p>
           </div>
 
@@ -788,26 +733,37 @@ const LandingPage: React.FC = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-full mb-6">
               <Heart className="h-4 w-4 text-green-600 ml-2" />
-              <span className="text-green-600 font-medium text-sm">آراء العملاء</span>
+              <span className="text-green-600 font-medium text-sm">
+                {language === 'ar' ? 'آراء العملاء' : 'Client Reviews'}
+              </span>
             </div>
             
             <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
-              ماذا يقول <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                عملاؤنا؟
-              </span>
+              {language === 'ar' ? (
+                <>ماذا يقول <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                  عملاؤنا؟
+                </span></>
+              ) : (
+                <>What Do Our <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                  Clients Say?
+                </span></>
+              )}
             </h2>
             
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              تجار�� حقيقية من عملائنا الكرام حول جودة خدماتنا
+              {language === 'ar' 
+                ? 'تجارب حقيقية من عملائنا الكرام حول جودة خدماتنا'
+                : 'Real experiences from our valued customers about the quality of our services'
+              }
             </p>
           </div>
 
           {/* Testimonials Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
@@ -858,7 +814,7 @@ const LandingPage: React.FC = () => {
                   </div>
                   
                   <div className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-                    {new Date(testimonial.date).toLocaleDateString('ar-EG')}
+                    {new Date(testimonial.date).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
                   </div>
                 </div>
               </div>
@@ -878,7 +834,10 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
               <span className={`font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-                انضم إلى +15,000 عميل راضٍ
+                {language === 'ar' 
+                  ? 'انضم إلى +15,000 عميل راضٍ'
+                  : 'Join +15,000 satisfied clients'
+                }
               </span>
             </div>
             
@@ -886,7 +845,7 @@ const LandingPage: React.FC = () => {
               onClick={() => scrollToSection('services')}
               className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
             >
-              ابدأ تجربتك الآن
+              {language === 'ar' ? 'ابدأ تجربتك الآن' : 'Start Your Experience Now'}
             </button>
           </div>
         </div>
@@ -898,26 +857,37 @@ const LandingPage: React.FC = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 bg-orange-50 dark:bg-orange-900/20 rounded-full mb-6">
               <Clock className="h-4 w-4 text-orange-600 ml-2" />
-              <span className="text-orange-600 font-medium text-sm">الأسئلة الشائعة</span>
+              <span className="text-orange-600 font-medium text-sm">
+                {language === 'ar' ? 'الأسئلة الشائعة' : 'Frequently Asked Questions'}
+              </span>
             </div>
-
+            
             <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
-              أجوبة على <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                أسئلتك
-              </span>
+              {language === 'ar' ? (
+                <>أجوبة على <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                  أسئلتك
+                </span></>
+              ) : (
+                <>Answers to Your <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                  Questions
+                </span></>
+              )}
             </h2>
-
+            
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              إجابات سريعة على الأسئلة الأكثر ش��وعاً حول خدماتنا
+              {language === 'ar' 
+                ? 'إجابات سريعة على الأسئلة الأكثر شيوعاً حول خدماتنا'
+                : 'Quick answers to the most frequently asked questions about our services'
+              }
             </p>
           </div>
 
           <div className="space-y-6">
-            {[
+            {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
                 a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخدمات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
@@ -935,15 +905,36 @@ const LandingPage: React.FC = () => {
                 a: 'نعم، نحن نقدم ضمان استرداد الأموال في حالة عدم تنفيذ الخدمة كما هو متفق عليه.'
               },
               {
-                q: 'كيف يمكنني التو��صل مع الدعم؟',
+                q: 'كيف يمكنني التواصل مع الد��م؟',
                 a: 'يمكنك التواصل معنا عبر واتساب على مدار 24/7، أو من خلال نموذج التواصل في الموقع.'
               }
-            ].map((faq, index) => (
+            ] : [
+              {
+                q: 'How long does it take to complete an order?',
+                a: 'Most of our orders are completed within 5 minutes or less. Some services may take a little longer depending on complexity.'
+              },
+              {
+                q: 'Are your services secure?',
+                a: 'Yes, we use the highest security and encryption standards. All data is protected and we do not store any sensitive information.'
+              },
+              {
+                q: 'What payment methods are available?',
+                a: 'We accept payment via Vodafone Cash, USDT, and other payment methods. You can review all available methods in the payment methods section.'
+              },
+              {
+                q: 'Do you provide a guarantee on services?',
+                a: 'Yes, we provide a money-back guarantee if the service is not executed as agreed.'
+              },
+              {
+                q: 'How can I contact support?',
+                a: 'You can contact us via WhatsApp 24/7, or through the contact form on the website.'
+              }
+            ]).map((faq, index) => (
               <div
                 key={index}
                 className={`p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg ${
-                  theme === 'dark'
-                    ? 'bg-gray-800/50 border-gray-700/50 hover:border-orange-500/50'
+                  theme === 'dark' 
+                    ? 'bg-gray-800/50 border-gray-700/50 hover:border-orange-500/50' 
                     : 'bg-white/50 border-gray-200/50 hover:border-orange-300/50'
                 } backdrop-blur-sm`}
               >
@@ -963,162 +954,20 @@ const LandingPage: React.FC = () => {
 
           <div className="text-center mt-12">
             <p className={`mb-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              لم تجد إجابة لسؤالك؟
+              {language === 'ar' ? 'لم تجد إجابة لسؤالك؟' : "Didn't find an answer to your question?"}
             </p>
             <button
               onClick={() => {
                 const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
-                const message = 'السلام عليكم، لدي سؤال حول خدماتكم';
+                const message = language === 'ar' ? 'السلام عليكم، لدي سؤال حول خدماتكم' : 'Hello, I have a question about your services';
                 const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
                 window.open(whatsappUrl, '_blank');
               }}
               className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2 mx-auto"
             >
               <MessageCircle className="h-5 w-5" />
-              <span>تواصل معنا عبر واتساب</span>
+              <span>{language === 'ar' ? 'تواصل معنا عبر واتساب' : 'Contact us via WhatsApp'}</span>
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced Contact Section */}
-      <section id="contact" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Contact Info */}
-            <div>
-              <div className="inline-flex items-center px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-full mb-6">
-                <Phone className="h-4 w-4 text-blue-600 ml-2" />
-                <span className="text-blue-600 font-medium text-sm">تواصل معنا</span>
-              </div>
-              
-              <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${
-                theme === 'dark' ? 'text-white' : 'text-gray-900'
-              }`}>
-                نحن هنا <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  لمساعدتك
-                </span>
-              </h2>
-              
-              <p className={`text-lg mb-8 ${
-                theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                فريق الدعم متاح 24/7 لمساعدتك في أي استفسار أو مشكلة
-              </p>
-
-              {/* Contact Methods */}
-              <div className="space-y-6 mb-8">
-                {[
-                  { icon: Phone, label: 'هاتف', value: '+966 50 123 4567', action: 'tel:+966501234567' },
-                  { icon: Mail, label: 'بريد إلكتروني', value: 'support@kyctrust.com', action: 'mailto:support@kyctrust.com' },
-                  { icon: MessageCircle, label: 'تليجرام', value: '@kyctrust_support', action: 'https://t.me/kyctrust_support' },
-                  { icon: MapPin, label: 'العنوان', value: 'الرياض، المملكة العربية السعودية', action: '#' }
-                ].map((contact, index) => (
-                  <a
-                    key={index}
-                    href={contact.action}
-                    className={`flex items-center space-x-reverse space-x-4 p-4 rounded-xl transition-all duration-300 hover:scale-105 ${
-                      theme === 'dark' 
-                        ? 'bg-gray-800/50 hover:bg-gray-700/50' 
-                        : 'bg-gray-50/50 hover:bg-gray-100/50'
-                    } backdrop-blur-sm group`}
-                  >
-                    <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl group-hover:scale-110 transition-transform">
-                      <contact.icon className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <h4 className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        {contact.label}
-                      </h4>
-                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        {contact.value}
-                      </p>
-                    </div>
-                  </a>
-                ))}
-              </div>
-
-              {/* Social Links */}
-              <div>
-                <h4 className={`font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  تابعنا على
-                </h4>
-                <div className="flex space-x-reverse space-x-4">
-                  {[
-                    { icon: Instagram, color: 'from-pink-500 to-purple-500' },
-                    { icon: Twitter, color: 'from-blue-400 to-blue-600' },
-                    { icon: Linkedin, color: 'from-blue-600 to-blue-800' },
-                    { icon: Youtube, color: 'from-red-500 to-red-600' }
-                  ].map((social, index) => (
-                    <a
-                      key={index}
-                      href="#"
-                      className={`p-3 bg-gradient-to-r ${social.color} rounded-xl text-white hover:scale-110 transition-transform duration-300`}
-                    >
-                      <social.icon className="h-5 w-5" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Newsletter */}
-            <div className={`p-8 rounded-3xl border ${
-              theme === 'dark' 
-                ? 'bg-gray-800/50 border-gray-700/50' 
-                : 'bg-white/50 border-gray-200/50'
-            } backdrop-blur-sm`}>
-              <div className="text-center mb-8">
-                <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  اشترك في النشرة الإخبارية
-                </h3>
-                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  احصل على أحدث العروض والتحديثات
-                </p>
-              </div>
-
-              {isNewsletterSubmitted ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h4 className={`text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    شكراً لك!
-                  </h4>
-                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    تم تسجيل اشتراكك بنجاح
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleNewsletterSubmit} className="space-y-6">
-                  <div>
-                    <input
-                      type="email"
-                      value={newsletterEmail}
-                      onChange={(e) => setNewsletterEmail(e.target.value)}
-                      placeholder="أدخل بريدك الإلكتروني"
-                      className={`w-full px-4 py-4 rounded-xl border focus:ring-2 focus:ring-blue-500 transition-colors ${
-                        theme === 'dark'
-                          ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                          : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                      }`}
-                      required
-                    />
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
-                  >
-                    اشتراك
-                  </button>
-                  
-                  <p className={`text-xs text-center ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-                    بالاشتراك، أنت توافق على سياسة الخصوصية الخاصة بنا
-                  </p>
-                </form>
-              )}
-            </div>
           </div>
         </div>
       </section>
@@ -1142,7 +991,7 @@ const LandingPage: React.FC = () => {
                     KYCtrust
                   </h3>
                   <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    منصة الخدمات المالية الموثوقة
+                    {language === 'ar' ? 'منصة الخدمات المالية الموثوقة' : 'Trusted Financial Services Platform'}
                   </p>
                 </div>
               </div>
@@ -1150,7 +999,10 @@ const LandingPage: React.FC = () => {
               <p className={`text-sm leading-relaxed mb-6 max-w-md ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                نحن نقدم خدمات مالية رقمية آمنة وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.
+                {language === 'ar' 
+                  ? 'نحن نقدم خدمات مالية رقمية آمنة وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.'
+                  : 'We provide secure and reliable digital financial services with the highest standards of quality and protection for our valued customers.'
+                }
               </p>
               
               <div className="flex space-x-reverse space-x-4">
@@ -1170,15 +1022,14 @@ const LandingPage: React.FC = () => {
             {/* Quick Links */}
             <div>
               <h4 className={`font-semibold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                روابط سريعة
+                {language === 'ar' ? 'روابط سريعة' : 'Quick Links'}
               </h4>
               <div className="space-y-4">
                 {[
-                  { label: 'الخدمات', action: () => scrollToSection('services') },
-                  { label: 'المميزات', action: () => scrollToSection('features') },
-                  { label: 'آراء العملاء', action: () => scrollToSection('testimonials') },
-                  { label: 'تواصل معنا', action: () => scrollToSection('contact') },
-                  { label: 'لوحة التحكم', action: () => window.open('/admin', '_blank') }
+                  { label: language === 'ar' ? 'الخدمات' : 'Services', action: () => scrollToSection('services') },
+                  { label: language === 'ar' ? 'المميزات' : 'Features', action: () => scrollToSection('features') },
+                  { label: language === 'ar' ? 'آراء العملاء' : 'Testimonials', action: () => scrollToSection('testimonials') },
+                  { label: language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ', action: () => scrollToSection('faq') }
                 ].map((link, index) => (
                   <button
                     key={index}
@@ -1196,7 +1047,7 @@ const LandingPage: React.FC = () => {
             {/* Contact Info */}
             <div>
               <h4 className={`font-semibold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                معلومات التواصل
+                {language === 'ar' ? 'معلومات التواصل' : 'Contact Information'}
               </h4>
               <div className="space-y-4">
                 <div className="flex items-center space-x-reverse space-x-3">
@@ -1214,7 +1065,7 @@ const LandingPage: React.FC = () => {
                 <div className="flex items-center space-x-reverse space-x-3">
                   <Clock className="h-4 w-4 text-blue-600" />
                   <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    24/7 دعم فني
+                    {language === 'ar' ? '24/7 دعم فني' : '24/7 Technical Support'}
                   </span>
                 </div>
               </div>
@@ -1226,24 +1077,24 @@ const LandingPage: React.FC = () => {
             theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
           }`}>
             <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              © 2024 KYCtrust. جميع الحقوق محفوظة.
+              © 2024 KYCtrust. {language === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
             </div>
             
             <div className="flex items-center space-x-reverse space-x-6 text-sm">
               <a href="#" className={`hover:text-blue-600 transition-colors ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                سياسة الخصوصية
+                {language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
               </a>
               <a href="#" className={`hover:text-blue-600 transition-colors ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                شروط الاستخدام
+                {language === 'ar' ? 'شروط الاستخدام' : 'Terms of Use'}
               </a>
               <a href="#" className={`hover:text-blue-600 transition-colors ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                المساعدة
+                {language === 'ar' ? 'المساعدة' : 'Help'}
               </a>
             </div>
           </div>
@@ -1270,32 +1121,12 @@ const LandingPage: React.FC = () => {
         />
       )}
 
-      {/* Video Modal */}
-      {isVideoModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-4xl mx-4">
-            <button
-              onClick={() => setIsVideoModalOpen(false)}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
-            >
-              <X className="h-8 w-8" />
-            </button>
-            <div className="aspect-video bg-gray-900 rounded-xl flex items-center justify-center">
-              <div className="text-center text-white">
-                <Play className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                <p>فيديو تعريفي بالمنصة</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Floating WhatsApp Button */}
       <div className="fixed bottom-6 left-6 z-40">
         <button
           onClick={() => {
             const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
-            const message = 'السلام عليكم، أريد الاستفسار عن خدماتكم';
+            const message = language === 'ar' ? 'السلام عليكم، أريد الاستفسار عن خدماتكم' : 'Hello, I would like to inquire about your services';
             const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
           }}
