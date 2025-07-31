@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Settings, Package, CreditCard, Inbox, BarChart3, RefreshCw, Users, FileText, Database, Palette } from 'lucide-react';
+import { Shield, Settings, Package, CreditCard, Inbox, BarChart3, RefreshCw, Users, FileText, Database, Palette, Edit3 } from 'lucide-react';
 import LoginForm from './LoginForm';
 import Dashboard from './Dashboard';
 import ServicesManager from './ServicesManager';
@@ -11,9 +11,10 @@ import UsersManager from './UsersManager';
 import ReportsManager from './ReportsManager';
 import BackupManager from './BackupManager';
 import LandingPageCustomizer from './LandingPageCustomizer';
+import PageBuilder from './VisualEditor/PageBuilder';
 import { useData } from '../../context/DataContext';
 
-type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'analytics' | 'users' | 'reports' | 'backup' | 'customizer' | 'settings';
+type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'analytics' | 'users' | 'reports' | 'backup' | 'customizer' | 'builder' | 'settings';
 
 const AdminPanel: React.FC = () => {
   const { refreshData, loading } = useData();
