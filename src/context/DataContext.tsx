@@ -65,7 +65,7 @@ const defaultServices: Service[] = [
 ];
 
 const defaultPaymentMethods: PaymentMethod[] = [
-  { id: '1', name: 'Vodafone Cash', details: '+966501234567', active: true },
+  { id: '1', name: 'Vodafone Cash', details: '+201062453344', active: true },
   { id: '2', name: 'USDT (TRC20)', details: 'TFUt8GRpk2R8Wv3FvoCiSUghRBQo4HrmQK', active: true },
 ];
 
