@@ -15,22 +15,30 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('kyctrust_theme') as Theme;
-    if (savedTheme) return savedTheme;
-    
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    
-    return 'light';
-  });
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [language, setLanguageState] = useState<Language>('ar');
 
-  const [language, setLanguageState] = useState<Language>(() => {
-    const savedLanguage = localStorage.getItem('kyctrust_language') as Language;
-    return savedLanguage || 'ar';
-  });
+  // Initialize from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('kyctrust_theme') as Theme;
+      if (savedTheme) {
+        setThemeState(savedTheme);
+      } else {
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          setThemeState('dark');
+        }
+      }
+
+      const savedLanguage = localStorage.getItem('kyctrust_language') as Language;
+      if (savedLanguage) {
+        setLanguageState(savedLanguage);
+      }
+    } catch (error) {
+      console.warn('Failed to load theme/language from localStorage:', error);
+    }
+  }, []);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
