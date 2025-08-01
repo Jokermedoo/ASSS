@@ -157,7 +157,7 @@ const LandingPage: React.FC = () => {
         : 'Advanced encryption and comprehensive protection for all your financial transactions',
       color: 'from-blue-500 to-blue-600',
       benefits: language === 'ar' 
-        ? ['تشفير من الدرجة البنكية', 'حماية ��لبيانات الشخصية', 'مراقبة أمنية 24/7']
+        ? ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصية', 'مراقبة أمنية 24/7']
         : ['Bank-grade encryption', 'Personal data protection', '24/7 security monitoring']
     },
     {
@@ -251,7 +251,7 @@ const LandingPage: React.FC = () => {
     title: language === 'ar' ? 'المستقبل الرقمي' : 'Digital Future',
     titleGradient: language === 'ar' ? 'للخدمات المالية' : 'Financial Services',
     subtitle: language === 'ar'
-      ? 'نحن الرواد في الخدما�� المالية الرقمية، نقدم حلولاً مبتكرة وآمنة تلبي جميع احتياجاتك المالية بسرعة وموثوقية عالية مع ضمان الجودة'
+      ? 'نحن الرواد في الخدمات المالية الرقمية، نقدم حلولاً مبتكرة وآمنة تلبي جميع احتياجاتك المالية بسرعة وموثوقية عالية مع ضمان الجودة'
       : 'We are pioneers in digital financial services, providing innovative and secure solutions that meet all your financial needs quickly and reliably with quality guarantee',
     button1Text: language === 'ar' ? 'ابدأ رحلتك معنا' : 'Start Your Journey',
     badgeText: language === 'ar' ? 'منصة موثوقة ومعتمدة في الخدمات المالية' : 'Trusted and certified platform for financial services',
@@ -333,7 +333,7 @@ const LandingPage: React.FC = () => {
                 className="hidden lg:flex items-center space-x-reverse space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
               >
                 <Rocket className="h-4 w-4" />
-                <span>{language === 'ar' ? 'ابدأ الآن' : 'Start Now'}</span>
+                <span>{language === 'ar' ? 'ا��دأ الآن' : 'Start Now'}</span>
               </button>
 
               {/* Mobile Menu Button */}
@@ -554,9 +554,9 @@ const LandingPage: React.FC = () => {
             <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
-              {language === 'ar' 
-                ? 'نقدم مجموعة واسعة من الخدمات المالية الرقمية بأعلى معايير الجودة والأمان'
-                : 'We provide a wide range of digital financial services with the highest standards of quality and security'
+              {language === 'ar'
+                ? 'نقدم مجموعة شاملة من الخدمات المالية الرقمية المتطورة بضمان الجودة والأمان والتنفيذ السريع'
+                : 'We provide a comprehensive range of advanced digital financial services with guaranteed quality, security and fast execution'
               }
             </p>
           </div>
@@ -647,7 +647,7 @@ const LandingPage: React.FC = () => {
                       className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-4 rounded-xl font-semibold text-sm hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2"
                     >
                       <MessageCircle className="h-4 w-4" />
-                      <span>{language === 'ar' ? '��طلب عبر واتساب' : 'Order via WhatsApp'}</span>
+                      <span>{language === 'ar' ? 'اطلب عبر واتساب' : 'Order via WhatsApp'}</span>
                     </button>
                   </div>
                 </div>
@@ -948,7 +948,7 @@ const LandingPage: React.FC = () => {
             {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
-                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ��مات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
+                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ���مات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
               },
               {
                 q: 'هل خدماتكم آمنة؟',
