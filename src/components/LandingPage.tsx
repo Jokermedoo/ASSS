@@ -358,7 +358,7 @@ const LandingPage: React.FC = () => {
               {[
                 { id: 'home', label: language === 'ar' ? 'الرئيسية' : 'Home' },
                 { id: 'services', label: language === 'ar' ? 'الخدمات' : 'Services' },
-                { id: 'features', label: language === 'ar' ? 'المم��زات' : 'Features' },
+                { id: 'features', label: language === 'ar' ? 'المميزات' : 'Features' },
                 { id: 'testimonials', label: language === 'ar' ? 'آراء العملاء' : 'Testimonials' },
                 { id: 'faq', label: language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ' }
               ].map((item) => (
@@ -585,17 +585,7 @@ const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Debug Info (temporary) */}
-          <div className="mb-4 p-4 bg-yellow-100 rounded-lg text-black">
-            <strong>Debug Info:</strong><br/>
-            Total services: {services.length}<br/>
-            Active services: {activeServices.length}<br/>
-            Featured services: {featuredServices.length}<br/>
-            Loading: {loading ? 'Yes' : 'No'}<br/>
-            Error: {error || 'None'}<br/>
-            Services names: {services.map(s => s.name).join(', ')}<br/>
-            Active services names: {activeServices.map(s => s.name).join(', ')}
-          </div>
+
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
@@ -984,7 +974,7 @@ const LandingPage: React.FC = () => {
             {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
-                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ���مات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
+                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ���مات ق�� تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
               },
               {
                 q: 'هل خدماتكم آمنة؟',
