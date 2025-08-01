@@ -162,7 +162,7 @@ const LandingPage: React.FC = () => {
     },
     {
       icon: Zap,
-      title: language === 'ar' ? 'س��عة البرق' : 'Lightning Speed',
+      title: language === 'ar' ? 'سرعة البرق' : 'Lightning Speed',
       description: language === 'ar' 
         ? 'معالجة فورية للطلبات في أقل من 5 دقائق' 
         : 'Instant processing of requests in less than 5 minutes',
@@ -238,12 +238,8 @@ const LandingPage: React.FC = () => {
     }
   }, [activeServices]);
 
-  // Loading and error states
-  if (loading) {
-    return <LoadingSpinner size="lg" text={language === 'ar' ? 'جاري التحميل...' : 'Loading...'} />;
-  }
-
-  if (error) {
+  // Show error state but don't block UI for loading since we have default data
+  if (error && services.length === 0) {
     return <ErrorMessage message={error} onRetry={refreshData} />;
   }
 
@@ -995,7 +991,7 @@ const LandingPage: React.FC = () => {
               },
               {
                 q: 'هل تقدمون ضمان على الخدمات؟',
-                a: 'نعم، نحن نقدم ضمان استرداد الأموال في حالة عدم تنفيذ الخدمة كما ��و متفق عليه.'
+                a: 'نعم، نحن نقدم ضمان استرداد الأموال في حالة عدم تنفيذ الخدمة كما هو متفق عليه.'
               },
               {
                 q: 'كيف يمكنني التواصل مع الد��م؟',
