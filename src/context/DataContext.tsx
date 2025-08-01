@@ -132,9 +132,13 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  // Load data on component mount
+  // Load data on component mount (optional, fallback to defaults if fails)
   useEffect(() => {
-    refreshData();
+    // Try to load from database but don't block UI if it fails
+    refreshData().catch(() => {
+      // Silently use default data if database fails
+      console.log('Using default services data');
+    });
   }, []);
 
   const addOrder = async (order: Omit<Order, 'id' | 'timestamp'>) => {
