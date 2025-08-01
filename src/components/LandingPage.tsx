@@ -78,7 +78,7 @@ const LandingPage: React.FC = () => {
       role: 'طالب جامعي',
       avatar: '👨‍🎓',
       rating: 5,
-      comment: 'سهولة في ال��ستخدام وأمان عالي، تعاملت معهم عدة مرات ولم أواجه أي مشكلة.',
+      comment: 'سهولة في الاستخدام وأمان عالي، تعاملت معهم عدة ��رات ولم أواجه أي مشكلة.',
       date: '2024-11-08',
       verified: true
     }
@@ -157,7 +157,7 @@ const LandingPage: React.FC = () => {
         : 'Advanced encryption and comprehensive protection for all your financial transactions',
       color: 'from-blue-500 to-blue-600',
       benefits: language === 'ar' 
-        ? ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصي��', 'مراقبة أمنية 24/7']
+        ? ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصية', 'مراقبة أمنية 24/7']
         : ['Bank-grade encryption', 'Personal data protection', '24/7 security monitoring']
     },
     {
@@ -251,7 +251,7 @@ const LandingPage: React.FC = () => {
     title: language === 'ar' ? 'مستقبل الخدمات' : 'Future of Digital',
     titleGradient: language === 'ar' ? 'المالية الرقمية' : 'Financial Services',
     subtitle: language === 'ar' 
-      ? 'نحن نعيد تعريف الخدمات المالية الرقمية من خلال تقديم حلول مبتكرة وآمنة ومتطورة تلبي احتياجاتك المالية بكفاءة عالية وموثوقية استثنائية'
+      ? 'نحن نعيد تعريف الخدمات المالية الرقمية من خلال تقديم حلول مبتكرة وآمنة ��متطورة تلبي احتياجاتك المالية بكفاءة عالية وموثوقية استثنائية'
       : 'We are redefining digital financial services by providing innovative, secure, and advanced solutions that meet your financial needs with high efficiency and exceptional reliability',
     button1Text: language === 'ar' ? 'ابدأ رحلتك معنا' : 'Start Your Journey',
     badgeText: language === 'ar' ? 'منصة رائدة في الخدم��ت المالية الرقمية' : 'Leading platform in digital financial services',
@@ -386,7 +386,7 @@ const LandingPage: React.FC = () => {
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-reverse space-x-2"
               >
                 <Rocket className="h-4 w-4" />
-                <span>{language === 'ar' ? 'ابدأ الآن' : 'Start Now'}</span>
+                <span>{language === 'ar' ? 'اب��أ الآن' : 'Start Now'}</span>
               </button>
             </div>
           </div>
@@ -669,14 +669,29 @@ const LandingPage: React.FC = () => {
             )}
           </div>
 
-          {/* View All Services Button */}
-          <div className="text-center">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => setIsServicesOpen(true)}
-              className="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3 mx-auto"
+              className="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3"
             >
-              <span>{language === 'ar' ? 'عرض جميع ا��خدمات' : 'View All Services'}</span>
+              <span>{language === 'ar' ? 'عرض جميع الخدمات' : 'View All Services'}</span>
               <Eye className="h-5 w-5 group-hover:scale-110 transition-transform" />
+            </button>
+
+            <button
+              onClick={() => {
+                const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
+                const message = language === 'ar'
+                  ? 'السلام عليكم، أريد الاستفسار عن الخدمات المتاحة وأسعارها'
+                  : 'Hello, I would like to inquire about available services and their prices';
+                const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+              }}
+              className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-3"
+            >
+              <span>{language === 'ar' ? 'استفسر عبر واتساب' : 'Inquire via WhatsApp'}</span>
+              <MessageCircle className="h-5 w-5 group-hover:scale-110 transition-transform" />
             </button>
           </div>
         </div>
@@ -949,7 +964,7 @@ const LandingPage: React.FC = () => {
               },
               {
                 q: 'كيف يمكنني التواصل مع الد��م؟',
-                a: 'يمكنك التواصل ��عنا عبر واتساب على مدار 24/7، أو من خلال نموذج التواصل في الموقع.'
+                a: 'يمكنك التواصل معنا عبر واتساب على مدار 24/7، أو من خلال نموذج التواصل في الموقع.'
               }
             ] : [
               {
@@ -1170,7 +1185,7 @@ const LandingPage: React.FC = () => {
         <button
           onClick={() => {
             const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
-            const message = language === 'ar' ? 'السلام عليكم، أريد الاستفسار عن خدماتكم' : 'Hello, I would like to inquire about your services';
+            const message = language === 'ar' ? 'السلام عل��كم، أريد الاستفسار عن خدماتكم' : 'Hello, I would like to inquire about your services';
             const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
           }}
