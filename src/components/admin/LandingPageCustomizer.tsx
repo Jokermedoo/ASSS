@@ -797,6 +797,50 @@ const LandingPageCustomizer: React.FC = () => {
               </div>
             </div>
           )}
+
+          {activeTab === 'sections' && (
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                معاينة ترتيب الأقسام
+              </h3>
+              <div className="space-y-2">
+                {[
+                  { name: '1. القسم الرئيسي', color: 'bg-blue-500' },
+                  { name: '2. الخدمات', color: 'bg-green-500' },
+                  { name: '3. المميزات', color: 'bg-purple-500' },
+                  { name: '4. آراء العملاء', color: 'bg-yellow-500' },
+                  { name: '5. الأسئلة الشائعة', color: 'bg-red-500' }
+                ].map((section, index) => (
+                  <div key={index} className={`p-3 rounded-lg ${section.color} text-white font-medium text-center`}>
+                    {section.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'features' && (
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                معاينة المميزات
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: '🛡️', title: 'أمان متقدم' },
+                  { icon: '⚡', title: 'سرعة البرق' },
+                  { icon: '🏆', title: 'موثوقية عالية' },
+                  { icon: '🌍', title: 'تغطية عالمية' }
+                ].map((feature, index) => (
+                  <div key={index} className={`p-4 rounded-lg border text-center ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'}`}>
+                    <div className="text-2xl mb-2">{feature.icon}</div>
+                    <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {feature.title}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
