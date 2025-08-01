@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Archive, Trash2, Search, Calendar, User, Package, FileText } from 'lucide-react';
 import { useData, Order } from '../../context/DataContext';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ErrorMessage';
 
 const OrdersManager: React.FC = () => {
