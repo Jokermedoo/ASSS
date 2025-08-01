@@ -9,15 +9,15 @@ import { useData } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 import { useCustomization } from '../context/CustomizationContext';
 import { useTranslation } from '../utils/translations';
-import OrderModal from './OrderModal';
-import LoadingSpinner from './LoadingSpinner';
-import ErrorMessage from './ErrorMessage';
-import ServicesShowcase from './ServicesShowcase';
-import ThemeToggle from './ThemeToggle';
-import LanguageToggle from './LanguageToggle';
-import CounterAnimation from './CounterAnimation';
-import SEOOptimizer from './SEOOptimizer';
-import PerformanceTracker from './PerformanceTracker';
+import OrderModal from './modals/OrderModal';
+import LoadingSpinner from './ui/LoadingSpinner';
+import ErrorMessage from './ui/ErrorMessage';
+import ServicesShowcase from './modals/ServicesShowcase';
+import ThemeToggle from './ui/ThemeToggle';
+import LanguageToggle from './ui/LanguageToggle';
+import CounterAnimation from './animations/CounterAnimation';
+import SEOOptimizer from './optimization/SEOOptimizer';
+import PerformanceTracker from './optimization/PerformanceTracker';
 
 const LandingPage: React.FC = () => {
   // Hooks
@@ -360,7 +360,7 @@ const LandingPage: React.FC = () => {
                 { id: 'services', label: language === 'ar' ? 'الخدمات' : 'Services' },
                 { id: 'features', label: language === 'ar' ? 'المميزات' : 'Features' },
                 { id: 'testimonials', label: language === 'ar' ? 'آراء العملاء' : 'Testimonials' },
-                { id: 'faq', label: language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ' }
+                { id: 'faq', label: language === 'ar' ? 'الأسئلة الشائ��ة' : 'FAQ' }
               ].map((item) => (
                 <button
                   key={item.id}
@@ -974,7 +974,7 @@ const LandingPage: React.FC = () => {
             {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
-                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ���مات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
+                a: 'معظم طلباتنا يتم ت��فيذها خلال 5 دقائق أو أقل. بعض الخ���مات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
               },
               {
                 q: 'هل خدماتكم آمنة؟',
@@ -1084,7 +1084,7 @@ const LandingPage: React.FC = () => {
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
                 {language === 'ar' 
-                  ? 'نحن نقدم خدمات مالية رقمية آمن�� وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.'
+                  ? 'نحن نقدم خدمات مالية رقمية آمنة وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.'
                   : 'We provide secure and reliable digital financial services with the highest standards of quality and protection for our valued customers.'
                 }
               </p>
@@ -1110,7 +1110,7 @@ const LandingPage: React.FC = () => {
               </h4>
               <div className="space-y-4">
                 {[
-                  { label: language === 'ar' ? 'ا��خدمات' : 'Services', action: () => scrollToSection('services') },
+                  { label: language === 'ar' ? 'الخدمات' : 'Services', action: () => scrollToSection('services') },
                   { label: language === 'ar' ? 'المميزات' : 'Features', action: () => scrollToSection('features') },
                   { label: language === 'ar' ? 'آراء العملاء' : 'Testimonials', action: () => scrollToSection('testimonials') },
                   { label: language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ', action: () => scrollToSection('faq') }
@@ -1211,7 +1211,7 @@ const LandingPage: React.FC = () => {
         <button
           onClick={() => {
             const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
-            const message = language === 'ar' ? 'السلام عل��كم، أريد الاستفسار عن خدماتكم' : 'Hello, I would like to inquire about your services';
+            const message = language === 'ar' ? 'السلام عل��كم، أريد الاستفسار عن ��دماتكم' : 'Hello, I would like to inquire about your services';
             const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
           }}
