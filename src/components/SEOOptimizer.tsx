@@ -35,7 +35,7 @@ const SEOOptimizer: React.FC<SEOOptimizerProps> = ({
     'فودافون كاش',
     'USDT',
     'العملات الرقمية',
-    'التداول',
+    'التد��ول',
     'الخدمات المصرفية'
   ];
 
@@ -95,79 +95,77 @@ const SEOOptimizer: React.FC<SEOOptimizerProps> = ({
     }
   };
 
-  return (
-    <Helmet>
-      {/* Basic Meta Tags */}
-      <title>{siteTitle}</title>
-      <meta name="description" content={siteDescription} />
-      <meta name="keywords" content={siteKeywords} />
-      <meta name="author" content="KYCtrust Team" />
-      <meta name="language" content={language} />
-      <meta name="robots" content="index, follow" />
-      <meta name="googlebot" content="index, follow" />
-      
-      {/* Viewport and Mobile */}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-      <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      
-      {/* Open Graph Tags */}
-      <meta property="og:type" content={type} />
-      <meta property="og:title" content={siteTitle} />
-      <meta property="og:description" content={siteDescription} />
-      <meta property="og:image" content={siteImage} />
-      <meta property="og:url" content={siteUrl} />
-      <meta property="og:site_name" content="KYCtrust" />
-      <meta property="og:locale" content={language === 'ar' ? 'ar_EG' : 'en_US'} />
-      
-      {/* Twitter Card Tags */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={siteTitle} />
-      <meta name="twitter:description" content={siteDescription} />
-      <meta name="twitter:image" content={siteImage} />
-      <meta name="twitter:site" content="@KYCtrust" />
-      
-      {/* Additional SEO Tags */}
-      <meta name="theme-color" content="#3B82F6" />
-      <meta name="msapplication-TileColor" content="#3B82F6" />
-      <meta name="msapplication-config" content="/browserconfig.xml" />
-      
-      {/* Canonical URL */}
-      <link rel="canonical" href={siteUrl} />
-      
-      {/* Alternate Languages */}
-      <link rel="alternate" hreflang="ar" href={siteUrl} />
-      <link rel="alternate" hreflang="en" href={siteUrl.replace('/ar/', '/en/')} />
-      <link rel="alternate" hreflang="x-default" href={siteUrl} />
-      
-      {/* Preconnect for Performance */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      
-      {/* DNS Prefetch */}
-      <link rel="dns-prefetch" href="//wa.me" />
-      <link rel="dns-prefetch" href="//api.whatsapp.com" />
-      
-      {/* Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </script>
-      
-      {/* Additional Meta for Arabic Content */}
-      {language === 'ar' && (
-        <meta httpEquiv="Content-Language" content="ar" />
-      )}
-      
-      {/* Security Headers */}
-      <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-      <meta httpEquiv="X-Frame-Options" content="DENY" />
-      <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
-      
-      {/* Performance Hints */}
-      <meta httpEquiv="Accept-CH" content="DPR, Viewport-Width, Width" />
-    </Helmet>
-  );
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    // Update document title
+    document.title = siteTitle;
+
+    // Update or create meta tags
+    const updateMetaTag = (name: string, content: string, property = false) => {
+      const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+      let meta = document.querySelector(selector) as HTMLMetaElement;
+
+      if (!meta) {
+        meta = document.createElement('meta');
+        if (property) {
+          meta.setAttribute('property', name);
+        } else {
+          meta.setAttribute('name', name);
+        }
+        document.head.appendChild(meta);
+      }
+
+      meta.setAttribute('content', content);
+    };
+
+    // Basic meta tags
+    updateMetaTag('description', siteDescription);
+    updateMetaTag('keywords', siteKeywords);
+    updateMetaTag('author', 'KYCtrust Team');
+    updateMetaTag('language', language);
+    updateMetaTag('robots', 'index, follow');
+
+    // Open Graph tags
+    updateMetaTag('og:type', type, true);
+    updateMetaTag('og:title', siteTitle, true);
+    updateMetaTag('og:description', siteDescription, true);
+    updateMetaTag('og:image', siteImage, true);
+    updateMetaTag('og:url', siteUrl, true);
+    updateMetaTag('og:site_name', 'KYCtrust', true);
+    updateMetaTag('og:locale', language === 'ar' ? 'ar_EG' : 'en_US', true);
+
+    // Twitter Card tags
+    updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:title', siteTitle);
+    updateMetaTag('twitter:description', siteDescription);
+    updateMetaTag('twitter:image', siteImage);
+
+    // Theme color
+    updateMetaTag('theme-color', '#3B82F6');
+
+    // Update canonical link
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', siteUrl);
+
+    // Add structured data
+    let structuredDataScript = document.querySelector('#structured-data');
+    if (!structuredDataScript) {
+      structuredDataScript = document.createElement('script');
+      structuredDataScript.id = 'structured-data';
+      structuredDataScript.type = 'application/ld+json';
+      document.head.appendChild(structuredDataScript);
+    }
+    structuredDataScript.textContent = JSON.stringify(structuredData);
+
+  }, [siteTitle, siteDescription, siteKeywords, siteUrl, siteImage, type, language, structuredData]);
+
+  return null;
 };
 
 export default SEOOptimizer;
