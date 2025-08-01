@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Settings, Package, CreditCard, Inbox, Eye, EyeOff, Palette, Layout } from 'lucide-react';
+import { Shield, Settings, Package, CreditCard, Inbox, Eye, EyeOff, Palette, Layout, TrendingUp } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import LoginForm from './admin/LoginForm';
 import Dashboard from './admin/Dashboard';
@@ -8,10 +8,10 @@ import PaymentMethodsManager from './admin/PaymentMethodsManager';
 import OrdersManager from './admin/OrdersManager';
 import SiteSettingsManager from './admin/SiteSettingsManager';
 import LandingPageCustomizer from './admin/LandingPageCustomizer';
-import ThemeToggle from './ThemeToggle';
-import LanguageToggle from './LanguageToggle';
+import ThemeToggle from './ui/ThemeToggle';
+import LanguageToggle from './ui/LanguageToggle';
 
-type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'settings' | 'customize';
+type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'settings' | 'customize' | 'testing';
 
 const AdminPanel: React.FC = () => {
   const { theme } = useTheme();
@@ -38,6 +38,7 @@ const AdminPanel: React.FC = () => {
     { id: 'orders' as TabType, name: 'الطلبات', icon: Inbox },
     { id: 'customize' as TabType, name: 'تخصيص صفحة الهبوط', icon: Palette },
     { id: 'settings' as TabType, name: 'إعدادات الموقع', icon: Settings },
+    { id: 'testing' as TabType, name: 'اختبار التكامل', icon: TrendingUp },
   ];
 
   const renderContent = () => {
@@ -54,6 +55,8 @@ const AdminPanel: React.FC = () => {
         return <LandingPageCustomizer />;
       case 'settings':
         return <SiteSettingsManager />;
+      case 'testing':
+        return <IntegrationTester />;
       default:
         return <Dashboard />;
     }

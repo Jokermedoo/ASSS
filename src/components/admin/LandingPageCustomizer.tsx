@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Save, Eye, Settings, Palette, Type, Layout, Image, Sparkles, Move, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCustomization } from '../../context/CustomizationContext';
 import { useTheme } from '../../context/ThemeContext';
-import LoadingSpinner from '../LoadingSpinner';
-import ErrorMessage from '../ErrorMessage';
+import LoadingSpinner from '../ui/LoadingSpinner';
+import ErrorMessage from '../ui/ErrorMessage';
 import toast from 'react-hot-toast';
 
 const LandingPageCustomizer: React.FC = () => {
@@ -529,6 +529,136 @@ const LandingPageCustomizer: React.FC = () => {
               </button>
             </div>
           )}
+
+          {/* Sections Tab */}
+          {activeTab === 'sections' && (
+            <div className="space-y-6">
+              <div className="flex items-center space-x-reverse space-x-3 mb-6">
+                <Move className="h-5 w-5 text-blue-600" />
+                <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  ترتيب أقسام الصفحة
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  { id: 'hero', name: 'القسم الرئيسي', enabled: true },
+                  { id: 'services', name: 'الخدمات', enabled: true },
+                  { id: 'features', name: 'المميزات', enabled: true },
+                  { id: 'testimonials', name: 'آراء العملاء', enabled: true },
+                  { id: 'faq', name: 'الأسئلة الشائعة', enabled: true },
+                  { id: 'contact', name: 'التواصل', enabled: false }
+                ].map((section, index) => (
+                  <div key={section.id} className={`p-4 rounded-lg border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-reverse space-x-3">
+                        <div className="w-6 h-6 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">
+                          {index + 1}
+                        </div>
+                        <span className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                          {section.name}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-reverse space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={section.enabled}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <button className="p-1 text-gray-400 hover:text-gray-600">
+                          <Move className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                حفظ ترتيب الأقسام
+              </button>
+            </div>
+          )}
+
+          {/* Features Tab */}
+          {activeTab === 'features' && (
+            <div className="space-y-6">
+              <div className="flex items-center space-x-reverse space-x-3 mb-6">
+                <Sparkles className="h-5 w-5 text-blue-600" />
+                <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  إدارة المميزات
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    title: 'أمان متقدم',
+                    description: 'تشفير متقدم وحماية شاملة',
+                    icon: '🛡️',
+                    enabled: true
+                  },
+                  {
+                    title: 'سرعة البرق',
+                    description: 'معالجة فورية في أقل من 5 دقائق',
+                    icon: '⚡',
+                    enabled: true
+                  },
+                  {
+                    title: 'موثوقية عالية',
+                    description: 'ضمان الجودة وإرجاع الأموال',
+                    icon: '🏆',
+                    enabled: true
+                  },
+                  {
+                    title: 'تغطية عالمية',
+                    description: 'متاح في أكثر من 150 دولة',
+                    icon: '🌍',
+                    enabled: false
+                  }
+                ].map((feature, index) => (
+                  <div key={index} className={`p-4 rounded-lg border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-reverse space-x-3">
+                        <div className="text-2xl">{feature.icon}</div>
+                        <div>
+                          <input
+                            type="text"
+                            value={feature.title}
+                            className={`font-medium bg-transparent border-none p-0 focus:ring-0 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+                          />
+                          <input
+                            type="text"
+                            value={feature.description}
+                            className={`block text-sm bg-transparent border-none p-0 focus:ring-0 mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-reverse space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={feature.enabled}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <button className="text-red-500 hover:text-red-700">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button className={`w-full border-2 border-dashed rounded-xl p-4 ${theme === 'dark' ? 'border-gray-600 text-gray-400 hover:border-gray-500' : 'border-gray-300 text-gray-500 hover:border-gray-400'} transition-colors`}>
+                <Plus className="h-5 w-5 mx-auto mb-2" />
+                إضافة ميزة جديدة
+              </button>
+
+              <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                حفظ المميزات
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Preview Panel */}
@@ -643,7 +773,7 @@ const LandingPageCustomizer: React.FC = () => {
                     className="w-full h-16 rounded-xl mb-2 border border-gray-300"
                     style={{ backgroundColor: globalForm.accentColor }}
                   />
-                  <span className="text-sm font-medium">لون الإبراز</span>
+                  <span className="text-sm font-medium">لون الإب��از</span>
                 </div>
               </div>
 
@@ -664,6 +794,50 @@ const LandingPageCustomizer: React.FC = () => {
                 >
                   زر بلون الإبراز
                 </button>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'sections' && (
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                معاينة ترتيب الأقسام
+              </h3>
+              <div className="space-y-2">
+                {[
+                  { name: '1. القسم الرئيسي', color: 'bg-blue-500' },
+                  { name: '2. الخدمات', color: 'bg-green-500' },
+                  { name: '3. المميزات', color: 'bg-purple-500' },
+                  { name: '4. آراء العملاء', color: 'bg-yellow-500' },
+                  { name: '5. الأسئلة الشائعة', color: 'bg-red-500' }
+                ].map((section, index) => (
+                  <div key={index} className={`p-3 rounded-lg ${section.color} text-white font-medium text-center`}>
+                    {section.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'features' && (
+            <div className="space-y-4">
+              <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                معاينة المميزات
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: '🛡️', title: 'أمان متقدم' },
+                  { icon: '⚡', title: 'سرعة البرق' },
+                  { icon: '🏆', title: 'موثوقية عالية' },
+                  { icon: '🌍', title: 'تغطية عالمية' }
+                ].map((feature, index) => (
+                  <div key={index} className={`p-4 rounded-lg border text-center ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'}`}>
+                    <div className="text-2xl mb-2">{feature.icon}</div>
+                    <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {feature.title}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

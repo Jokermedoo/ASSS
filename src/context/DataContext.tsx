@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import toast from 'react-hot-toast';
-import { servicesService, paymentMethodsService, ordersService, siteSettingsService } from '../services/database';
+import { databaseService } from '../services/database';
 
 export interface Service {
   id: string;
@@ -21,6 +21,7 @@ export interface SiteSettings {
   title: string;
   description: string;
   orderNotice: string;
+  whatsappNumber?: string;
 }
 
 export interface Order {
@@ -39,21 +40,24 @@ interface DataContextType {
   orders: Order[];
   loading: boolean;
   error: string | null;
-  updateService: (id: string, updates: Partial<Service>) => void;
-  addService: (service: Omit<Service, 'id'>) => void;
-  deleteService: (id: string) => void;
-  updatePaymentMethod: (id: string, updates: Partial<PaymentMethod>) => void;
-  addPaymentMethod: (method: Omit<PaymentMethod, 'id'>) => void;
-  deletePaymentMethod: (id: string) => void;
-  updateSiteSettings: (settings: SiteSettings) => void;
   addOrder: (order: Omit<Order, 'id' | 'timestamp'>) => void;
+  refreshData: () => void;
+  // Services management
+  addService: (service: Omit<Service, 'id'>) => void;
+  updateService: (id: string, updates: Partial<Service>) => void;
+  deleteService: (id: string) => void;
+  // Orders management
   archiveOrder: (id: string) => void;
   deleteOrder: (id: string) => void;
-  refreshData: () => Promise<void>;
+  // Payment methods management
+  addPaymentMethod: (method: Omit<PaymentMethod, 'id'>) => void;
+  updatePaymentMethod: (id: string, updates: Partial<PaymentMethod>) => void;
+  deletePaymentMethod: (id: string) => void;
+  // Site settings management
+  updateSiteSettings: (settings: Partial<SiteSettings>) => void;
 }
 
-const DataContext = createContext<DataContextType | undefined>(undefined);
-
+// Default data
 const defaultServices: Service[] = [
   { id: '1', name: 'Payoneer', price: '30$', order: 1, active: true },
   { id: '2', name: 'Wise', price: '30$', order: 2, active: true },
@@ -61,11 +65,11 @@ const defaultServices: Service[] = [
   { id: '4', name: 'Neteller', price: '20$', order: 4, active: true },
   { id: '5', name: 'Kast', price: '20$', order: 5, active: true },
   { id: '6', name: 'Redotpay', price: '20$', order: 6, active: true },
-  { id: '7', name: 'Okx', price: '20$', order: 7, active: true },
+  { id: '7', name: 'OKX', price: '20$', order: 7, active: true },
   { id: '8', name: 'World First', price: '20$', order: 8, active: true },
   { id: '9', name: 'Bybit', price: '20$', order: 9, active: true },
   { id: '10', name: 'Bitget', price: '20$', order: 10, active: true },
-  { id: '11', name: 'Kucoin', price: '20$', order: 11, active: true },
+  { id: '11', name: 'KuCoin', price: '20$', order: 11, active: true },
   { id: '12', name: 'PayPal', price: '15$', order: 12, active: true },
   { id: '13', name: 'Mexc', price: '20$', order: 13, active: true },
   { id: '14', name: 'Exness', price: '20$', order: 14, active: true },
@@ -75,287 +79,193 @@ const defaultServices: Service[] = [
 ];
 
 const defaultPaymentMethods: PaymentMethod[] = [
-  { id: '1', name: 'Vodafone Cash', details: '01062453344', active: true },
+  { id: '1', name: 'Vodafone Cash', details: '+201062453344', active: true },
   { id: '2', name: 'USDT (TRC20)', details: 'TFUt8GRpk2R8Wv3FvoCiSUghRBQo4HrmQK', active: true },
 ];
 
 const defaultSiteSettings: SiteSettings = {
   title: 'KYCtrust - خدمات مالية رقمية موثوقة',
   description: 'نقدم خدمات مالية رقمية احترافية وآمنة لجميع المنصات العالمية مع ضمان الجودة والموثوقية',
-  orderNotice: 'سيتم التواصل معك يدويًا عبر واتساب بعد إرسال الطلب.'
+  orderNotice: 'سيتم التواصل معك يدوياً عبر واتساب بعد إرسال الطلب.',
+  whatsappNumber: '+201062453344'
 };
 
+const DataContext = createContext<DataContextType | undefined>(undefined);
+
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [services, setServices] = useState<Service[]>([]);
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  // Initialize with default data immediately
+  const [services, setServices] = useState<Service[]>(defaultServices);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(defaultPaymentMethods);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const refreshData = async () => {
     try {
       setLoading(true);
       setError(null);
-      console.log('Starting data refresh...');
 
-      console.log('Fetching data from services...');
-      const [servicesData, paymentMethodsData, ordersData, siteSettingsData] = await Promise.all([
-        servicesService.getAll().catch(err => {
-          console.warn('Services fetch failed:', err.message);
-          return [];
-        }),
-        paymentMethodsService.getAll().catch(err => {
-          console.warn('Payment methods fetch failed:', err.message);
-          return [];
-        }),
-        ordersService.getAll().catch(err => {
-          console.warn('Orders fetch failed:', err.message);
-          return [];
-        }),
-        siteSettingsService.get().catch(err => {
-          console.warn('Site settings fetch failed:', err.message);
-          return defaultSiteSettings;
-        })
+      // Load all data from database
+      const [servicesData, paymentMethodsData, siteSettingsData, ordersData] = await Promise.all([
+        databaseService.getServices().catch(() => defaultServices),
+        databaseService.getPaymentMethods().catch(() => defaultPaymentMethods),
+        databaseService.getSiteSettings().catch(() => defaultSiteSettings),
+        databaseService.getOrders().catch(() => [])
       ]);
 
-      console.log('Data fetched successfully:', {
-        services: servicesData.length,
-        paymentMethods: paymentMethodsData.length,
-        orders: ordersData.length,
-        siteSettings: siteSettingsData.title
-      });
+      // Ensure we always have services data
+      const finalServices = servicesData && servicesData.length > 0 ? servicesData : defaultServices;
+      setServices(finalServices);
+      setPaymentMethods(paymentMethodsData && paymentMethodsData.length > 0 ? paymentMethodsData : defaultPaymentMethods);
+      setSiteSettings(siteSettingsData || defaultSiteSettings);
+      setOrders(ordersData || []);
 
-      setServices(servicesData.length > 0 ? servicesData : defaultServices);
-      setPaymentMethods(paymentMethodsData.length > 0 ? paymentMethodsData : defaultPaymentMethods);
-      setOrders(ordersData);
-      setSiteSettings(siteSettingsData);
-    } catch (err) {
-      console.error('Error loading data:', err);
-
-      // Better error message extraction
-      let errorMessage = 'Unknown error occurred';
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      } else if (typeof err === 'string') {
-        errorMessage = err;
-      } else if (err && typeof err === 'object') {
-        errorMessage = JSON.stringify(err);
-      }
-
-      console.error('Error details:', errorMessage);
-
-      // Don't show error for expected Supabase config issues
-      if (errorMessage.includes('Supabase not configured')) {
-        console.warn('Using local storage fallback - Supabase not configured');
-        setError(null);
-      } else {
-        setError(`خطأ في التحميل: ${errorMessage}`);
-      }
-      
-      // Fallback to localStorage if database fails
-      const savedServices = localStorage.getItem('kyctrust_services');
-      const savedPaymentMethods = localStorage.getItem('kyctrust_payment_methods');
-      const savedSiteSettings = localStorage.getItem('kyctrust_site_settings');
-      const savedOrders = localStorage.getItem('kyctrust_orders');
-
-      try {
-        if (savedServices) {
-          setServices(JSON.parse(savedServices));
-        } else {
-          setServices(defaultServices);
-          // Save default services to localStorage
-          localStorage.setItem('kyctrust_services', JSON.stringify(defaultServices));
-        }
-
-        if (savedPaymentMethods) {
-          setPaymentMethods(JSON.parse(savedPaymentMethods));
-        } else {
-          setPaymentMethods(defaultPaymentMethods);
-          // Save default payment methods to localStorage
-          localStorage.setItem('kyctrust_payment_methods', JSON.stringify(defaultPaymentMethods));
-        }
-
-        if (savedSiteSettings) {
-          setSiteSettings(JSON.parse(savedSiteSettings));
-        } else {
-          setSiteSettings(defaultSiteSettings);
-          // Save default site settings to localStorage
-          localStorage.setItem('kyctrust_site_settings', JSON.stringify(defaultSiteSettings));
-        }
-
-        if (savedOrders) {
-          const parsedOrders = JSON.parse(savedOrders);
-          setOrders(parsedOrders.map((order: any) => ({
-            ...order,
-            timestamp: new Date(order.timestamp)
-          })));
-        } else {
-          setOrders([]);
-        }
-      } catch (localStorageError) {
-        console.error('Error reading from localStorage:', localStorageError);
-        // Fall back to defaults if localStorage is corrupted
-        setServices(defaultServices);
-        setPaymentMethods(defaultPaymentMethods);
-        setSiteSettings(defaultSiteSettings);
-        setOrders([]);
-      }
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+      setError('فشل ��ي تحميل البيانات');
+      // Always fallback to default data
+      setServices(defaultServices);
+      setPaymentMethods(defaultPaymentMethods);
+      setSiteSettings(defaultSiteSettings);
+      setOrders([]);
     } finally {
       setLoading(false);
     }
   };
 
+  // Load data on component mount (optional, fallback to defaults if fails)
   useEffect(() => {
-    refreshData();
+    // Try to load from database but don't block UI if it fails
+    refreshData().catch(() => {
+      // Silently use default data if database fails
+      console.log('Using default services data');
+    });
   }, []);
 
-  const saveToStorage = (key: string, data: any) => {
-    localStorage.setItem(key, JSON.stringify(data));
+  const addOrder = async (order: Omit<Order, 'id' | 'timestamp'>) => {
+    try {
+      const newOrder = await databaseService.createOrder(order);
+      setOrders(prev => [newOrder, ...prev]);
+      toast.success('تم حفظ الطلب بنجاح!');
+
+      // Track analytics
+      await databaseService.trackEvent('order_created', {
+        serviceName: order.serviceName,
+        customerName: order.customerName
+      });
+    } catch (error) {
+      console.error('Error creating order:', error);
+      toast.error('فشل في حفظ الطلب');
+    }
+  };
+
+  // Services management functions
+  const addService = async (service: Omit<Service, 'id'>) => {
+    try {
+      const newService = await databaseService.createService(service);
+      setServices(prev => [...prev, newService]);
+      toast.success('تم إضافة الخدمة بنجاح!');
+    } catch (error) {
+      console.error('Error creating service:', error);
+      toast.error('فشل في إضافة الخدمة');
+    }
   };
 
   const updateService = async (id: string, updates: Partial<Service>) => {
     try {
-      const updatedService = await servicesService.update(id, updates);
-      const updatedServices = services.map(service =>
+      const updatedService = await databaseService.updateService(id, updates);
+      setServices(prev => prev.map(service =>
         service.id === id ? updatedService : service
-      );
-      setServices(updatedServices);
-      saveToStorage('kyctrust_services', updatedServices);
-      toast.success('تم تحديث الخدمة بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error updating service:', errorMessage);
-      toast.error('حدث خطأ في تحديث الخدمة');
-    }
-  };
-
-  const addService = async (service: Omit<Service, 'id'>) => {
-    try {
-      const newService = await servicesService.create(service);
-      const updatedServices = [...services, newService];
-      setServices(updatedServices);
-      saveToStorage('kyctrust_services', updatedServices);
-      toast.success('تم إضافة الخدمة بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error adding service:', errorMessage);
-      toast.error('حدث خطأ في إضافة الخدمة');
+      ));
+      toast.success('تم تحديث الخدمة بنجاح!');
+    } catch (error) {
+      console.error('Error updating service:', error);
+      toast.error('فشل في تحديث الخدمة');
     }
   };
 
   const deleteService = async (id: string) => {
     try {
-      await servicesService.delete(id);
-      const updatedServices = services.filter(service => service.id !== id);
-      setServices(updatedServices);
-      saveToStorage('kyctrust_services', updatedServices);
-      toast.success('تم حذف الخدمة بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error deleting service:', errorMessage);
-      toast.error('حدث خطأ في حذف الخدمة');
+      await databaseService.deleteService(id);
+      setServices(prev => prev.filter(service => service.id !== id));
+      toast.success('تم حذف الخدمة بنجاح!');
+    } catch (error) {
+      console.error('Error deleting service:', error);
+      toast.error('فشل في حذف الخدمة');
     }
   };
 
-  const updatePaymentMethod = async (id: string, updates: Partial<PaymentMethod>) => {
-    try {
-      const updatedMethod = await paymentMethodsService.update(id, updates);
-      const updatedMethods = paymentMethods.map(method =>
-        method.id === id ? updatedMethod : method
-      );
-      setPaymentMethods(updatedMethods);
-      saveToStorage('kyctrust_payment_methods', updatedMethods);
-      toast.success('تم تحديث طريقة الدفع بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error updating payment method:', errorMessage);
-      toast.error('حدث خطأ في تحديث طريقة الدفع');
-    }
-  };
-
-  const addPaymentMethod = async (method: Omit<PaymentMethod, 'id'>) => {
-    try {
-      const newMethod = await paymentMethodsService.create(method);
-      const updatedMethods = [...paymentMethods, newMethod];
-      setPaymentMethods(updatedMethods);
-      saveToStorage('kyctrust_payment_methods', updatedMethods);
-      toast.success('تم إضافة طريقة الدفع بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error adding payment method:', errorMessage);
-      toast.error('حدث خطأ في إضافة طريقة الدفع');
-    }
-  };
-
-  const deletePaymentMethod = async (id: string) => {
-    try {
-      await paymentMethodsService.delete(id);
-      const updatedMethods = paymentMethods.filter(method => method.id !== id);
-      setPaymentMethods(updatedMethods);
-      saveToStorage('kyctrust_payment_methods', updatedMethods);
-      toast.success('تم حذف طريقة الدفع بن��اح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error deleting payment method:', errorMessage);
-      toast.error('حدث خطأ في حذف طريقة الدفع');
-    }
-  };
-
-  const updateSiteSettings = async (settings: SiteSettings) => {
-    try {
-      const updatedSettings = await siteSettingsService.update(settings);
-      setSiteSettings(updatedSettings);
-      saveToStorage('kyctrust_site_settings', updatedSettings);
-      toast.success('تم تحديث إعدادات الموقع بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error updating site settings:', errorMessage);
-      toast.error('حدث خطأ في تحديث إعدادات الموقع');
-    }
-  };
-
-  const addOrder = async (order: Omit<Order, 'id' | 'timestamp'>) => {
-    try {
-      const newOrder = await ordersService.create(order);
-      const updatedOrders = [newOrder, ...orders];
-      setOrders(updatedOrders);
-      saveToStorage('kyctrust_orders', updatedOrders);
-      toast.success('تم إرسال الطلب بنجاح! سيتم التواصل معك قريباً');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error adding order:', errorMessage);
-      toast.error('حدث خطأ في إرسال الطلب');
-    }
-  };
-
+  // Orders management functions
   const archiveOrder = async (id: string) => {
     try {
-      const updatedOrder = await ordersService.update(id, { archived: true });
-      const updatedOrders = orders.map(order =>
-        order.id === id ? updatedOrder : order
-      );
-      setOrders(updatedOrders);
-      saveToStorage('kyctrust_orders', updatedOrders);
-      toast.success('تم أرشفة الطلب بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error archiving order:', errorMessage);
-      toast.error('حدث خطأ في أرشفة الطلب');
+      const archivedOrder = await databaseService.archiveOrder(id);
+      setOrders(prev => prev.map(order =>
+        order.id === id ? archivedOrder : order
+      ));
+      toast.success('تم أرشفة الطلب بنجاح!');
+    } catch (error) {
+      console.error('Error archiving order:', error);
+      toast.error('فشل في أرشفة الطلب');
     }
   };
 
   const deleteOrder = async (id: string) => {
     try {
-      await ordersService.delete(id);
-      const updatedOrders = orders.filter(order => order.id !== id);
-      setOrders(updatedOrders);
-      saveToStorage('kyctrust_orders', updatedOrders);
-      toast.success('تم حذف الطلب بنجاح');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error deleting order:', errorMessage);
-      toast.error('حدث خطأ في حذف الطلب');
+      await databaseService.deleteOrder(id);
+      setOrders(prev => prev.filter(order => order.id !== id));
+      toast.success('تم حذف الطلب بنجاح!');
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      toast.error('فشل في حذف الطلب');
+    }
+  };
+
+  // Payment methods management functions
+  const addPaymentMethod = async (method: Omit<PaymentMethod, 'id'>) => {
+    try {
+      const newMethod = await databaseService.createPaymentMethod(method);
+      setPaymentMethods(prev => [...prev, newMethod]);
+      toast.success('تم إضافة طريقة الدفع بنجاح!');
+    } catch (error) {
+      console.error('Error creating payment method:', error);
+      toast.error('فشل في إضافة طريقة الدفع');
+    }
+  };
+
+  const updatePaymentMethod = async (id: string, updates: Partial<PaymentMethod>) => {
+    try {
+      const updatedMethod = await databaseService.updatePaymentMethod(id, updates);
+      setPaymentMethods(prev => prev.map(method =>
+        method.id === id ? updatedMethod : method
+      ));
+      toast.success('تم تحديث طريقة الدفع بنجاح!');
+    } catch (error) {
+      console.error('Error updating payment method:', error);
+      toast.error('فشل في تحديث طريقة الدفع');
+    }
+  };
+
+  const deletePaymentMethod = async (id: string) => {
+    try {
+      await databaseService.deletePaymentMethod(id);
+      setPaymentMethods(prev => prev.filter(method => method.id !== id));
+      toast.success('تم حذف طريقة الدفع بنجاح!');
+    } catch (error) {
+      console.error('Error deleting payment method:', error);
+      toast.error('فشل في حذف طريقة الدفع');
+    }
+  };
+
+  // Site settings management
+  const updateSiteSettings = async (updates: Partial<SiteSettings>) => {
+    try {
+      const updatedSettings = await databaseService.updateSiteSettings(updates);
+      setSiteSettings(updatedSettings);
+      toast.success('تم تحديث إعدادات الموقع بنجاح!');
+    } catch (error) {
+      console.error('Error updating site settings:', error);
+      toast.error('فشل في تحديث إعدادات الموقع');
     }
   };
 
@@ -366,17 +276,17 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     orders,
     loading,
     error,
-    updateService,
-    addService,
-    deleteService,
-    updatePaymentMethod,
-    addPaymentMethod,
-    deletePaymentMethod,
-    updateSiteSettings,
     addOrder,
+    refreshData,
+    addService,
+    updateService,
+    deleteService,
     archiveOrder,
     deleteOrder,
-    refreshData,
+    addPaymentMethod,
+    updatePaymentMethod,
+    deletePaymentMethod,
+    updateSiteSettings
   };
 
   return (
@@ -386,7 +296,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
-export const useData = () => {
+export const useData = (): DataContextType => {
   const context = useContext(DataContext);
   if (context === undefined) {
     throw new Error('useData must be used within a DataProvider');

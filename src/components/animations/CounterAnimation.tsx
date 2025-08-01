@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { usePerformance } from '../../config/performance';
 
 interface CounterAnimationProps {
   end: number;
@@ -10,11 +11,14 @@ interface CounterAnimationProps {
 
 const CounterAnimation: React.FC<CounterAnimationProps> = ({
   end,
-  duration = 2000,
+  duration,
   suffix = '',
   prefix = '',
   decimals = 0
 }) => {
+  const { config } = usePerformance();
+  const actualDuration = duration || config.ANIMATION.COUNTER_DURATION;
+
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const counterRef = useRef<HTMLSpanElement>(null);
@@ -26,45 +30,64 @@ const CounterAnimation: React.FC<CounterAnimationProps> = ({
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      {
+        threshold: config.ANIMATION.INTERSECTION_THRESHOLD,
+        rootMargin: config.ANIMATION.INTERSECTION_ROOT_MARGIN
+      }
     );
 
-    if (counterRef.current) {
-      observer.observe(counterRef.current);
+    const currentRef = counterRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+      observer.disconnect();
+    };
   }, [isVisible]);
 
   useEffect(() => {
     if (!isVisible) return;
 
+    let animationId: number;
     let startTime: number;
     const startValue = 0;
-    
+
     const updateCount = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      
-      // Easing function for smooth animation
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const progress = Math.min((timestamp - startTime) / actualDuration, 1);
+
+      // Improved easing function for smoother animation
+      const easedProgress = progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
       const currentValue = startValue + (end - startValue) * easedProgress;
-      
+
       setCount(Number(currentValue.toFixed(decimals)));
-      
+
       if (progress < 1) {
-        requestAnimationFrame(updateCount);
+        animationId = requestAnimationFrame(updateCount);
       }
     };
-    
-    requestAnimationFrame(updateCount);
-  }, [isVisible, end, duration, decimals]);
+
+    animationId = requestAnimationFrame(updateCount);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [isVisible, end, actualDuration, decimals]);
 
   const formatNumber = (num: number) => {
     if (decimals > 0) {
       return num.toFixed(decimals);
     }
-    return Math.floor(num).toLocaleString('ar-EG');
+    return Math.floor(num).toLocaleString('en-US');
   };
 
   return (

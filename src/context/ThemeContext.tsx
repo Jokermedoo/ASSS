@@ -15,27 +15,39 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('kyctrust_theme') as Theme;
-    if (savedTheme) return savedTheme;
-    
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    
-    return 'light';
-  });
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [language, setLanguageState] = useState<Language>('ar');
 
-  const [language, setLanguageState] = useState<Language>(() => {
-    const savedLanguage = localStorage.getItem('kyctrust_language') as Language;
-    return savedLanguage || 'ar';
-  });
+  // Initialize from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('kyctrust_theme') as Theme;
+      if (savedTheme) {
+        setThemeState(savedTheme);
+      } else {
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          setThemeState('dark');
+        }
+      }
+
+      const savedLanguage = localStorage.getItem('kyctrust_language') as Language;
+      if (savedLanguage) {
+        setLanguageState(savedLanguage);
+      }
+    } catch (error) {
+      console.warn('Failed to load theme/language from localStorage:', error);
+    }
+  }, []);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('kyctrust_theme', newTheme);
-    
+    try {
+      localStorage.setItem('kyctrust_theme', newTheme);
+    } catch (error) {
+      console.warn('Failed to save theme to localStorage:', error);
+    }
+
     // Apply theme to document
     if (newTheme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -46,7 +58,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const setLanguage = (newLanguage: Language) => {
     setLanguageState(newLanguage);
-    localStorage.setItem('kyctrust_language', newLanguage);
+    try {
+      localStorage.setItem('kyctrust_language', newLanguage);
+    } catch (error) {
+      console.warn('Failed to save language to localStorage:', error);
+    }
     
     // Apply language to document
     document.documentElement.lang = newLanguage;

@@ -1,3 +1,6 @@
+/* استيراد التحسينات المخصصة */
+@import './styles/custom.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
