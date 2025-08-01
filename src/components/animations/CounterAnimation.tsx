@@ -31,8 +31,8 @@ const CounterAnimation: React.FC<CounterAnimationProps> = ({
         }
       },
       {
-        threshold: 0.3,
-        rootMargin: '50px 0px'
+        threshold: config.ANIMATION.INTERSECTION_THRESHOLD,
+        rootMargin: config.ANIMATION.INTERSECTION_ROOT_MARGIN
       }
     );
 
