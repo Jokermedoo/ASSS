@@ -1,775 +1,480 @@
-import { supabase, isSupabaseConfigured, DatabaseService, DatabasePaymentMethod, DatabaseOrder, DatabaseSiteSettings } from '../lib/supabase';
-import { Service, PaymentMethod, Order, SiteSettings } from '../context/DataContext';
+import { supabase } from '../lib/supabase';
+import type { Service, PaymentMethod, SiteSettings, Order } from '../context/DataContext';
 
-// Helper function to make API calls as fallback
-const makeApiCall = async (endpoint: string, options: RequestInit = {}) => {
-  const response = await fetch(`/api/${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-    ...options,
-  });
+export interface DatabaseService {
+  // Services
+  getServices(): Promise<Service[]>;
+  createService(service: Omit<Service, 'id'>): Promise<Service>;
+  updateService(id: string, updates: Partial<Service>): Promise<Service>;
+  deleteService(id: string): Promise<void>;
 
-  if (!response.ok) {
-    throw new Error(`API call failed: ${response.statusText}`);
+  // Payment Methods
+  getPaymentMethods(): Promise<PaymentMethod[]>;
+  createPaymentMethod(method: Omit<PaymentMethod, 'id'>): Promise<PaymentMethod>;
+  updatePaymentMethod(id: string, updates: Partial<PaymentMethod>): Promise<PaymentMethod>;
+  deletePaymentMethod(id: string): Promise<void>;
+
+  // Site Settings
+  getSiteSettings(): Promise<SiteSettings>;
+  updateSiteSettings(settings: Partial<SiteSettings>): Promise<SiteSettings>;
+
+  // Orders
+  getOrders(): Promise<Order[]>;
+  createOrder(order: Omit<Order, 'id' | 'timestamp'>): Promise<Order>;
+  updateOrder(id: string, updates: Partial<Order>): Promise<Order>;
+  deleteOrder(id: string): Promise<void>;
+  archiveOrder(id: string): Promise<Order>;
+
+  // Analytics
+  trackEvent(eventType: string, metadata?: any): Promise<void>;
+  getAnalytics(startDate?: Date, endDate?: Date): Promise<any>;
+}
+
+// Supabase Database Service Implementation
+export class SupabaseDatabaseService implements DatabaseService {
+  // Services Methods
+  async getServices(): Promise<Service[]> {
+    const { data, error } = await supabase
+      .from('services')
+      .select('*')
+      .order('order_index');
+
+    if (error) throw new Error(`Failed to fetch services: ${error.message}`);
+    
+    return data.map(this.mapServiceFromDB);
   }
 
-  return response.json();
-};
+  async createService(service: Omit<Service, 'id'>): Promise<Service> {
+    const { data, error } = await supabase
+      .from('services')
+      .insert({
+        name: service.name,
+        price: service.price,
+        order_index: service.order,
+        active: service.active,
+        description: `${service.name} service`,
+        category: 'general'
+      })
+      .select()
+      .single();
 
-// Helper function to check if we can use Supabase
-const checkSupabaseAvailable = () => {
-  if (!isSupabaseConfigured || !supabase) {
-    throw new Error('Supabase not configured. Using API fallback.');
+    if (error) throw new Error(`Failed to create service: ${error.message}`);
+    
+    return this.mapServiceFromDB(data);
   }
-  return supabase;
-};
 
-// خدمات قاعدة البيانات للخدمات
-export const servicesService = {
-  async getAll(): Promise<Service[]> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('services')
-        .select('*')
-        .order('order_index', { ascending: true });
+  async updateService(id: string, updates: Partial<Service>): Promise<Service> {
+    const updateData: any = {};
+    if (updates.name) updateData.name = updates.name;
+    if (updates.price) updateData.price = updates.price;
+    if (updates.order !== undefined) updateData.order_index = updates.order;
+    if (updates.active !== undefined) updateData.active = updates.active;
 
-      if (error) throw error;
+    const { data, error } = await supabase
+      .from('services')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
 
-      return data.map((item: DatabaseService) => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        order: item.order_index,
-        active: item.active
-      }));
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('services');
-        return response.data.map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          order: item.order_index || 0,
-          active: item.active
-        }));
-      } catch (apiError) {
-        console.warn('Both Supabase and API unavailable, returning empty services array');
-        return [];
-      }
-    }
-  },
-
-  async create(service: Omit<Service, 'id'>): Promise<Service> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('services')
-        .insert({
-          name: service.name,
-          price: service.price,
-          order_index: service.order,
-          active: service.active
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      return {
-        id: data.id,
-        name: data.name,
-        price: data.price,
-        order: data.order_index,
-        active: data.active
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('services', {
-          method: 'POST',
-          body: JSON.stringify({
-            name: service.name,
-            price: service.price,
-            order_index: service.order,
-          }),
-        });
-        return {
-          id: response.data.id,
-          name: response.data.name,
-          price: response.data.price,
-          order: response.data.order_index,
-          active: response.data.active
-        };
-      } catch (apiError) {
-        console.warn('Service creation failed on both Supabase and API');
-        throw new Error('Database operation not available');
-      }
-    }
-  },
-
-  async update(id: string, updates: Partial<Service>): Promise<Service> {
-    try {
-      const client = checkSupabaseAvailable();
-      const updateData: any = {};
-      if (updates.name !== undefined) updateData.name = updates.name;
-      if (updates.price !== undefined) updateData.price = updates.price;
-      if (updates.order !== undefined) updateData.order_index = updates.order;
-      if (updates.active !== undefined) updateData.active = updates.active;
-
-      const { data, error } = await client
-        .from('services')
-        .update(updateData)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      return {
-        id: data.id,
-        name: data.name,
-        price: data.price,
-        order: data.order_index,
-        active: data.active
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const updateData: any = {};
-        if (updates.name !== undefined) updateData.name = updates.name;
-        if (updates.price !== undefined) updateData.price = updates.price;
-        if (updates.order !== undefined) updateData.order_index = updates.order;
-        if (updates.active !== undefined) updateData.active = updates.active;
-
-        const response = await makeApiCall(`services?id=${id}`, {
-          method: 'PUT',
-          body: JSON.stringify(updateData),
-        });
-        return {
-          id: response.data.id,
-          name: response.data.name,
-          price: response.data.price,
-          order: response.data.order_index,
-          active: response.data.active
-        };
-      } catch (apiError) {
-        throw new Error('Service update failed');
-      }
-    }
-  },
-
-  async delete(id: string): Promise<void> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { error } = await client
-        .from('services')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-    } catch (error) {
-      // Fallback to API
-      try {
-        await makeApiCall(`services?id=${id}`, { method: 'DELETE' });
-      } catch (apiError) {
-        throw new Error('Service deletion failed');
-      }
-    }
+    if (error) throw new Error(`Failed to update service: ${error.message}`);
+    
+    return this.mapServiceFromDB(data);
   }
-};
 
-// خدمات قاعدة البيانات لطرق الدفع
-export const paymentMethodsService = {
-  async getAll(): Promise<PaymentMethod[]> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('payment_methods')
-        .select('*')
-        .order('created_at', { ascending: true });
+  async deleteService(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('services')
+      .delete()
+      .eq('id', id);
 
-      if (error) throw error;
+    if (error) throw new Error(`Failed to delete service: ${error.message}`);
+  }
 
-      return data.map((item: DatabasePaymentMethod) => ({
-        id: item.id,
-        name: item.name,
-        details: item.details,
-        active: item.active
-      }));
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('payment-methods');
-        return response.data.map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          details: item.details,
-          active: item.active
-        }));
-      } catch (apiError) {
-        console.warn('Both Supabase and API unavailable, returning empty payment methods array');
-        return [];
-      }
-    }
-  },
+  // Payment Methods
+  async getPaymentMethods(): Promise<PaymentMethod[]> {
+    const { data, error } = await supabase
+      .from('payment_methods')
+      .select('*')
+      .order('order_index');
 
-  async create(method: Omit<PaymentMethod, 'id'>): Promise<PaymentMethod> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('payment_methods')
-        .insert({
-          name: method.name,
-          details: method.details,
-          active: method.active
-        })
-        .select()
-        .single();
+    if (error) throw new Error(`Failed to fetch payment methods: ${error.message}`);
+    
+    return data.map(this.mapPaymentMethodFromDB);
+  }
 
-      if (error) throw error;
+  async createPaymentMethod(method: Omit<PaymentMethod, 'id'>): Promise<PaymentMethod> {
+    const { data, error } = await supabase
+      .from('payment_methods')
+      .insert({
+        name: method.name,
+        details: method.details,
+        active: method.active,
+        type: 'manual'
+      })
+      .select()
+      .single();
 
-      return {
-        id: data.id,
-        name: data.name,
-        details: data.details,
-        active: data.active
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('payment-methods', {
-          method: 'POST',
-          body: JSON.stringify(method),
-        });
-        return response.data;
-      } catch (apiError) {
-        throw new Error('Payment method creation failed');
-      }
-    }
-  },
+    if (error) throw new Error(`Failed to create payment method: ${error.message}`);
+    
+    return this.mapPaymentMethodFromDB(data);
+  }
 
-  async update(id: string, updates: Partial<PaymentMethod>): Promise<PaymentMethod> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('payment_methods')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
+  async updatePaymentMethod(id: string, updates: Partial<PaymentMethod>): Promise<PaymentMethod> {
+    const { data, error } = await supabase
+      .from('payment_methods')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
 
-      if (error) throw error;
+    if (error) throw new Error(`Failed to update payment method: ${error.message}`);
+    
+    return this.mapPaymentMethodFromDB(data);
+  }
 
-      return {
-        id: data.id,
-        name: data.name,
-        details: data.details,
-        active: data.active
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall(`payment-methods?id=${id}`, {
-          method: 'PUT',
-          body: JSON.stringify(updates),
-        });
-        return response.data;
-      } catch (apiError) {
-        throw new Error('Payment method update failed');
-      }
-    }
-  },
+  async deletePaymentMethod(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('payment_methods')
+      .delete()
+      .eq('id', id);
 
-  async delete(id: string): Promise<void> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { error } = await client
-        .from('payment_methods')
-        .delete()
-        .eq('id', id);
+    if (error) throw new Error(`Failed to delete payment method: ${error.message}`);
+  }
 
-      if (error) throw error;
-    } catch (error) {
-      // Fallback to API
-      try {
-        await makeApiCall(`payment-methods?id=${id}`, { method: 'DELETE' });
-      } catch (apiError) {
-        throw new Error('Payment method deletion failed');
-      }
+  // Site Settings
+  async getSiteSettings(): Promise<SiteSettings> {
+    const { data, error } = await supabase
+      .from('site_settings')
+      .select('*')
+      .single();
+
+    if (error) throw new Error(`Failed to fetch site settings: ${error.message}`);
+    
+    return {
+      title: data.title,
+      description: data.description,
+      orderNotice: data.order_notice,
+      whatsappNumber: data.whatsapp_number
+    };
+  }
+
+  async updateSiteSettings(settings: Partial<SiteSettings>): Promise<SiteSettings> {
+    const updateData: any = {};
+    if (settings.title) updateData.title = settings.title;
+    if (settings.description) updateData.description = settings.description;
+    if (settings.orderNotice) updateData.order_notice = settings.orderNotice;
+    if (settings.whatsappNumber) updateData.whatsapp_number = settings.whatsappNumber;
+
+    const { data, error } = await supabase
+      .from('site_settings')
+      .update(updateData)
+      .select()
+      .single();
+
+    if (error) throw new Error(`Failed to update site settings: ${error.message}`);
+    
+    return {
+      title: data.title,
+      description: data.description,
+      orderNotice: data.order_notice,
+      whatsappNumber: data.whatsapp_number
+    };
+  }
+
+  // Orders
+  async getOrders(): Promise<Order[]> {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw new Error(`Failed to fetch orders: ${error.message}`);
+    
+    return data.map(this.mapOrderFromDB);
+  }
+
+  async createOrder(order: Omit<Order, 'id' | 'timestamp'>): Promise<Order> {
+    const { data, error } = await supabase
+      .from('orders')
+      .insert({
+        customer_name: order.customerName,
+        service_name: order.serviceName,
+        notes: order.notes,
+        archived: order.archived
+      })
+      .select()
+      .single();
+
+    if (error) throw new Error(`Failed to create order: ${error.message}`);
+    
+    return this.mapOrderFromDB(data);
+  }
+
+  async updateOrder(id: string, updates: Partial<Order>): Promise<Order> {
+    const updateData: any = {};
+    if (updates.customerName) updateData.customer_name = updates.customerName;
+    if (updates.serviceName) updateData.service_name = updates.serviceName;
+    if (updates.notes) updateData.notes = updates.notes;
+    if (updates.archived !== undefined) updateData.archived = updates.archived;
+
+    const { data, error } = await supabase
+      .from('orders')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw new Error(`Failed to update order: ${error.message}`);
+    
+    return this.mapOrderFromDB(data);
+  }
+
+  async deleteOrder(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('orders')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw new Error(`Failed to delete order: ${error.message}`);
+  }
+
+  async archiveOrder(id: string): Promise<Order> {
+    return this.updateOrder(id, { archived: true });
+  }
+
+  // Analytics
+  async trackEvent(eventType: string, metadata: any = {}): Promise<void> {
+    const { error } = await supabase
+      .from('analytics_events')
+      .insert({
+        event_type: eventType,
+        metadata,
+        page_url: window.location.href,
+        referrer_url: document.referrer
+      });
+
+    if (error) {
+      console.error('Failed to track event:', error);
+      // Don't throw error for analytics to avoid breaking user experience
     }
   }
-};
 
-// خدمات قاعدة البيانات للطلبات
-export const ordersService = {
-  async getAll(): Promise<Order[]> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
+  async getAnalytics(startDate?: Date, endDate?: Date): Promise<any> {
+    let query = supabase
+      .from('analytics_events')
+      .select('*');
 
-      if (error) throw error;
-
-      return data.map((item: DatabaseOrder) => ({
-        id: item.id,
-        customerName: item.customer_name,
-        serviceName: item.service_name,
-        notes: item.notes,
-        timestamp: new Date(item.created_at),
-        archived: item.archived
-      }));
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('orders');
-        return response.data.map((item: any) => ({
-          id: item.id,
-          customerName: item.customer_name,
-          serviceName: item.service_name,
-          notes: item.notes,
-          timestamp: new Date(item.created_at),
-          archived: item.archived
-        }));
-      } catch (apiError) {
-        console.warn('Both Supabase and API unavailable, returning empty orders array');
-        return [];
-      }
+    if (startDate) {
+      query = query.gte('created_at', startDate.toISOString());
     }
-  },
-
-  async create(order: Omit<Order, 'id' | 'timestamp'>): Promise<Order> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('orders')
-        .insert({
-          customer_name: order.customerName,
-          service_name: order.serviceName,
-          notes: order.notes,
-          archived: order.archived
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      return {
-        id: data.id,
-        customerName: data.customer_name,
-        serviceName: data.service_name,
-        notes: data.notes,
-        timestamp: new Date(data.created_at),
-        archived: data.archived
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('orders', {
-          method: 'POST',
-          body: JSON.stringify({
-            customer_name: order.customerName,
-            service_name: order.serviceName,
-            notes: order.notes,
-          }),
-        });
-        return {
-          id: response.data.id,
-          customerName: response.data.customer_name,
-          serviceName: response.data.service_name,
-          notes: response.data.notes,
-          timestamp: new Date(response.data.created_at),
-          archived: response.data.archived || false
-        };
-      } catch (apiError) {
-        throw new Error('Order creation failed');
-      }
+    if (endDate) {
+      query = query.lte('created_at', endDate.toISOString());
     }
-  },
 
-  async update(id: string, updates: Partial<Order>): Promise<Order> {
+    const { data, error } = await query.order('created_at', { ascending: false });
+
+    if (error) throw new Error(`Failed to fetch analytics: ${error.message}`);
+    
+    return data;
+  }
+
+  // Helper mapping functions
+  private mapServiceFromDB(data: any): Service {
+    return {
+      id: data.id,
+      name: data.name,
+      price: data.price,
+      order: data.order_index || 0,
+      active: data.active ?? true
+    };
+  }
+
+  private mapPaymentMethodFromDB(data: any): PaymentMethod {
+    return {
+      id: data.id,
+      name: data.name,
+      details: data.details,
+      active: data.active ?? true
+    };
+  }
+
+  private mapOrderFromDB(data: any): Order {
+    return {
+      id: data.id,
+      customerName: data.customer_name,
+      serviceName: data.service_name,
+      notes: data.notes || '',
+      timestamp: new Date(data.created_at),
+      archived: data.archived ?? false
+    };
+  }
+}
+
+// Fallback LocalStorage Service
+export class LocalStorageDatabaseService implements DatabaseService {
+  private getStorageKey(key: string): string {
+    return `kyctrust_${key}`;
+  }
+
+  private getFromStorage<T>(key: string, defaultValue: T): T {
     try {
-      const client = checkSupabaseAvailable();
-      const updateData: any = {};
-      if (updates.customerName !== undefined) updateData.customer_name = updates.customerName;
-      if (updates.serviceName !== undefined) updateData.service_name = updates.serviceName;
-      if (updates.notes !== undefined) updateData.notes = updates.notes;
-      if (updates.archived !== undefined) updateData.archived = updates.archived;
-
-      const { data, error } = await client
-        .from('orders')
-        .update(updateData)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      return {
-        id: data.id,
-        customerName: data.customer_name,
-        serviceName: data.service_name,
-        notes: data.notes,
-        timestamp: new Date(data.created_at),
-        archived: data.archived
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const updateData: any = {};
-        if (updates.customerName !== undefined) updateData.customer_name = updates.customerName;
-        if (updates.serviceName !== undefined) updateData.service_name = updates.serviceName;
-        if (updates.notes !== undefined) updateData.notes = updates.notes;
-        if (updates.archived !== undefined) updateData.archived = updates.archived;
-
-        const response = await makeApiCall(`orders?id=${id}`, {
-          method: 'PUT',
-          body: JSON.stringify(updateData),
-        });
-        return {
-          id: response.data.id,
-          customerName: response.data.customer_name,
-          serviceName: response.data.service_name,
-          notes: response.data.notes,
-          timestamp: new Date(response.data.created_at),
-          archived: response.data.archived
-        };
-      } catch (apiError) {
-        throw new Error('Order update failed');
-      }
-    }
-  },
-
-  async delete(id: string): Promise<void> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { error } = await client
-        .from('orders')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-    } catch (error) {
-      // Fallback to API
-      try {
-        await makeApiCall(`orders?id=${id}`, { method: 'DELETE' });
-      } catch (apiError) {
-        throw new Error('Order deletion failed');
-      }
+      const item = localStorage.getItem(this.getStorageKey(key));
+      return item ? JSON.parse(item) : defaultValue;
+    } catch {
+      return defaultValue;
     }
   }
-};
 
-// خدمات قاعدة البيانات لإعدادات الموقع
-export const siteSettingsService = {
-  async get(): Promise<SiteSettings> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('site_settings')
-        .select('*')
-        .limit(1)
-        .single();
-
-      if (error && error.code !== 'PGRST116') throw error;
-
-      if (data) {
-        return {
-          title: data.title,
-          description: data.description,
-          orderNotice: data.order_notice
-        };
-      }
-
-      // Return default settings if none found
-      return {
-        title: 'KYCtrust - خدمات مالية رقمية موثوقة',
-        description: 'نقدم خدمات مالية رقمية احترافية وآمنة لجميع المنصات العالمية مع ضمان الجودة والموثوقية',
-        orderNotice: 'سيتم التواصل معك يدويًا عبر واتساب بعد إرسال الطلب.'
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('site-settings');
-        return {
-          title: response.data.title,
-          description: response.data.description,
-          orderNotice: response.data.order_notice
-        };
-      } catch (apiError) {
-        // Return default settings if all else fails
-        return {
-          title: 'KYCtrust - خدمات مالية رقمية موثوقة',
-          description: 'نقدم خدمات مالية رقمية احترافية وآمنة لجميع المنصات العالمية مع ضمان الجودة والموثوقية',
-          orderNotice: 'سيتم التواصل معك يدويًا عبر واتساب بعد إرسال الطلب.'
-        };
-      }
-    }
-  },
-
-  async update(settings: SiteSettings): Promise<SiteSettings> {
-    try {
-      const client = checkSupabaseAvailable();
-      // أولاً نحاول الحصول على الإعدادات الحالية
-      const { data: existing } = await client
-        .from('site_settings')
-        .select('id')
-        .limit(1)
-        .single();
-
-      let result;
-      if (existing) {
-        // تحديث الإعدادات الموجودة
-        const { data, error } = await client
-          .from('site_settings')
-          .update({
-            title: settings.title,
-            description: settings.description,
-            order_notice: settings.orderNotice
-          })
-          .eq('id', existing.id)
-          .select()
-          .single();
-
-        if (error) throw error;
-        result = data;
-      } else {
-        // إنشاء إعدادات جديدة
-        const { data, error } = await client
-          .from('site_settings')
-          .insert({
-            title: settings.title,
-            description: settings.description,
-            order_notice: settings.orderNotice
-          })
-          .select()
-          .single();
-
-        if (error) throw error;
-        result = data;
-      }
-
-      return {
-        title: result.title,
-        description: result.description,
-        orderNotice: result.order_notice
-      };
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('site-settings', {
-          method: 'PUT',
-          body: JSON.stringify({
-            title: settings.title,
-            description: settings.description,
-            order_notice: settings.orderNotice
-          }),
-        });
-        return {
-          title: response.data.title,
-          description: response.data.description,
-          orderNotice: response.data.order_notice
-        };
-      } catch (apiError) {
-        throw new Error('Site settings update failed');
-      }
-    }
+  private setToStorage<T>(key: string, value: T): void {
+    localStorage.setItem(this.getStorageKey(key), JSON.stringify(value));
   }
-};
 
-// خدمات قوالب الصفحات للبناء المرئي
-export const pageTemplatesService = {
-  async getAll(pageType?: string): Promise<any[]> {
-    try {
-      const client = checkSupabaseAvailable();
-      let query = client.from('page_templates').select('*');
-      
-      if (pageType) {
-        query = query.eq('page_type', pageType);
-      }
-      
-      const { data, error } = await query.order('updated_at', { ascending: false });
-
-      if (error) throw error;
-
-      return data.map((item: any) => ({
-        ...item,
-        template_data: JSON.parse(item.template_data || '{}'),
-        theme_config: JSON.parse(item.theme_config || '{}')
-      }));
-    } catch (error) {
-      // Fallback to API
-      try {
-        const url = pageType ? `page-templates?page_type=${pageType}` : 'page-templates';
-        const response = await makeApiCall(url);
-        return response.data.map((item: any) => ({
-          ...item,
-          template_data: typeof item.template_data === 'string' ? JSON.parse(item.template_data) : item.template_data,
-          theme_config: typeof item.theme_config === 'string' ? JSON.parse(item.theme_config) : item.theme_config
-        }));
-      } catch (apiError) {
-        console.warn('Both Supabase and API unavailable, returning empty templates array');
-        return [];
-      }
-    }
-  },
-
-  async save(template: any): Promise<any> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('page_templates')
-        .insert({
-          ...template,
-          template_data: JSON.stringify(template.template_data),
-          theme_config: JSON.stringify(template.theme_config || {})
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('page-templates', {
-          method: 'POST',
-          body: JSON.stringify(template),
-        });
-        return response.data;
-      } catch (apiError) {
-        throw new Error('Template save failed');
-      }
-    }
-  },
-
-  async update(id: string, updates: any): Promise<any> {
-    try {
-      const client = checkSupabaseAvailable();
-      const updateData = { ...updates };
-      if (updateData.template_data) {
-        updateData.template_data = JSON.stringify(updateData.template_data);
-      }
-      if (updateData.theme_config) {
-        updateData.theme_config = JSON.stringify(updateData.theme_config);
-      }
-
-      const { data, error } = await client
-        .from('page_templates')
-        .update(updateData)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall(`page-templates?id=${id}`, {
-          method: 'PUT',
-          body: JSON.stringify(updates),
-        });
-        return response.data;
-      } catch (apiError) {
-        throw new Error('Template update failed');
-      }
-    }
+  async getServices(): Promise<Service[]> {
+    return this.getFromStorage('services', []);
   }
-};
 
-// خدمات الثيمات
-export const themesService = {
-  async getAll(): Promise<any[]> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('themes')
-        .select('*')
-        .order('updated_at', { ascending: false });
-
-      if (error) throw error;
-
-      return data.map((item: any) => ({
-        ...item,
-        theme_config: JSON.parse(item.theme_config || '{}')
-      }));
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('themes');
-        return response.data.map((item: any) => ({
-          ...item,
-          theme_config: typeof item.theme_config === 'string' ? JSON.parse(item.theme_config) : item.theme_config
-        }));
-      } catch (apiError) {
-        console.warn('Both Supabase and API unavailable, returning empty themes array');
-        return [];
-      }
-    }
-  },
-
-  async save(theme: any): Promise<any> {
-    try {
-      const client = checkSupabaseAvailable();
-      const { data, error } = await client
-        .from('themes')
-        .insert({
-          ...theme,
-          theme_config: JSON.stringify(theme.theme_config)
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall('themes', {
-          method: 'POST',
-          body: JSON.stringify(theme),
-        });
-        return response.data;
-      } catch (apiError) {
-        throw new Error('Theme save failed');
-      }
-    }
-  },
-
-  async update(id: string, updates: any): Promise<any> {
-    try {
-      const client = checkSupabaseAvailable();
-      const updateData = { ...updates };
-      if (updateData.theme_config) {
-        updateData.theme_config = JSON.stringify(updateData.theme_config);
-      }
-
-      const { data, error } = await client
-        .from('themes')
-        .update(updateData)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      // Fallback to API
-      try {
-        const response = await makeApiCall(`themes?id=${id}`, {
-          method: 'PUT',
-          body: JSON.stringify(updates),
-        });
-        return response.data;
-      } catch (apiError) {
-        throw new Error('Theme update failed');
-      }
-    }
+  async createService(service: Omit<Service, 'id'>): Promise<Service> {
+    const services = await this.getServices();
+    const newService: Service = { ...service, id: Date.now().toString() };
+    services.push(newService);
+    this.setToStorage('services', services);
+    return newService;
   }
-};
+
+  async updateService(id: string, updates: Partial<Service>): Promise<Service> {
+    const services = await this.getServices();
+    const index = services.findIndex(s => s.id === id);
+    if (index === -1) throw new Error('Service not found');
+    
+    services[index] = { ...services[index], ...updates };
+    this.setToStorage('services', services);
+    return services[index];
+  }
+
+  async deleteService(id: string): Promise<void> {
+    const services = await this.getServices();
+    const filtered = services.filter(s => s.id !== id);
+    this.setToStorage('services', filtered);
+  }
+
+  async getPaymentMethods(): Promise<PaymentMethod[]> {
+    return this.getFromStorage('paymentMethods', []);
+  }
+
+  async createPaymentMethod(method: Omit<PaymentMethod, 'id'>): Promise<PaymentMethod> {
+    const methods = await this.getPaymentMethods();
+    const newMethod: PaymentMethod = { ...method, id: Date.now().toString() };
+    methods.push(newMethod);
+    this.setToStorage('paymentMethods', methods);
+    return newMethod;
+  }
+
+  async updatePaymentMethod(id: string, updates: Partial<PaymentMethod>): Promise<PaymentMethod> {
+    const methods = await this.getPaymentMethods();
+    const index = methods.findIndex(m => m.id === id);
+    if (index === -1) throw new Error('Payment method not found');
+    
+    methods[index] = { ...methods[index], ...updates };
+    this.setToStorage('paymentMethods', methods);
+    return methods[index];
+  }
+
+  async deletePaymentMethod(id: string): Promise<void> {
+    const methods = await this.getPaymentMethods();
+    const filtered = methods.filter(m => m.id !== id);
+    this.setToStorage('paymentMethods', filtered);
+  }
+
+  async getSiteSettings(): Promise<SiteSettings> {
+    return this.getFromStorage('siteSettings', {
+      title: 'KYCtrust',
+      description: 'Digital Financial Services',
+      orderNotice: 'We will contact you via WhatsApp',
+      whatsappNumber: '+201062453344'
+    });
+  }
+
+  async updateSiteSettings(settings: Partial<SiteSettings>): Promise<SiteSettings> {
+    const current = await this.getSiteSettings();
+    const updated = { ...current, ...settings };
+    this.setToStorage('siteSettings', updated);
+    return updated;
+  }
+
+  async getOrders(): Promise<Order[]> {
+    const orders = this.getFromStorage('orders', []);
+    return orders.map((order: any) => ({
+      ...order,
+      timestamp: new Date(order.timestamp)
+    }));
+  }
+
+  async createOrder(order: Omit<Order, 'id' | 'timestamp'>): Promise<Order> {
+    const orders = await this.getOrders();
+    const newOrder: Order = {
+      ...order,
+      id: Date.now().toString(),
+      timestamp: new Date()
+    };
+    orders.push(newOrder);
+    this.setToStorage('orders', orders);
+    return newOrder;
+  }
+
+  async updateOrder(id: string, updates: Partial<Order>): Promise<Order> {
+    const orders = await this.getOrders();
+    const index = orders.findIndex(o => o.id === id);
+    if (index === -1) throw new Error('Order not found');
+    
+    orders[index] = { ...orders[index], ...updates };
+    this.setToStorage('orders', orders);
+    return orders[index];
+  }
+
+  async deleteOrder(id: string): Promise<void> {
+    const orders = await this.getOrders();
+    const filtered = orders.filter(o => o.id !== id);
+    this.setToStorage('orders', filtered);
+  }
+
+  async archiveOrder(id: string): Promise<Order> {
+    return this.updateOrder(id, { archived: true });
+  }
+
+  async trackEvent(eventType: string, metadata: any = {}): Promise<void> {
+    // Store events locally for potential sync later
+    const events = this.getFromStorage('analytics_events', []);
+    events.push({
+      id: Date.now().toString(),
+      event_type: eventType,
+      metadata,
+      created_at: new Date().toISOString()
+    });
+    this.setToStorage('analytics_events', events);
+  }
+
+  async getAnalytics(startDate?: Date, endDate?: Date): Promise<any> {
+    const events = this.getFromStorage('analytics_events', []);
+    return events.filter((event: any) => {
+      const eventDate = new Date(event.created_at);
+      if (startDate && eventDate < startDate) return false;
+      if (endDate && eventDate > endDate) return false;
+      return true;
+    });
+  }
+}
+
+// Database Factory
+export function createDatabaseService(): DatabaseService {
+  // Check if Supabase is configured
+  if (supabase && supabase.supabaseUrl && supabase.supabaseKey) {
+    return new SupabaseDatabaseService();
+  } else {
+    console.warn('Supabase not configured, falling back to localStorage');
+    return new LocalStorageDatabaseService();
+  }
+}
+
+// Default export
+export const databaseService = createDatabaseService();
