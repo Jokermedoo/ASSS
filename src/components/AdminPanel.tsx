@@ -10,6 +10,7 @@ import SiteSettingsManager from './admin/SiteSettingsManager';
 import LandingPageCustomizer from './admin/LandingPageCustomizer';
 import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
+import IntegrationTester from './IntegrationTester';
 
 type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'settings' | 'customize';
 
