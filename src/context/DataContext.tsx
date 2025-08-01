@@ -113,18 +113,20 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         databaseService.getOrders().catch(() => [])
       ]);
 
-      setServices(servicesData);
-      setPaymentMethods(paymentMethodsData);
-      setSiteSettings(siteSettingsData);
-      setOrders(ordersData);
+      // Ensure we always have services data
+      setServices(servicesData && servicesData.length > 0 ? servicesData : defaultServices);
+      setPaymentMethods(paymentMethodsData && paymentMethodsData.length > 0 ? paymentMethodsData : defaultPaymentMethods);
+      setSiteSettings(siteSettingsData || defaultSiteSettings);
+      setOrders(ordersData || []);
 
     } catch (error) {
       console.error('Error refreshing data:', error);
       setError('فشل في تحميل البيانات');
-      // Fallback to default data
+      // Always fallback to default data
       setServices(defaultServices);
       setPaymentMethods(defaultPaymentMethods);
       setSiteSettings(defaultSiteSettings);
+      setOrders([]);
     } finally {
       setLoading(false);
     }
