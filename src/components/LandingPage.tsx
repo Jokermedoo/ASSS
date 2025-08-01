@@ -78,7 +78,7 @@ const LandingPage: React.FC = () => {
       role: 'طالب جامعي',
       avatar: '👨‍🎓',
       rating: 5,
-      comment: 'سهولة في الاستخدام وأمان عالي، تعاملت معهم عدة مرات ولم أواجه أي مشكلة.',
+      comment: 'سهولة في ال��ستخدام وأمان عالي، تعاملت معهم عدة مرات ولم أواجه أي مشكلة.',
       date: '2024-11-08',
       verified: true
     }
@@ -157,7 +157,7 @@ const LandingPage: React.FC = () => {
         : 'Advanced encryption and comprehensive protection for all your financial transactions',
       color: 'from-blue-500 to-blue-600',
       benefits: language === 'ar' 
-        ? ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصية', 'مراقبة أمنية 24/7']
+        ? ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصي��', 'مراقبة أمنية 24/7']
         : ['Bank-grade encryption', 'Personal data protection', '24/7 security monitoring']
     },
     {
@@ -563,12 +563,12 @@ const LandingPage: React.FC = () => {
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {featuredServices.map((service, index) => (
+            {featuredServices.length > 0 ? featuredServices.map((service, index) => (
               <div
                 key={service.id}
                 className={`group relative p-8 rounded-3xl border transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer ${
-                  theme === 'dark' 
-                    ? 'bg-gray-800/50 border-gray-700/50 hover:border-blue-500/50' 
+                  theme === 'dark'
+                    ? 'bg-gray-800/50 border-gray-700/50 hover:border-blue-500/50'
                     : 'bg-white/50 border-gray-200/50 hover:border-blue-300/50'
                 } backdrop-blur-sm`}
                 onClick={() => handleOrderService(service.name)}
@@ -596,9 +596,9 @@ const LandingPage: React.FC = () => {
                   <p className={`text-sm leading-relaxed ${
                     theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                   }`}>
-                    {language === 'ar' 
-                      ? 'خدمة مالية موثوقة وآمنة بأفضل الأسعار'
-                      : 'Reliable and secure financial service at the best prices'
+                    {language === 'ar'
+                      ? 'خدمة مالية احترافية وآمنة مع ضمان الجودة والتنفيذ السريع'
+                      : 'Professional and secure financial service with quality guarantee and fast execution'
                     }
                   </p>
 
@@ -622,7 +622,7 @@ const LandingPage: React.FC = () => {
 
                   {/* Features */}
                   <div className="space-y-2 pt-4">
-                    {(language === 'ar' ? ['تنفيذ فوري', 'أمان عالي', 'دع�� 24/7'] : ['Instant execution', 'High security', '24/7 support']).map((feature, idx) => (
+                    {(language === 'ar' ? ['تنفيذ فوري', 'أمان عالي', 'دعم 24/7'] : ['Instant execution', 'High security', '24/7 support']).map((feature, idx) => (
                       <div key={idx} className="flex items-center space-x-reverse space-x-2">
                         <CheckSquare className="h-4 w-4 text-green-500" />
                         <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -631,12 +631,42 @@ const LandingPage: React.FC = () => {
                       </div>
                     ))}
                   </div>
+
+                  {/* WhatsApp Order Button */}
+                  <div className="pt-4">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const whatsappNumber = siteSettings?.whatsappNumber || '+966501234567';
+                        const message = language === 'ar'
+                          ? `السلام عليكم، أريد طلب خدمة ${service.name} بسعر ${service.price}`
+                          : `Hello, I would like to order ${service.name} service for ${service.price}`;
+                        const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+                        window.open(whatsappUrl, '_blank');
+                      }}
+                      className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-4 rounded-xl font-semibold text-sm hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      <span>{language === 'ar' ? 'اطلب عبر واتساب' : 'Order via WhatsApp'}</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Hover Effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </div>
-            ))}
+            )) : (
+              <div className="col-span-full text-center py-12">
+                <CreditCard className={`h-16 w-16 mx-auto mb-4 ${
+                  theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+                }`} />
+                <p className={`text-lg ${
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }`}>
+                  {language === 'ar' ? 'لا توجد خدمات متاحة حالياً' : 'No services available at the moment'}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* View All Services Button */}
@@ -919,7 +949,7 @@ const LandingPage: React.FC = () => {
               },
               {
                 q: 'كيف يمكنني التواصل مع الد��م؟',
-                a: 'يمكنك التواصل معنا عبر واتساب على مدار 24/7، أو من خلال نموذج التواصل في الموقع.'
+                a: 'يمكنك التواصل ��عنا عبر واتساب على مدار 24/7، أو من خلال نموذج التواصل في الموقع.'
               }
             ] : [
               {
