@@ -3,7 +3,7 @@ import { Package, CreditCard, Inbox, TrendingUp, Users, CheckCircle, Activity, C
 import { useData } from '../../context/DataContext';
 import { useTheme } from '../../context/ThemeContext';
 import LoadingSpinner from '../ui/LoadingSpinner';
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../ui/ErrorMessage';
 
 const Dashboard: React.FC = () => {
   const { services, paymentMethods, orders, loading, error, refreshData } = useData();
