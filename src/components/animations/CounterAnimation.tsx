@@ -48,25 +48,35 @@ const CounterAnimation: React.FC<CounterAnimationProps> = ({
   useEffect(() => {
     if (!isVisible) return;
 
+    let animationId: number;
     let startTime: number;
     const startValue = 0;
-    
+
     const updateCount = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      
-      // Easing function for smooth animation
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+      // Improved easing function for smoother animation
+      const easedProgress = progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
       const currentValue = startValue + (end - startValue) * easedProgress;
-      
+
       setCount(Number(currentValue.toFixed(decimals)));
-      
+
       if (progress < 1) {
-        requestAnimationFrame(updateCount);
+        animationId = requestAnimationFrame(updateCount);
       }
     };
-    
-    requestAnimationFrame(updateCount);
+
+    animationId = requestAnimationFrame(updateCount);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
   }, [isVisible, end, duration, decimals]);
 
   const formatNumber = (num: number) => {
