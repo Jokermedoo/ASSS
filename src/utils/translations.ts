@@ -252,7 +252,7 @@ export const translations = {
     customerName: 'Customer Name',
     additionalNotes: 'Additional Notes',
     securityGuarantee: 'Security Guarantee',
-    securityDescription: 'All your data is protected and encrypted. We respect your privacy and do not share your information with third parties.',
+    privacyDescription: 'All your data is protected and encrypted. We respect your privacy and do not share your information with third parties.',
     importantInfo: 'Important Information',
     cancel: 'Cancel',
     
