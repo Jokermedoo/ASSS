@@ -529,6 +529,136 @@ const LandingPageCustomizer: React.FC = () => {
               </button>
             </div>
           )}
+
+          {/* Sections Tab */}
+          {activeTab === 'sections' && (
+            <div className="space-y-6">
+              <div className="flex items-center space-x-reverse space-x-3 mb-6">
+                <Move className="h-5 w-5 text-blue-600" />
+                <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  ترتيب أقسام الصفحة
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  { id: 'hero', name: 'القسم الرئيسي', enabled: true },
+                  { id: 'services', name: 'الخدمات', enabled: true },
+                  { id: 'features', name: 'المميزات', enabled: true },
+                  { id: 'testimonials', name: 'آراء العملاء', enabled: true },
+                  { id: 'faq', name: 'الأسئلة الشائعة', enabled: true },
+                  { id: 'contact', name: 'التواصل', enabled: false }
+                ].map((section, index) => (
+                  <div key={section.id} className={`p-4 rounded-lg border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-reverse space-x-3">
+                        <div className="w-6 h-6 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">
+                          {index + 1}
+                        </div>
+                        <span className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                          {section.name}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-reverse space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={section.enabled}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <button className="p-1 text-gray-400 hover:text-gray-600">
+                          <Move className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                حفظ ترتيب الأقسام
+              </button>
+            </div>
+          )}
+
+          {/* Features Tab */}
+          {activeTab === 'features' && (
+            <div className="space-y-6">
+              <div className="flex items-center space-x-reverse space-x-3 mb-6">
+                <Sparkles className="h-5 w-5 text-blue-600" />
+                <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  إدارة المميزات
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    title: 'أمان متقدم',
+                    description: 'تشفير متقدم وحماية شاملة',
+                    icon: '🛡️',
+                    enabled: true
+                  },
+                  {
+                    title: 'سرعة البرق',
+                    description: 'معالجة فورية في أقل من 5 دقائق',
+                    icon: '⚡',
+                    enabled: true
+                  },
+                  {
+                    title: 'موثوقية عالية',
+                    description: 'ضمان الجودة وإرجاع الأموال',
+                    icon: '🏆',
+                    enabled: true
+                  },
+                  {
+                    title: 'تغطية عالمية',
+                    description: 'متاح في أكثر من 150 دولة',
+                    icon: '🌍',
+                    enabled: false
+                  }
+                ].map((feature, index) => (
+                  <div key={index} className={`p-4 rounded-lg border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-reverse space-x-3">
+                        <div className="text-2xl">{feature.icon}</div>
+                        <div>
+                          <input
+                            type="text"
+                            value={feature.title}
+                            className={`font-medium bg-transparent border-none p-0 focus:ring-0 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+                          />
+                          <input
+                            type="text"
+                            value={feature.description}
+                            className={`block text-sm bg-transparent border-none p-0 focus:ring-0 mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-reverse space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={feature.enabled}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <button className="text-red-500 hover:text-red-700">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button className={`w-full border-2 border-dashed rounded-xl p-4 ${theme === 'dark' ? 'border-gray-600 text-gray-400 hover:border-gray-500' : 'border-gray-300 text-gray-500 hover:border-gray-400'} transition-colors`}>
+                <Plus className="h-5 w-5 mx-auto mb-2" />
+                إضافة ميزة جديدة
+              </button>
+
+              <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                حفظ المميزات
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Preview Panel */}
