@@ -39,6 +39,7 @@ const AdminPanel: React.FC = () => {
     { id: 'orders' as TabType, name: 'الطلبات', icon: Inbox },
     { id: 'customize' as TabType, name: 'تخصيص صفحة الهبوط', icon: Palette },
     { id: 'settings' as TabType, name: 'إعدادات الموقع', icon: Settings },
+    { id: 'testing' as TabType, name: 'اختبار التكامل', icon: TrendingUp },
   ];
 
   const renderContent = () => {
