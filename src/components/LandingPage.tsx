@@ -97,7 +97,7 @@ const LandingPage: React.FC = () => {
       id: 2,
       name: 'Fatima Al-Salem',
       role: 'Company Founder',
-      avatar: '👩‍💼',
+      avatar: '����‍💼',
       rating: 5,
       comment: 'Best platform for financial services, excellent technical support and very reasonable prices.',
       date: '2024-11-10',
@@ -248,13 +248,13 @@ const LandingPage: React.FC = () => {
   }
 
   const heroData = customization?.hero || {
-    title: language === 'ar' ? 'مستقبل الخدمات' : 'Future of Digital',
-    titleGradient: language === 'ar' ? 'المالية الرقمية' : 'Financial Services',
-    subtitle: language === 'ar' 
-      ? 'نحن نعيد تعريف الخدمات المالية الرقمية من خلال تقديم حلول مبتكرة وآمنة ��متطورة تلبي احتياجاتك المالية بكفاءة عالية وموثوقية استثنائية'
-      : 'We are redefining digital financial services by providing innovative, secure, and advanced solutions that meet your financial needs with high efficiency and exceptional reliability',
+    title: language === 'ar' ? 'المستقبل الرقمي' : 'Digital Future',
+    titleGradient: language === 'ar' ? 'للخدمات المالية' : 'Financial Services',
+    subtitle: language === 'ar'
+      ? 'نحن الرواد في الخدمات المالية الرقمية، نقدم حلولاً مبتكرة وآمنة تلبي جميع احتياجاتك المالية بسرعة وموثوقية عالية مع ضمان الجودة'
+      : 'We are pioneers in digital financial services, providing innovative and secure solutions that meet all your financial needs quickly and reliably with quality guarantee',
     button1Text: language === 'ar' ? 'ابدأ رحلتك معنا' : 'Start Your Journey',
-    badgeText: language === 'ar' ? 'منصة رائدة في الخدم��ت المالية الرقمية' : 'Leading platform in digital financial services',
+    badgeText: language === 'ar' ? 'منصة موثوقة ومعتمدة في الخدمات المالية' : 'Trusted and certified platform for financial services',
     showStats: true,
     statsData: {
       clients: '15,000+',
