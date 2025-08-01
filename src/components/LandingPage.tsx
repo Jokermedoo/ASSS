@@ -55,7 +55,7 @@ const LandingPage: React.FC = () => {
     {
       id: 1,
       name: 'أحمد محمد',
-      role: 'مدير أعمال',
+      role: 'مدير أ��مال',
       avatar: '👨‍💼',
       rating: 5,
       comment: 'خدمة ممتازة وسريعة، تم إنجاز طلبي في أقل من 5 دقائق. أنصح بشدة بالتعامل مع KYCtrust.',
@@ -168,7 +168,7 @@ const LandingPage: React.FC = () => {
         : 'Instant processing of requests in less than 5 minutes',
       color: 'from-yellow-500 to-yellow-600',
       benefits: language === 'ar' 
-        ? ['إنجاز فوري للطلبات', 'معالجة سريعة للدفعات', 'دعم فني فوري']
+        ? ['إنجاز فوري للطل��ات', 'معالجة سريعة للدفعات', 'دعم فني فوري']
         : ['Instant order completion', 'Fast payment processing', 'Immediate technical support']
     },
     {
@@ -437,6 +437,34 @@ const LandingPage: React.FC = () => {
               }`}>
                 {heroData.subtitle}
               </p>
+
+              {/* Trust Badges */}
+              <div className="flex flex-wrap items-center justify-center gap-6 mt-8 pt-6 border-t border-gray-200/20">
+                <div className="flex items-center space-x-reverse space-x-2">
+                  <Shield className="h-5 w-5 text-green-500" />
+                  <span className={`text-sm font-medium ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    {language === 'ar' ? 'ضمان الأمان' : 'Security Guaranteed'}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-reverse space-x-2">
+                  <CheckCircle className="h-5 w-5 text-blue-500" />
+                  <span className={`text-sm font-medium ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    {language === 'ar' ? 'تنفيذ فوري' : 'Instant Execution'}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-reverse space-x-2">
+                  <Award className="h-5 w-5 text-orange-500" />
+                  <span className={`text-sm font-medium ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    {language === 'ar' ? 'جودة مضمونة' : 'Quality Assured'}
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* CTA Button */}
@@ -727,7 +755,7 @@ const LandingPage: React.FC = () => {
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
               {language === 'ar' 
-                ? 'نجمع بين الأمان والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات المالية'
+                ? 'نجمع بين الأم��ن والسرعة والموثوقية لنقدم لك أفضل تجربة في الخدمات المالية'
                 : 'We combine security, speed and reliability to provide you with the best experience in financial services'
               }
             </p>
