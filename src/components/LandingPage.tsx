@@ -162,7 +162,7 @@ const LandingPage: React.FC = () => {
     },
     {
       icon: Zap,
-      title: language === 'ar' ? 'سرعة البرق' : 'Lightning Speed',
+      title: language === 'ar' ? 'س��عة البرق' : 'Lightning Speed',
       description: language === 'ar' 
         ? 'معالجة فورية للطلبات في أقل من 5 دقائق' 
         : 'Instant processing of requests in less than 5 minutes',
@@ -190,7 +190,7 @@ const LandingPage: React.FC = () => {
         : 'Our services are available in more than 150 countries worldwide',
       color: 'from-purple-500 to-purple-600',
       benefits: language === 'ar' 
-        ? ['دعم متعدد القارات', 'عملات ��تنوعة', 'شراكات عالمية']
+        ? ['دعم متعدد القارات', 'عملات متنوعة', 'شراكات عالمية']
         : ['Multi-continental support', 'Multiple currencies', 'Global partnerships']
     }
   ], [language]);
@@ -583,11 +583,18 @@ const LandingPage: React.FC = () => {
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
               {language === 'ar'
-                ? 'نقدم مجموعة شاملة من الخدمات المالية الرقمية المتطورة بضمان الجو��ة والأمان والتنفيذ السريع'
+                ? 'نقدم مجموعة شاملة من الخدمات المالية الرقمية المتطورة بضمان الجودة والأمان والتنفيذ السريع'
                 : 'We provide a comprehensive range of advanced digital financial services with guaranteed quality, security and fast execution'
               }
             </p>
           </div>
+
+          {/* Debug Info (temporary) */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mb-4 p-4 bg-yellow-100 rounded-lg text-black">
+              Debug: Total services: {services.length}, Active: {activeServices.length}, Featured: {featuredServices.length}, Loading: {loading ? 'Yes' : 'No'}
+            </div>
+          )}
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
@@ -980,7 +987,7 @@ const LandingPage: React.FC = () => {
               },
               {
                 q: 'هل خدماتكم آمنة؟',
-                a: 'نعم، نحن نستخدم أعلى ��عايير الأمان والتشفير. جميع البيانات محمية ولا نحتفظ بأي معلومات حساسة.'
+                a: 'نعم، نحن نستخدم أعلى معايير الأمان والتشفير. جميع البيانات محمية ولا نحتفظ بأي معلومات حساسة.'
               },
               {
                 q: 'ما هي طرق الدفع المتاحة؟',
@@ -988,7 +995,7 @@ const LandingPage: React.FC = () => {
               },
               {
                 q: 'هل تقدمون ضمان على الخدمات؟',
-                a: 'نعم، نحن نقدم ضمان استرداد الأموال في حالة عدم تنفيذ الخدمة كما هو متفق عليه.'
+                a: 'نعم، نحن نقدم ضمان استرداد الأموال في حالة عدم تنفيذ الخدمة كما ��و متفق عليه.'
               },
               {
                 q: 'كيف يمكنني التواصل مع الد��م؟',
