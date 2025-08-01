@@ -92,7 +92,7 @@ export const translations = {
     customerName: 'اسم العميل',
     additionalNotes: 'ملاحظات إضافية',
     securityGuarantee: 'ضمان الأمان',
-    securityDescription: 'جميع بياناتك محمية ومشفرة. نحن نحترم خصوصيتك ولا نشارك معلوماتك مع أطراف ثالثة.',
+    privacyDescription: 'جميع بياناتك محمية ومشفرة. نحن نحترم خصوصيتك ولا نشارك معلوماتك مع أطراف ثالثة.',
     importantInfo: 'معلومات مهمة',
     cancel: 'إلغاء',
     
