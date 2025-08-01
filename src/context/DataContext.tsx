@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import toast from 'react-hot-toast';
+import { databaseService } from '../services/database';
 
 export interface Service {
   id: string;
@@ -96,86 +97,168 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(defaultPaymentMethods);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(false); // Start with false since we have default data
+  const [loading, setLoading] = useState(true); // Start with true to load from database
   const [error, setError] = useState<string | null>(null);
 
   const refreshData = async () => {
-    // For now, just use defaults - API integration can be added later
-    console.log('Using default data (Supabase not configured)');
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Load all data from database
+      const [servicesData, paymentMethodsData, siteSettingsData, ordersData] = await Promise.all([
+        databaseService.getServices().catch(() => defaultServices),
+        databaseService.getPaymentMethods().catch(() => defaultPaymentMethods),
+        databaseService.getSiteSettings().catch(() => defaultSiteSettings),
+        databaseService.getOrders().catch(() => [])
+      ]);
+
+      setServices(servicesData);
+      setPaymentMethods(paymentMethodsData);
+      setSiteSettings(siteSettingsData);
+      setOrders(ordersData);
+
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+      setError('فشل في تحميل البيانات');
+      // Fallback to default data
+      setServices(defaultServices);
+      setPaymentMethods(defaultPaymentMethods);
+      setSiteSettings(defaultSiteSettings);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const addOrder = (order: Omit<Order, 'id' | 'timestamp'>) => {
-    const newOrder: Order = {
-      ...order,
-      id: Date.now().toString(),
-      timestamp: new Date()
-    };
-    setOrders(prev => [newOrder, ...prev]);
+  // Load data on component mount
+  useEffect(() => {
+    refreshData();
+  }, []);
 
-    toast.success('تم حفظ الطلب بنجاح!');
+  const addOrder = async (order: Omit<Order, 'id' | 'timestamp'>) => {
+    try {
+      const newOrder = await databaseService.createOrder(order);
+      setOrders(prev => [newOrder, ...prev]);
+      toast.success('تم حفظ الطلب بنجاح!');
+
+      // Track analytics
+      await databaseService.trackEvent('order_created', {
+        serviceName: order.serviceName,
+        customerName: order.customerName
+      });
+    } catch (error) {
+      console.error('Error creating order:', error);
+      toast.error('فشل في حفظ الطلب');
+    }
   };
 
   // Services management functions
-  const addService = (service: Omit<Service, 'id'>) => {
-    const newService: Service = {
-      ...service,
-      id: Date.now().toString()
-    };
-    setServices(prev => [...prev, newService]);
-    toast.success('تم إضافة الخدمة بنجاح!');
+  const addService = async (service: Omit<Service, 'id'>) => {
+    try {
+      const newService = await databaseService.createService(service);
+      setServices(prev => [...prev, newService]);
+      toast.success('تم إضافة الخدمة بنجاح!');
+    } catch (error) {
+      console.error('Error creating service:', error);
+      toast.error('فشل في إضافة الخدمة');
+    }
   };
 
-  const updateService = (id: string, updates: Partial<Service>) => {
-    setServices(prev => prev.map(service =>
-      service.id === id ? { ...service, ...updates } : service
-    ));
-    toast.success('تم تحديث الخدمة بنجاح!');
+  const updateService = async (id: string, updates: Partial<Service>) => {
+    try {
+      const updatedService = await databaseService.updateService(id, updates);
+      setServices(prev => prev.map(service =>
+        service.id === id ? updatedService : service
+      ));
+      toast.success('تم تحديث الخدمة بنجاح!');
+    } catch (error) {
+      console.error('Error updating service:', error);
+      toast.error('فشل في تحديث الخدمة');
+    }
   };
 
-  const deleteService = (id: string) => {
-    setServices(prev => prev.filter(service => service.id !== id));
-    toast.success('تم حذف الخدمة بنجاح!');
+  const deleteService = async (id: string) => {
+    try {
+      await databaseService.deleteService(id);
+      setServices(prev => prev.filter(service => service.id !== id));
+      toast.success('تم حذف الخدمة بنجاح!');
+    } catch (error) {
+      console.error('Error deleting service:', error);
+      toast.error('فشل في حذف الخدمة');
+    }
   };
 
   // Orders management functions
-  const archiveOrder = (id: string) => {
-    setOrders(prev => prev.map(order =>
-      order.id === id ? { ...order, archived: true } : order
-    ));
-    toast.success('تم أرشفة الطلب بنجاح!');
+  const archiveOrder = async (id: string) => {
+    try {
+      const archivedOrder = await databaseService.archiveOrder(id);
+      setOrders(prev => prev.map(order =>
+        order.id === id ? archivedOrder : order
+      ));
+      toast.success('تم أرشفة الطلب بنجاح!');
+    } catch (error) {
+      console.error('Error archiving order:', error);
+      toast.error('فشل في أرشفة الطلب');
+    }
   };
 
-  const deleteOrder = (id: string) => {
-    setOrders(prev => prev.filter(order => order.id !== id));
-    toast.success('تم حذف الطلب بنجاح!');
+  const deleteOrder = async (id: string) => {
+    try {
+      await databaseService.deleteOrder(id);
+      setOrders(prev => prev.filter(order => order.id !== id));
+      toast.success('تم حذف الطلب بنجاح!');
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      toast.error('فشل في حذف الطلب');
+    }
   };
 
   // Payment methods management functions
-  const addPaymentMethod = (method: Omit<PaymentMethod, 'id'>) => {
-    const newMethod: PaymentMethod = {
-      ...method,
-      id: Date.now().toString()
-    };
-    setPaymentMethods(prev => [...prev, newMethod]);
-    toast.success('تم إضافة طريقة الدفع بنجاح!');
+  const addPaymentMethod = async (method: Omit<PaymentMethod, 'id'>) => {
+    try {
+      const newMethod = await databaseService.createPaymentMethod(method);
+      setPaymentMethods(prev => [...prev, newMethod]);
+      toast.success('تم إضافة طريقة الدفع بنجاح!');
+    } catch (error) {
+      console.error('Error creating payment method:', error);
+      toast.error('فشل في إضافة طريقة الدفع');
+    }
   };
 
-  const updatePaymentMethod = (id: string, updates: Partial<PaymentMethod>) => {
-    setPaymentMethods(prev => prev.map(method =>
-      method.id === id ? { ...method, ...updates } : method
-    ));
-    toast.success('تم تحديث طريقة الدفع بنجاح!');
+  const updatePaymentMethod = async (id: string, updates: Partial<PaymentMethod>) => {
+    try {
+      const updatedMethod = await databaseService.updatePaymentMethod(id, updates);
+      setPaymentMethods(prev => prev.map(method =>
+        method.id === id ? updatedMethod : method
+      ));
+      toast.success('تم تحديث طريقة الدفع بنجاح!');
+    } catch (error) {
+      console.error('Error updating payment method:', error);
+      toast.error('فشل في تحديث طريقة الدفع');
+    }
   };
 
-  const deletePaymentMethod = (id: string) => {
-    setPaymentMethods(prev => prev.filter(method => method.id !== id));
-    toast.success('تم حذف طريقة الدفع بنجاح!');
+  const deletePaymentMethod = async (id: string) => {
+    try {
+      await databaseService.deletePaymentMethod(id);
+      setPaymentMethods(prev => prev.filter(method => method.id !== id));
+      toast.success('تم حذف طريقة الدفع بنجاح!');
+    } catch (error) {
+      console.error('Error deleting payment method:', error);
+      toast.error('فشل في حذف طريقة الدفع');
+    }
   };
 
   // Site settings management
-  const updateSiteSettings = (updates: Partial<SiteSettings>) => {
-    setSiteSettings(prev => ({ ...prev, ...updates }));
-    toast.success('تم تحديث إعدادات الموقع بنجاح!');
+  const updateSiteSettings = async (updates: Partial<SiteSettings>) => {
+    try {
+      const updatedSettings = await databaseService.updateSiteSettings(updates);
+      setSiteSettings(updatedSettings);
+      toast.success('تم تحديث إعدادات الموقع بنجاح!');
+    } catch (error) {
+      console.error('Error updating site settings:', error);
+      toast.error('فشل في تحديث إعدادات الموقع');
+    }
   };
 
   const value: DataContextType = {
