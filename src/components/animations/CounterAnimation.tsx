@@ -81,7 +81,7 @@ const CounterAnimation: React.FC<CounterAnimationProps> = ({
         cancelAnimationFrame(animationId);
       }
     };
-  }, [isVisible, end, duration, decimals]);
+  }, [isVisible, end, actualDuration, decimals]);
 
   const formatNumber = (num: number) => {
     if (decimals > 0) {
