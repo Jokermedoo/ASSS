@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Edit2, Trash2, Eye, EyeOff, CreditCard } from 'lucide-react';
 import { useData, PaymentMethod } from '../../context/DataContext';
 import LoadingSpinner from '../ui/LoadingSpinner';
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../ui/ErrorMessage';
 
 const PaymentMethodsManager: React.FC = () => {
   const { paymentMethods, updatePaymentMethod, addPaymentMethod, deletePaymentMethod, loading, error, refreshData } = useData();
