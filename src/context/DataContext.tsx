@@ -93,11 +93,15 @@ const defaultSiteSettings: SiteSettings = {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [services, setServices] = useState<Service[]>(defaultServices);
+  // Initialize with default data immediately
+  const [services, setServices] = useState<Service[]>(() => {
+    console.log('Initializing services with', defaultServices.length, 'default services');
+    return defaultServices;
+  });
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(defaultPaymentMethods);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(false); // Set to false to show default data immediately
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const refreshData = async () => {
