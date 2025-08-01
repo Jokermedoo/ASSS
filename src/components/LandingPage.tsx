@@ -45,10 +45,10 @@ const LandingPage: React.FC = () => {
     [paymentMethods]
   );
 
-  const featuredServices = useMemo(() => 
-    activeServices.slice(0, 6),
-    [activeServices]
-  );
+  const featuredServices = useMemo(() => {
+    console.log('Services data:', services.length, 'Active services:', activeServices.length);
+    return activeServices.slice(0, 12); // Show up to 12 services instead of 6
+  }, [activeServices, services]);
 
   // Enhanced testimonials data with full translations
   const testimonials = useMemo(() => language === 'ar' ? [
@@ -190,7 +190,7 @@ const LandingPage: React.FC = () => {
         : 'Our services are available in more than 150 countries worldwide',
       color: 'from-purple-500 to-purple-600',
       benefits: language === 'ar' 
-        ? ['دعم متعدد القارات', 'عملات متنوعة', 'شراكات عالمية']
+        ? ['دعم متعدد القارات', 'عملات ��تنوعة', 'شراكات عالمية']
         : ['Multi-continental support', 'Multiple currencies', 'Global partnerships']
     }
   ], [language]);
@@ -583,7 +583,7 @@ const LandingPage: React.FC = () => {
               theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}>
               {language === 'ar'
-                ? 'نقدم مجموعة شاملة من الخدمات المالية الرقمية المتطورة بضمان الجودة والأمان والتنفيذ السريع'
+                ? 'نقدم مجموعة شاملة من الخدمات المالية الرقمية المتطورة بضمان الجو��ة والأمان والتنفيذ السريع'
                 : 'We provide a comprehensive range of advanced digital financial services with guaranteed quality, security and fast execution'
               }
             </p>
@@ -980,7 +980,7 @@ const LandingPage: React.FC = () => {
               },
               {
                 q: 'هل خدماتكم آمنة؟',
-                a: 'نعم، نحن نستخدم أعلى معايير الأمان والتشفير. جميع البيانات محمية ولا نحتفظ بأي معلومات حساسة.'
+                a: 'نعم، نحن نستخدم أعلى ��عايير الأمان والتشفير. جميع البيانات محمية ولا نحتفظ بأي معلومات حساسة.'
               },
               {
                 q: 'ما هي طرق الدفع المتاحة؟',
