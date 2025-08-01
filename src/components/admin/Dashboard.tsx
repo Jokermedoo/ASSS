@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Package, CreditCard, Inbox, TrendingUp, Users, CheckCircle, Activity, Calendar, BarChart3, DollarSign, Clock, Globe, Zap, Settings, Eye, Plus } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { useTheme } from '../../context/ThemeContext';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ErrorMessage';
 
 const Dashboard: React.FC = () => {
@@ -100,7 +100,7 @@ const Dashboard: React.FC = () => {
   const getPeriodLabel = () => {
     switch (selectedPeriod) {
       case 'today': return 'اليوم';
-      case 'week': return 'هذا الأسبوع';
+      case 'week': return '��ذا الأسبوع';
       case 'month': return 'هذا الشهر';
       default: return 'هذا الأسبوع';
     }
