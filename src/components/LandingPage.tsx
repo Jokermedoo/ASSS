@@ -483,7 +483,7 @@ const LandingPage: React.FC = () => {
                       theme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}>
                       <CounterAnimation
-                        value={stat.value}
+                        end={stat.value}
                         prefix={stat.prefix}
                         suffix={stat.suffix}
                       />
@@ -893,7 +893,7 @@ const LandingPage: React.FC = () => {
             {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
-                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخدمات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
+                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ��مات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
               },
               {
                 q: 'هل خدماتكم آمنة؟',
