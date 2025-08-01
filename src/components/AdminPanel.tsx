@@ -56,6 +56,8 @@ const AdminPanel: React.FC = () => {
         return <LandingPageCustomizer />;
       case 'settings':
         return <SiteSettingsManager />;
+      case 'testing':
+        return <IntegrationTester />;
       default:
         return <Dashboard />;
     }
