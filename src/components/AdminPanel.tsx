@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Settings, Package, CreditCard, Inbox, Eye, EyeOff, Palette, Layout } from 'lucide-react';
+import { Shield, Settings, Package, CreditCard, Inbox, Eye, EyeOff, Palette, Layout, TrendingUp } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import LoginForm from './admin/LoginForm';
 import Dashboard from './admin/Dashboard';
