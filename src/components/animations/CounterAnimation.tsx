@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { usePerformance } from '../../config/performance';
 
 interface CounterAnimationProps {
   end: number;
