@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Save, Globe, FileText, Bell, Phone, Upload, Image, Settings, Palette, Type } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { useTheme } from '../../context/ThemeContext';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ErrorMessage';
 
 const SiteSettingsManager: React.FC = () => {
@@ -191,7 +191,7 @@ const SiteSettingsManager: React.FC = () => {
               dir="ltr"
             />
             <p className="text-xs text-gray-500 mt-1">
-              رقم الواتس اب الذي سيتم إرسال الطلبات إليه (مع رمز الدولة)
+              رقم الواتس اب الذي سيتم ��رسال الطلبات إليه (مع رمز الدولة)
             </p>
           </div>
 
@@ -401,7 +401,7 @@ const SiteSettingsManager: React.FC = () => {
                 >
                   <option value="Cairo">Cairo (عربي)</option>
                   <option value="Tajawal">Tajawal (عربي)</option>
-                  <option value="Inter">Inter (إنجليزي)</option>
+                  <option value="Inter">Inter (��نجليزي)</option>
                   <option value="Roboto">Roboto (إنجليزي)</option>
                   <option value="Poppins">Poppins (إنجليزي)</option>
                 </select>
@@ -430,7 +430,7 @@ const SiteSettingsManager: React.FC = () => {
                       className="w-full h-16 rounded-xl border border-gray-300"
                       style={{ backgroundColor: formData.accentColor }}
                     />
-                    <span className="text-sm font-medium mt-2 block">إبراز</span>
+                    <span className="text-sm font-medium mt-2 block">إبر��ز</span>
                   </div>
                 </div>
 
@@ -560,7 +560,7 @@ const SiteSettingsManager: React.FC = () => {
                   className="px-6 py-3 rounded-xl text-white font-semibold"
                   style={{ backgroundColor: formData.primaryColor }}
                 >
-                  زر أساسي
+                  زر ��ساسي
                 </button>
                 <button
                   className="px-6 py-3 rounded-xl text-white font-semibold"
