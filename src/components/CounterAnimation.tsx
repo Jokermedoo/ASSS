@@ -64,7 +64,7 @@ const CounterAnimation: React.FC<CounterAnimationProps> = ({
     if (decimals > 0) {
       return num.toFixed(decimals);
     }
-    return Math.floor(num).toLocaleString('ar-EG');
+    return Math.floor(num).toLocaleString('en-US');
   };
 
   return (
