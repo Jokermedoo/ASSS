@@ -246,23 +246,7 @@ export const appState = {
   reset: () => appStateManager.reset(),
 };
 
-// React hook for using app state
-export const useAppState = () => {
-  const [state, setState] = React.useState(appStateManager.getState());
-  
-  React.useEffect(() => {
-    const unsubscribe = appStateManager.subscribe((newState) => {
-      setState(newState);
-    });
-    
-    return unsubscribe;
-  }, []);
-  
-  return {
-    state,
-    actions: appState,
-  };
-};
+// Note: React hook implementation moved to separate hooks file to avoid import issues
 
 // State persistence utilities
 export const statePersistence = {
