@@ -118,7 +118,9 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       ]);
 
       // Ensure we always have services data
-      setServices(servicesData && servicesData.length > 0 ? servicesData : defaultServices);
+      const finalServices = servicesData && servicesData.length > 0 ? servicesData : defaultServices;
+      console.log('Setting services:', finalServices.length, 'services loaded');
+      setServices(finalServices);
       setPaymentMethods(paymentMethodsData && paymentMethodsData.length > 0 ? paymentMethodsData : defaultPaymentMethods);
       setSiteSettings(siteSettingsData || defaultSiteSettings);
       setOrders(ordersData || []);
