@@ -12,7 +12,7 @@ import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
 import IntegrationTester from './IntegrationTester';
 
-type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'settings' | 'customize';
+type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'settings' | 'customize' | 'testing';
 
 const AdminPanel: React.FC = () => {
   const { theme } = useTheme();
