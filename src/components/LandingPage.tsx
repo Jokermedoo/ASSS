@@ -97,7 +97,7 @@ const LandingPage: React.FC = () => {
       id: 2,
       name: 'Fatima Al-Salem',
       role: 'Company Founder',
-      avatar: '����‍💼',
+      avatar: '👩‍💼',
       rating: 5,
       comment: 'Best platform for financial services, excellent technical support and very reasonable prices.',
       date: '2024-11-10',
@@ -157,7 +157,7 @@ const LandingPage: React.FC = () => {
         : 'Advanced encryption and comprehensive protection for all your financial transactions',
       color: 'from-blue-500 to-blue-600',
       benefits: language === 'ar' 
-        ? ['تشفير من الدرجة البنكية', 'حماية البيانات الشخصية', 'مراقبة أمنية 24/7']
+        ? ['تشفير من الدرجة البنكية', 'حماية ��لبيانات الشخصية', 'مراقبة أمنية 24/7']
         : ['Bank-grade encryption', 'Personal data protection', '24/7 security monitoring']
     },
     {
@@ -251,7 +251,7 @@ const LandingPage: React.FC = () => {
     title: language === 'ar' ? 'المستقبل الرقمي' : 'Digital Future',
     titleGradient: language === 'ar' ? 'للخدمات المالية' : 'Financial Services',
     subtitle: language === 'ar'
-      ? 'نحن الرواد في الخدمات المالية الرقمية، نقدم حلولاً مبتكرة وآمنة تلبي جميع احتياجاتك المالية بسرعة وموثوقية عالية مع ضمان الجودة'
+      ? 'نحن الرواد في الخدما�� المالية الرقمية، نقدم حلولاً مبتكرة وآمنة تلبي جميع احتياجاتك المالية بسرعة وموثوقية عالية مع ضمان الجودة'
       : 'We are pioneers in digital financial services, providing innovative and secure solutions that meet all your financial needs quickly and reliably with quality guarantee',
     button1Text: language === 'ar' ? 'ابدأ رحلتك معنا' : 'Start Your Journey',
     badgeText: language === 'ar' ? 'منصة موثوقة ومعتمدة في الخدمات المالية' : 'Trusted and certified platform for financial services',
@@ -542,10 +542,10 @@ const LandingPage: React.FC = () => {
             }`}>
               {language === 'ar' ? (
                 <>خدمات <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  مالية شاملة
+                  مالية احترافية
                 </span></>
               ) : (
-                <>Comprehensive <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <>Professional <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Financial Services
                 </span></>
               )}
@@ -647,7 +647,7 @@ const LandingPage: React.FC = () => {
                       className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-4 rounded-xl font-semibold text-sm hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2"
                     >
                       <MessageCircle className="h-4 w-4" />
-                      <span>{language === 'ar' ? 'اطلب عبر واتساب' : 'Order via WhatsApp'}</span>
+                      <span>{language === 'ar' ? '��طلب عبر واتساب' : 'Order via WhatsApp'}</span>
                     </button>
                   </div>
                 </div>
