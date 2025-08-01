@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Edit2, Trash2, Eye, EyeOff, ArrowUp, ArrowDown } from 'lucide-react';
 import { useData, Service } from '../../context/DataContext';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ErrorMessage';
 
 const ServicesManager: React.FC = () => {
