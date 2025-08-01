@@ -116,7 +116,6 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       // Ensure we always have services data
       const finalServices = servicesData && servicesData.length > 0 ? servicesData : defaultServices;
-      console.log('Setting services:', finalServices.length, 'services loaded');
       setServices(finalServices);
       setPaymentMethods(paymentMethodsData && paymentMethodsData.length > 0 ? paymentMethodsData : defaultPaymentMethods);
       setSiteSettings(siteSettingsData || defaultSiteSettings);
@@ -124,7 +123,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     } catch (error) {
       console.error('Error refreshing data:', error);
-      setError('فشل في تحميل البيانات');
+      setError('فشل ��ي تحميل البيانات');
       // Always fallback to default data
       setServices(defaultServices);
       setPaymentMethods(defaultPaymentMethods);
