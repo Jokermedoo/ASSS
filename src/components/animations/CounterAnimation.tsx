@@ -11,11 +11,14 @@ interface CounterAnimationProps {
 
 const CounterAnimation: React.FC<CounterAnimationProps> = ({
   end,
-  duration = 2000,
+  duration,
   suffix = '',
   prefix = '',
   decimals = 0
 }) => {
+  const { config } = usePerformance();
+  const actualDuration = duration || config.ANIMATION.COUNTER_DURATION;
+
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const counterRef = useRef<HTMLSpanElement>(null);
