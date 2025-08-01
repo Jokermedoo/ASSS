@@ -16,6 +16,8 @@ import ServicesShowcase from './ServicesShowcase';
 import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
 import CounterAnimation from './CounterAnimation';
+import SEOOptimizer from './SEOOptimizer';
+import PerformanceTracker from './PerformanceTracker';
 
 const LandingPage: React.FC = () => {
   // Hooks
@@ -151,7 +153,7 @@ const LandingPage: React.FC = () => {
       icon: Shield,
       title: language === 'ar' ? 'أمان متقدم' : 'Advanced Security',
       description: language === 'ar' 
-        ? 'تشفير متقدم وحماية شاملة لجميع معاملاتك المالية' 
+        ? 'تشفير مت��دم وحماية شاملة لجميع معاملاتك المالية' 
         : 'Advanced encryption and comprehensive protection for all your financial transactions',
       color: 'from-blue-500 to-blue-600',
       benefits: language === 'ar' 
@@ -263,7 +265,15 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <>
+      <SEOOptimizer
+        title={language === 'ar' ? 'الصفحة الرئيسية' : 'Home'}
+        description={siteSettings.description}
+        keywords={['digital wallets', 'financial services', 'paypal', 'payoneer', 'wise', 'crypto']}
+      />
+      <PerformanceTracker />
+
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
       {/* Enhanced Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrollY > 100 
@@ -282,7 +292,7 @@ const LandingPage: React.FC = () => {
                   KYCtrust
                 </h1>
                 <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {language === 'ar' ? 'منصة موثوقة' : 'Trusted Platform'}
+                  {language === 'ar' ? 'منصة م��ثوقة' : 'Trusted Platform'}
                 </p>
               </div>
             </div>
@@ -1155,7 +1165,8 @@ const LandingPage: React.FC = () => {
           </button>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
