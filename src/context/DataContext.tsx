@@ -41,6 +41,19 @@ interface DataContextType {
   error: string | null;
   addOrder: (order: Omit<Order, 'id' | 'timestamp'>) => void;
   refreshData: () => void;
+  // Services management
+  addService: (service: Omit<Service, 'id'>) => void;
+  updateService: (id: string, updates: Partial<Service>) => void;
+  deleteService: (id: string) => void;
+  // Orders management
+  archiveOrder: (id: string) => void;
+  deleteOrder: (id: string) => void;
+  // Payment methods management
+  addPaymentMethod: (method: Omit<PaymentMethod, 'id'>) => void;
+  updatePaymentMethod: (id: string, updates: Partial<PaymentMethod>) => void;
+  deletePaymentMethod: (id: string) => void;
+  // Site settings management
+  updateSiteSettings: (settings: Partial<SiteSettings>) => void;
 }
 
 // Default data
@@ -98,8 +111,71 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       timestamp: new Date()
     };
     setOrders(prev => [newOrder, ...prev]);
-    
+
     toast.success('تم حفظ الطلب بنجاح!');
+  };
+
+  // Services management functions
+  const addService = (service: Omit<Service, 'id'>) => {
+    const newService: Service = {
+      ...service,
+      id: Date.now().toString()
+    };
+    setServices(prev => [...prev, newService]);
+    toast.success('تم إضافة الخدمة بنجاح!');
+  };
+
+  const updateService = (id: string, updates: Partial<Service>) => {
+    setServices(prev => prev.map(service =>
+      service.id === id ? { ...service, ...updates } : service
+    ));
+    toast.success('تم تحديث الخدمة بنجاح!');
+  };
+
+  const deleteService = (id: string) => {
+    setServices(prev => prev.filter(service => service.id !== id));
+    toast.success('تم حذف الخدمة بنجاح!');
+  };
+
+  // Orders management functions
+  const archiveOrder = (id: string) => {
+    setOrders(prev => prev.map(order =>
+      order.id === id ? { ...order, archived: true } : order
+    ));
+    toast.success('تم أرشفة الطلب بنجاح!');
+  };
+
+  const deleteOrder = (id: string) => {
+    setOrders(prev => prev.filter(order => order.id !== id));
+    toast.success('تم حذف الطلب بنجاح!');
+  };
+
+  // Payment methods management functions
+  const addPaymentMethod = (method: Omit<PaymentMethod, 'id'>) => {
+    const newMethod: PaymentMethod = {
+      ...method,
+      id: Date.now().toString()
+    };
+    setPaymentMethods(prev => [...prev, newMethod]);
+    toast.success('تم إضافة طريقة الدفع بنجاح!');
+  };
+
+  const updatePaymentMethod = (id: string, updates: Partial<PaymentMethod>) => {
+    setPaymentMethods(prev => prev.map(method =>
+      method.id === id ? { ...method, ...updates } : method
+    ));
+    toast.success('تم تحديث طريقة الدفع بنجاح!');
+  };
+
+  const deletePaymentMethod = (id: string) => {
+    setPaymentMethods(prev => prev.filter(method => method.id !== id));
+    toast.success('تم حذف طريقة الدفع بنجاح!');
+  };
+
+  // Site settings management
+  const updateSiteSettings = (updates: Partial<SiteSettings>) => {
+    setSiteSettings(prev => ({ ...prev, ...updates }));
+    toast.success('تم تحديث إعدادات الموقع بنجاح!');
   };
 
   const value: DataContextType = {
@@ -110,7 +186,16 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     loading,
     error,
     addOrder,
-    refreshData
+    refreshData,
+    addService,
+    updateService,
+    deleteService,
+    archiveOrder,
+    deleteOrder,
+    addPaymentMethod,
+    updatePaymentMethod,
+    deletePaymentMethod,
+    updateSiteSettings
   };
 
   return (
