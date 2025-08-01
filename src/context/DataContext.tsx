@@ -97,7 +97,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(defaultPaymentMethods);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true); // Start with true to load from database
+  const [loading, setLoading] = useState(false); // Set to false to show default data immediately
   const [error, setError] = useState<string | null>(null);
 
   const refreshData = async () => {
