@@ -8,9 +8,8 @@ import PaymentMethodsManager from './admin/PaymentMethodsManager';
 import OrdersManager from './admin/OrdersManager';
 import SiteSettingsManager from './admin/SiteSettingsManager';
 import LandingPageCustomizer from './admin/LandingPageCustomizer';
-import ThemeToggle from './ThemeToggle';
-import LanguageToggle from './LanguageToggle';
-import IntegrationTester from './IntegrationTester';
+import ThemeToggle from './ui/ThemeToggle';
+import LanguageToggle from './ui/LanguageToggle';
 
 type TabType = 'dashboard' | 'services' | 'payments' | 'orders' | 'settings' | 'customize' | 'testing';
 
