@@ -3,7 +3,7 @@ import { Save, Globe, FileText, Bell, Phone, Upload, Image, Settings, Palette, T
 import { useData } from '../../context/DataContext';
 import { useTheme } from '../../context/ThemeContext';
 import LoadingSpinner from '../ui/LoadingSpinner';
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../ui/ErrorMessage';
 
 const SiteSettingsManager: React.FC = () => {
   const { siteSettings, updateSiteSettings, loading, error, refreshData } = useData();
@@ -167,7 +167,7 @@ const SiteSettingsManager: React.FC = () => {
               placeholder="وصف تعريفي شامل عن خدمات الموقع"
             />
             <p className="text-xs text-gray-500 mt-1">
-              وصف مختصر يظهر تحت العنوان الرئيسي لتعريف العملاء بخدماتك
+              وصف مختصر يظهر ��حت العنوان الرئيسي لتعريف العملاء بخدماتك
             </p>
           </div>
 
@@ -430,7 +430,7 @@ const SiteSettingsManager: React.FC = () => {
                       className="w-full h-16 rounded-xl border border-gray-300"
                       style={{ backgroundColor: formData.accentColor }}
                     />
-                    <span className="text-sm font-medium mt-2 block">إبر��ز</span>
+                    <span className="text-sm font-medium mt-2 block">إبراز</span>
                   </div>
                 </div>
 
