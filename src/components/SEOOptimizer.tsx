@@ -1,5 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect } from 'react';
 import { useData } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -24,7 +23,7 @@ const SEOOptimizer: React.FC<SEOOptimizerProps> = ({
   const { language } = useTheme();
 
   const defaultTitle = siteSettings.title || 'KYCtrust - خدمات مالية رقمية موثوقة';
-  const defaultDescription = siteSettings.description || 'نقدم خدمات مالية رقمية احترافية وآمنة لجميع المنصات العالمية مع ضمان الجودة والموثوق��ة';
+  const defaultDescription = siteSettings.description || 'نقدم خدمات مالية رقمية احترافية وآمنة لجميع المنصات العالمية مع ضمان الجودة والموثوقية';
   const defaultKeywords = [
     'خدمات مالية',
     'محافظ رقمية', 
