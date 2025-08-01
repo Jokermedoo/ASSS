@@ -58,7 +58,7 @@ const CounterAnimation: React.FC<CounterAnimationProps> = ({
 
     const updateCount = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const progress = Math.min((timestamp - startTime) / actualDuration, 1);
 
       // Improved easing function for smoother animation
       const easedProgress = progress < 0.5
