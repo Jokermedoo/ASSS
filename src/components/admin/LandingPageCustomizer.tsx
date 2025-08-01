@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Save, Eye, Settings, Palette, Type, Layout, Image, Sparkles, Move, Plus, Trash2, Edit2 } from 'lucide-react';
 import { useCustomization } from '../../context/CustomizationContext';
 import { useTheme } from '../../context/ThemeContext';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ErrorMessage';
 import toast from 'react-hot-toast';
 
