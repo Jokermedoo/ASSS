@@ -45,10 +45,10 @@ const LandingPage: React.FC = () => {
     [paymentMethods]
   );
 
-  const featuredServices = useMemo(() => {
-    console.log('Services data:', services.length, 'Active services:', activeServices.length);
-    return activeServices.slice(0, 12); // Show up to 12 services instead of 6
-  }, [activeServices, services]);
+  const featuredServices = useMemo(() =>
+    activeServices.slice(0, 12), // Show up to 12 services instead of 6
+    [activeServices]
+  );
 
   // Enhanced testimonials data with full translations
   const testimonials = useMemo(() => language === 'ar' ? [
@@ -974,7 +974,7 @@ const LandingPage: React.FC = () => {
             {(language === 'ar' ? [
               {
                 q: 'كم يستغرق تنفيذ الطلب؟',
-                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ���مات ق�� تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
+                a: 'معظم طلباتنا يتم تنفيذها خلال 5 دقائق أو أقل. بعض الخ���مات قد تحتاج إلى وقت أطول قليلاً حسب التعقيد.'
               },
               {
                 q: 'هل خدماتكم آمنة؟',
@@ -1084,7 +1084,7 @@ const LandingPage: React.FC = () => {
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
                 {language === 'ar' 
-                  ? 'نحن نقدم خدمات مالية رقمية آمنة وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.'
+                  ? 'نحن نقدم خدمات مالية رقمية آمن�� وموثوقة مع أعلى معايير الجودة والحماية لعملائنا الكرام.'
                   : 'We provide secure and reliable digital financial services with the highest standards of quality and protection for our valued customers.'
                 }
               </p>
@@ -1110,7 +1110,7 @@ const LandingPage: React.FC = () => {
               </h4>
               <div className="space-y-4">
                 {[
-                  { label: language === 'ar' ? 'الخدمات' : 'Services', action: () => scrollToSection('services') },
+                  { label: language === 'ar' ? 'ا��خدمات' : 'Services', action: () => scrollToSection('services') },
                   { label: language === 'ar' ? 'المميزات' : 'Features', action: () => scrollToSection('features') },
                   { label: language === 'ar' ? 'آراء العملاء' : 'Testimonials', action: () => scrollToSection('testimonials') },
                   { label: language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ', action: () => scrollToSection('faq') }
