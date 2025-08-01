@@ -3,7 +3,7 @@ import { Save, Eye, Settings, Palette, Type, Layout, Image, Sparkles, Move, Plus
 import { useCustomization } from '../../context/CustomizationContext';
 import { useTheme } from '../../context/ThemeContext';
 import LoadingSpinner from '../ui/LoadingSpinner';
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../ui/ErrorMessage';
 import toast from 'react-hot-toast';
 
 const LandingPageCustomizer: React.FC = () => {
@@ -773,7 +773,7 @@ const LandingPageCustomizer: React.FC = () => {
                     className="w-full h-16 rounded-xl mb-2 border border-gray-300"
                     style={{ backgroundColor: globalForm.accentColor }}
                   />
-                  <span className="text-sm font-medium">لون الإبراز</span>
+                  <span className="text-sm font-medium">لون الإب��از</span>
                 </div>
               </div>
 
